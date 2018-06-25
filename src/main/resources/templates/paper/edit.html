@@ -1,0 +1,40 @@
+<div class="container">
+ 
+<form th:action="@{/papers}" method="post" th:object="${paperModel.paper}" id="paperForm">
+	<input type="hidden" name="id" th:value="*{id}">
+	
+	<div class="form-group ">
+		<label for="papername" class="col-form-label">报纸名称</label>
+		<input type="text" class="form-control" id="paperName" name="paperName"  th:value="*{paperName}" maxlength="50" placeholder="请输入报纸名称">
+
+	</div>
+	<div class="form-group">
+		<label for="releaseDate" class="col-form-label">发布时间</label>
+		<div class="input-group date form_date col-md-15"data-link-field="releaseDate" data-link-format="yyyy-mm-dd">
+			<input class="form-control" size="16" type="text" th:value="*{releaseDate}" readonly>
+			<span class="input-group-addon"><i class="fa fa-trash" aria-hidden="true"></i></span>
+			<span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+		</div>
+		<input type="hidden" id="releaseDate" name="releaseDate" th:value="*{releaseDate}" /><br/>
+	</div>
+
+</form>
+	<script src="../../js/papers/moment.js" th:src="@{js/papers/moment.js}"></script>
+	<script src="../../js/papers/moment-with-locales.js" th:src="@{js/papers/moment-with-locales.js}"></script>
+	<script src="../../js/papers/datepicker/bootstrap-datetimepicker.min.js" th:src="@{js/papers/datepicker/bootstrap-datetimepicker.min.js}"></script>
+	<script src="../../js/papers/datepicker/locales/bootstrap-datetimepicker.zh-CN.js" th:src="@{js/papers/datepicker/locales/bootstrap-datetimepicker.zh-CN.js}"></script>
+<script type="text/javascript">
+    $('.form_date').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0,
+    });
+</script>
+</div><!-- /.container -->
+ 

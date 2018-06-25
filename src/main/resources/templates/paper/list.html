@@ -1,0 +1,90 @@
+<div class="card-header bg-dark font-white">
+
+	<div class="input-group col-md-7 col-xl-6">
+
+		<input type="text" class="form-control" id="searchName"
+			placeholder="输入发行日期进行搜索"> <span class="input-group-btn">
+			<button class="btn btn-secondary" type="button" id="searchNameBtn">
+				<i class="fa fa-search" aria-hidden="true"></i>
+			</button>
+		</span> <a class="btn btn-primary" data-toggle="modal"
+			data-target="#flipFlop" role="button" id="addPaper"><i
+			class="fa fa-plus" aria-hidden="true"></i></a>
+
+	</div>
+</div>
+
+<div id="mainContainer" class="container">
+	<div id="mainContainerRepleace" class="row">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th data-field="id">ID</th>
+					<th data-field="paperName">报刊名称</th>
+					<th data-field="releaseDate">发行日期</th>
+					<th data-field="createTime">创建时间</th>
+					<th data-field="state">状态</th>
+					<th data-field="operation">操作</th>
+
+				</tr>
+			</thead>
+			<tbody>
+
+				<tr th:each="paper : ${paperModel.paperList}">
+					<td th:text="${paper.id}">1</td>
+					<td><a th:text="${paper.paperName}" th:href="@{'/papers/'+${paper.id}}">内蒙古日报</a></td>
+					<td th:text="${paper.releaseDate}"></td>
+					<td th:text="${paper.createTime}"></td>
+					<td th:switch="${paper.state}">
+						<p th:case="'1'">已删除</p>
+						<!-- *: case的默认的选项 -->
+						<p th:case="0">正常</p>
+					</td>
+					<td>
+						<div>
+							<a class="paper-edit-paper" data-toggle="modal"
+								data-target="#flipFlop" role="button"
+								data-th-attr="paperId=${paper.id}"> <i
+								class="fa fa-pencil-square-o" aria-hidden="true"></i>
+							</a>
+							<a class="paper-delete-paper" role="button"
+								data-th-attr="paperId=${paper.id}"> <i class="fa fa-times"
+								aria-hidden="true"></i>
+							</a>
+						</div>
+					</td>
+				</tr>
+
+			</tbody>
+
+		</table>
+		<div th:replace="~{fragments/page :: page}">...</div>
+
+	</div>
+</div>
+
+<!-- The modal -->
+<div class="modal fade" id="flipFlop" tabindex="-1" role="dialog"
+	aria-labelledby="modalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="modalLabel">新增/编辑</h4>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+
+			</div>
+			<div class="modal-body" id="paperFormContainer"></div>
+			<div class="modal-footer">
+				<button class="btn btn-primary" data-dismiss="modal" id="submitEdit">提交</button>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- JavaScript -->
+<script src="../../js/papers/main.js" th:src="@{/js/papers/main.js}"></script>
+

@@ -1,0 +1,10 @@
+package com.oyun.media.epaper.repository;
+
+import com.oyun.media.epaper.domain.Page;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+/**
+ * @author changzhen
+ */
+public interface PageRepository extends JpaRepository<Page,Long> {
+}

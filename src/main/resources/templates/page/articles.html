@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{fragments/header :: header}">
+<body>
+<div id="mainContainer" class="container">
+	<div id="mainContainerRepleace" class="row">
+		<table class="table table-striped">
+			<thead>
+			<tr>
+				<th data-field="id">ID</th>
+				<th data-field="pageName">版面名称</th>
+				<th data-field="pagePdfPath">版面图片地址</th>
+				<th data-field="createTime">创建时间</th>
+				<th data-field="state">状态</th>
+				<th data-field="operation">操作</th>
+
+			</tr>
+			</thead>
+			<tbody>
+			<tr th:each="article : ${pageModel.page.articleList}">
+				<td th:text="${article.id}">1</td>
+				<td th:text="${article.title}"></td>
+				<td th:text="${article.content}"></td>
+				<td th:text="${article.createTime}"></td>
+				<td th:text="${article.state}"></td>
+			</tr>
+			</tbody>
+
+		</table>
+	</div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}">...</div>
+</body>
+</html>
