@@ -11,6 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 /**
  * @program: epaper
  * @description:
@@ -35,7 +38,8 @@ public class PageServiceImpl implements IPageService{
     }
 
     @Override
-    public Page saveOrUpdatePage(Page page) {
+    public Page updatePage(Page page) {
+        page.setModifyTime(new Timestamp(System.currentTimeMillis()));
         return pageRepository.save(page);
     }
 

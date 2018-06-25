@@ -39,15 +39,6 @@ public class PageController {
         return new ModelAndView("page/add","pageModel",model);
     }
 
-    @GetMapping("/{id}")
-    @ApiOperation(value = "添加版面")
-    public ModelAndView add(@PathVariable("id") Long id, Model model){
-        Page page = pageService.getPageById(id);
-
-        model.addAttribute("page",page);
-        return new ModelAndView("/page/articles","pageModel",model);
-    }
-
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除版面")
     public ResponseEntity<Response> delete(@PathVariable("id") Long id) {
@@ -62,7 +53,12 @@ public class PageController {
     @PostMapping
     public ResponseEntity<Response> saveOrUpdatePaper(Page page) {
         try {
-            paperService.addNewPage(page);
+            if (page.getId() == null){
+                paperService.addNewPage(page);
+            }else {
+                pageService.updatePage(page);
+            }
+
         }  catch (ConstraintViolationException e)  {
             return ResponseEntity.ok().body(new Response(false, ConstraintViolationExceptionHandler.getMessage(e)));
         }
@@ -82,5 +78,13 @@ public class PageController {
         model.addAttribute("page", page);
         return new ModelAndView("page/edit", "pageModel", model);
     }
+
+    @GetMapping(value = "/{id}")
+    public ModelAndView pageDetails(@PathVariable("id")Long id,Model model){
+        Page page = pageService.getPageById(id);
+        model.addAttribute(page);
+        return new ModelAndView("page/articles","articleModel",model);
+    }
+
 
 }

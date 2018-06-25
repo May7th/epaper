@@ -37,7 +37,7 @@ public interface IPageService {
      * @param page
      * @return
      */
-    Page saveOrUpdatePage(Page page);
+    Page updatePage(Page page);
 
     /**
      * 获取所有报纸信息

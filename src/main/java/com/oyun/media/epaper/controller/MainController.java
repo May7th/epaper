@@ -96,6 +96,7 @@ public class MainController {
 			List<Article> articles = new ArrayList<>();
 			for (int j = 0; j < 10; j++) {
 				Article article = new Article();
+				article.setTitle("title"+j);
 				article.setContent("content"+j);
 				article.setContentHtml("contentHtml"+j);
 				article.setCoordinate("1,1,1,10,10,10,10,"+j);

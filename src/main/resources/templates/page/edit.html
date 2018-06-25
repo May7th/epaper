@@ -3,7 +3,8 @@
 <body>
 <form th:action="@{/pages}" method="post" th:object="${pageModel.page}" id="pageForm">
 	<input type="hidden" name="id" th:value="*{id}">
-	<input type="hidden" name="parentId" th:value="${pageModel.paperId}">
+	<input type="hidden" name="parentId" th:value="*{parentId}">
+	<input type="hidden" name="createTime" th:value="*{createTime}">
 
 	<div class="form-group ">
 		<label for="pageName" class="col-form-label">版面名称</label>

@@ -73,18 +73,30 @@ $(function() {
          });
     });
 
-    // 获取编辑用户的界面
-    $("#rightContainer").on("click",".page-edit-page", function () {
-        $.ajax({ 
-             url: "/pages/edit/" + $(this).attr("pageId"),
-             success: function(data){
-                 $("#pageFormContainer").html(data);
-             },
-             error : function() {
-                 toastr.error("error!");
-             }
-         });
+    $(".page-edit-page").click(function() {
+        $.ajax({
+            url: "/pages/edit/" + $(this).attr("pageId"),
+            success: function(data){
+                $("#pageFormContainer").html(data);
+            },
+            error : function() {
+                toastr.error("error!");
+            }
+        });
     });
+
+    // // 获取编辑用户的界面
+    // $("#rightContainer").on("click","", function () {
+    //     $.ajax({
+    //          url: "/pages/edit/" + $(this).attr("pageId"),
+    //          success: function(data){
+    //              $("#pageFormContainer").html(data);
+    //          },
+    //          error : function() {
+    //              toastr.error("error!");
+    //          }
+    //      });
+    // });
 
     // 提交变更后，清空表单
     $("#submitEdit").click(function() {
@@ -110,7 +122,8 @@ $(function() {
     });
 
     // 删除用户
-    $("#rightContainer").on("click",".page-delete-page", function () {
+    $(".page-delete-page").click(function() {
+    // $("#rightContainer").on("click",".page-delete-page", function () {
         var pageId = $(this).attr("pageId");
         swal({
             title: "确定删除版面么?",
