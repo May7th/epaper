@@ -1,7 +1,6 @@
 package com.oyun.media.epaper.service;
 
 import com.oyun.media.epaper.domain.Page;
-import com.oyun.media.epaper.domain.Paper;
 import org.springframework.data.domain.Pageable;
 
 /**
@@ -24,13 +23,6 @@ public interface IPageService {
      * @param id
      */
     void removePage(Long id);
-
-    /**
-     * 增加新报纸
-     * @param page
-     * @return
-     */
-    Page addNewPage(Page page);
 
     /**
      * 储存更新报纸

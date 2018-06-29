@@ -28,7 +28,7 @@
                 <th data-field="id">ID</th>
                 <th data-field="pageName">版面名称</th>
                 <th data-field="pageName">版面描述</th>
-                <th data-field="pagePdfPath">版面图片地址</th>
+                <th data-field="pageImagePath">版面图片地址</th>
                 <th data-field="createTime">创建时间</th>
                 <th data-field="modifyTime">上次修改时间</th>
                 <th data-field="state">状态</th>
@@ -42,7 +42,7 @@
                 <td th:text="${page.id}">1</td>
                 <td><a th:text="${page.pageName}" th:href="@{'/pages/'+${page.id}}"></td>
                 <td th:text="${page.description}"></td>
-                <td th:text="${page.pagePdfPath}"></td>
+                <td th:text="${page.pageImagePath}"></td>
                 <td th:text="${page.createTime}"></td>
                 <td th:text="${page.modifyTime}"></td>
                 <td th:switch="${page.state}">

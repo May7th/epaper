@@ -2,7 +2,6 @@ package com.oyun.media.epaper.service.impl;
 
 import com.oyun.media.epaper.common.Const;
 import com.oyun.media.epaper.domain.Paper;
-import com.oyun.media.epaper.domain.Paper;
 import com.oyun.media.epaper.repository.PaperRepository;
 import com.oyun.media.epaper.service.IPaperService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -80,11 +78,11 @@ public class PaperServiceImpl implements IPaperService {
 
         Paper paper = paperRepository.getOne(page.getParentId());
 
-        List<com.oyun.media.epaper.domain.Page> pages =  paper.getPageList();
+        List<com.oyun.media.epaper.domain.Page> pageList =  paper.getPageList();
 
-        pages.add(page);
+        pageList.add(page);
 
-        paper.setPageList(pages);
+        paper.setPageList(pageList);
 
         paperRepository.save(paper);
     }

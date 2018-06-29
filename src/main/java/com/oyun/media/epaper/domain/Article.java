@@ -24,6 +24,9 @@ public class Article {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
+    private String author;
+
     @Column(nullable = false,updatable = false)
     @org.hibernate.annotations.CreationTimestamp
     private Timestamp createTime;
@@ -37,6 +40,9 @@ public class Article {
 
     @Column(length = 100)
     private String title;
+
+    @Column
+    private String subTitle;
 
     @Column
     private String content;

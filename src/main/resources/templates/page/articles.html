@@ -17,7 +17,7 @@
 		<a class="btn btn-primary" data-toggle="modal"
 				   data-target="#flipFlop" role="button" id="addPage"><i
 			class="fa fa-plus" aria-hidden="true"></i></a>
-		<a th:href="@{'/articles/add'}"><i
+		<a th:href="@{'/articles/add/'+${articleModel.page.id}}"><i
 				class="fa fa-plus" aria-hidden="true"></i></a>
 
 	</div>
@@ -43,7 +43,7 @@
 
 			<tr th:each="article : ${articleModel.page.articleList}">
 				<td th:text="${article.id}">1</td>
-				<td><a th:text="${article.title}" th:href="@{'/page/'+${page.id}}"></td>
+				<td><a th:text="${article.title}" th:href="@{'/article/'+${article.id}}"></td>
 				<td th:text="${article.content}"></td>
 				<td th:text="${article.contentHtml}"></td>
 				<td th:text="${article.createTime}"></td>
@@ -55,12 +55,12 @@
 				</td>
 				<td>
 					<div>
-						<a class="page-edit-page" data-toggle="modal"
+						<a class="article-edit-article" data-toggle="modal"
 						   data-target="#flipFlop" role="button"
 						   data-th-attr="articleId=${article.id}"> <i
 								class="fa fa-pencil-square-o" aria-hidden="true"></i>
 						</a>
-						<a class="page-delete-page" role="button"
+						<a class="article-delete-article" role="button"
 						   data-th-attr="articleId=${article.id}"> <i class="fa fa-times"
 																aria-hidden="true"></i>
 						</a>
@@ -101,5 +101,5 @@
 <script th:inline="javascript">
     var pageId = [[${articleModel.page.id}]];
 </script>
-<script src="../../js/pages/main.js" th:src="@{/js/pages/main.js}"></script>
+<script src="../../js/articles/main.js" th:src="@{/js/articles/main.js}"></script>
 </html>

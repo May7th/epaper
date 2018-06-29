@@ -2,9 +2,7 @@ package com.oyun.media.epaper.service.impl;
 
 import com.oyun.media.epaper.common.Const;
 import com.oyun.media.epaper.domain.Page;
-import com.oyun.media.epaper.domain.Paper;
 import com.oyun.media.epaper.repository.PageRepository;
-import com.oyun.media.epaper.repository.PaperRepository;
 import com.oyun.media.epaper.service.IPageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.util.Date;
 
 /**
  * @program: epaper
@@ -31,15 +28,14 @@ public class PageServiceImpl implements IPageService{
         return pageRepository.getOne(id);
     }
 
-    @Override
-    public Page addNewPage(Page page) {
-
-        return pageRepository.save(page);
-    }
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Page updatePage(Page page) {
         page.setModifyTime(new Timestamp(System.currentTimeMillis()));
+        Page oldPage = pageRepository.getOne(page.getId());
+        if (!oldPage.getArticleList().isEmpty()){
+            page.setArticleList(oldPage.getArticleList());
+        }
         return pageRepository.save(page);
     }
 

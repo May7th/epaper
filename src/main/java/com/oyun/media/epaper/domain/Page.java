@@ -34,7 +34,7 @@ public class Page {
     private Timestamp modifyTime;
 
 //    @NotEmpty(message = "版面图片不能为空！")
-    private String pagePdfPath;
+    private String pageImagePath;
 
     private String description;
 

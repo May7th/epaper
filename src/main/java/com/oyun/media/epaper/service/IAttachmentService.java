@@ -8,10 +8,8 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 /**
- * 文件服务接口
- * @author 李文杰  E-mail:hhhtliwenjie@163.com
- * @version V1.0.0
- * 创建时间：2016年11月11日 下午5:17:31
+ *
+ * @author changzhen
  */
 public interface IAttachmentService{
 
@@ -45,7 +43,7 @@ public interface IAttachmentService{
 	 * 获取所有临时文件
 	 * @return 所有临时文件
 	 */
-	List<Attachment> listByTemp();
+	Page<Attachment> listByTemp();
 
 	/**
 	 * 校验是否删除文件，如果文件已标记为临时文件，则删除，否则不删除

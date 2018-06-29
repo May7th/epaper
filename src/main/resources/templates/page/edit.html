@@ -15,7 +15,7 @@
 		<label for="description" class="col-form-label">版面描述</label>
 		<input type="text" class="form-control" id="description" name="description"  th:value="*{description}" maxlength="50" placeholder="请输入版面描述">
 	</div>
-	<input type="hidden" class="form-control" id="pagePdfPath" name="pagePdfPath"  th:value="*{pagePdfPath}">
+	<input type="hidden" class="form-control" id="pageImagePath" name="pageImagePath"  th:value="*{pageImagePath}">
 </form>
 <div class="card ">
 	<h5 class="card-header"><i class="fa fa-file-image-o" aria-hidden="true"></i> 图片上传</h5>
@@ -44,7 +44,7 @@
                 contentType: false,
                 processData: false,
                 success: function(data){
-                    $("#pagePdfPath").val(data);
+                    $("#pageImagePath").val(data);
                 }
             }).done(function(res) {
                 $('#file').val('');

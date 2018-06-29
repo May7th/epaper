@@ -4,7 +4,6 @@
 <form th:action="@{/pages}" method="post" th:object="${pageModel.page}" id="pageForm">
 	<input type="hidden" name="id" th:value="*{id}">
 	<input type="hidden" name="parentId" th:value="${pageModel.paperId}">
-
 	<div class="form-group ">
 		<label for="pageName" class="col-form-label">版面名称</label>
 		<input type="text" class="form-control" id="pageName" name="pageName"  th:value="*{pageName}" maxlength="50" placeholder="请输入版面名称">
@@ -14,7 +13,7 @@
 		<label for="description" class="col-form-label">版面描述</label>
 		<input type="text" class="form-control" id="description" name="description"  th:value="*{description}" maxlength="50" placeholder="请输入版面描述">
 	</div>
-	<input type="hidden" class="form-control" id="pagePdfPath" name="pagePdfPath"  th:value="*{pagePdfPath}">
+	<input type="hidden" class="form-control" id="pageImagePath" name="pageImagePath"  th:value="*{pageImagePath}">
 </form>
 <div class="card ">
 	<h5 class="card-header"><i class="fa fa-file-image-o" aria-hidden="true"></i> 图片上传</h5>
@@ -22,8 +21,8 @@
 		<div class="row mt-1">
 			<div  class="col-lg-12">
 
-				<form  enctype="multipart/form-data"  id="uploadformid">
-					<input type="file" name="file" id="file"  accept="application/pdf" >
+				<form method="post" enctype="multipart/form-data"  id="uploadformid">
+					<input type="file" name="file" id="file"  accept="image/*" >
 					<button class="btn btn-primary float-right"  type="button" id="uploadImage" >插入</button>
 				</form>
 
@@ -35,15 +34,23 @@
 <script type="text/javascript">
     $(function() {
         $("#uploadImage").click(function() {
+            // 获取 CSRF Token
+            var csrfToken = $("meta[name='_csrf']").attr("content");
+            var csrfHeader = $("meta[name='_csrf_header']").attr("content");
             $.ajax({
-                url: 'http://localhost:8081/upload',
+                url: '/upload',
                 type: 'POST',
+                beforeSend: function(request) {
+                    request.setRequestHeader(csrfHeader, csrfToken); // 添加  CSRF Token
+                },
+                enctype: 'multipart/form-data',
                 data: new FormData($('#uploadformid')[0]),
+                async: false,
                 cache: false,
                 contentType: false,
                 processData: false,
                 success: function(data){
-                    $("#pagePdfPath").val(data);
+                    $("#pageImagePath").val(data);
                 }
             }).done(function(res) {
                 $('#file').val('');
