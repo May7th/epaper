@@ -8,7 +8,7 @@
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <!-- default header name is X-CSRF-TOKEN -->
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
-    
+
     <!-- Tether core CSS -->
     <link href="../../css/tether.min.css" th:href="@{/css/tether.min.css}" rel="stylesheet">
 
@@ -47,12 +47,17 @@
 
 
 	<!--hot spots-->
-    <link href="../../css/hotspots/leaflet.css" th:href="@{/css/hotspots/leaflet.css}" rel="stylesheet">
-    <link href="../../css/hotspots/leaflet.draw-src.css" th:href="@{/css/hotspots/leaflet.draw-src.css}" rel="stylesheet">
-    <link href="../../css/hotspots/leaflet.label.css" th:href="@{/css/hotspots/leaflet.label.css}" rel="stylesheet">
-    <link href="../../css/hotspots/sweetalert2.min.css" th:href="@{/css/hotspots/sweetalert2.min.css}" rel="stylesheet">
-    <link href="../../css/hotspots/buttons.css" th:href="@{/css/hotspots/buttons.css}" rel="stylesheet">
+    <link href="../../libs/hotspots/css/leaflet.css" th:href="@{/libs/hotspots/css/leaflet.css}" rel="stylesheet">
+    <link href="../../libs/hotspots/css/leaflet.draw-src.css" th:href="@{/libs/hotspots/css/leaflet.draw-src.css}" rel="stylesheet">
+    <link href="../../libs/hotspots/css/leaflet.label.css" th:href="@{/libs/hotspots/css/leaflet.label.css}" rel="stylesheet">
+    <link href="../../libs/hotspots/css/sweetalert2.min.css" th:href="@{/libs/hotspots/css/sweetalert2.min.css}" rel="stylesheet">
+    <!--<link href="../../css/hotspots/buttons.css" th:href="@{/css/hotspots/buttons.css}" rel="stylesheet">-->
     <!--<link href="../../css/sweetalert/sweetalert.css" th:href="@{/css/sweetalert/sweetalert.css}" rel="stylesheet"  type="text/css">-->
+
+	<!--bootstrap file upload-->
+	<link href="../../libs/bootstrap-fileinput/css/fileinput.css" th:href="@{/libs/bootstrap-fileinput/css/fileinput.css}" rel="stylesheet">
+	<link href="../../libs/bootstrap-fileinput/css/fileinput-rtl.css" th:href="@{/libs/bootstrap-fileinput/css/fileinput-rtl.css}" rel="stylesheet">
+	<link href="../../libs/bootstrap-fileinput/themes/explorer-fa/theme.css" media="all" rel="stylesheet" th:href="@{/libs/bootstrap-fileinput/themes/explorer-fa/theme.css}" type="text/css"/>
 </head>
 <body>
 <nav class="navbar navbar-inverse bg-inverse navbar-toggleable-md" style="flex: 0 0 auto;height: 60px">

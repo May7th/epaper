@@ -39,5 +39,11 @@ public interface IPageService {
     org.springframework.data.domain.Page<Page> findAllPages(Pageable pageable);
 
 
-
+    /**
+     * 根据paperId查找page
+     * @param id
+     * @param pageable
+     * @return
+     */
+    org.springframework.data.domain.Page<Page> getPaperPage(Long id,Pageable pageable);
 }

@@ -33,6 +33,7 @@ public class PageServiceImpl implements IPageService{
     public Page updatePage(Page page) {
         page.setModifyTime(new Timestamp(System.currentTimeMillis()));
         Page oldPage = pageRepository.getOne(page.getId());
+        page.setCreateTime(oldPage.getCreateTime());
         if (!oldPage.getArticleList().isEmpty()){
             page.setArticleList(oldPage.getArticleList());
         }
@@ -50,6 +51,14 @@ public class PageServiceImpl implements IPageService{
         Page page = pageRepository.getOne(id);
         page.setState(Const.State.DELETED);
         pageRepository.save(page);
+    }
+
+    @Override
+    public org.springframework.data.domain.Page<Page> getPaperPage(Long id, Pageable pageable){
+
+        org.springframework.data.domain.Page<Page> pages = pageRepository.findAllByAndParentId(id,pageable);
+
+        return pages;
     }
 
 }

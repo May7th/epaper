@@ -1,113 +1,57 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:replace="~{fragments/header :: header}">
-</head>
-<body>
-<style type="text/css">
- 
-    @import "/css/emoji/nature.css";
-    @import "/css/emoji/object.css";
-    @import "/css/emoji/people.css";
-    @import "/css/emoji/place.css";
-    @import "/css/emoji/Sysmbols.css";
-    @import "/css/emoji/twemoji.css";
- 
-</style>
-<!-- Page Content -->
-<div class="container article-content-container">
+/*!
+ * blogedit.html 页面脚本.
+ * 
+ * @since: 1.0.0 2017-03-26
+ * @author Way Lau <https://waylau.com>
+ */
+"use strict";
+//# sourceURL=blogedit.js
 
-    <div class="row">
+// DOM 加载完再执行
+$(function() {
 
-        <!-- article Entries Column -->
-        <div class="col-md-8">
+    // 发布
+    $("#submit").click(function() {
 
-            <!-- article Post -->
-            <div class="card mb-4">
-				<div class="card-block" th:object="${articleModel.article}">
-				    <input type="hidden" name="id" th:value="*{id}" id="articleId">
-				    <input  type="text" class="form-control" placeholder="请填写文章标题"  id="title" name="title"  th:value="*{title}"  maxlength="50">
-				
-				    <textarea class="blog-textarea" placeholder="请填写文章摘要"  id="contentHtml" name="contentHtml"  th:text="*{contentHtml}" maxlength="300"></textarea>
-				
-				    <hr>
-				    <textarea id="md" data-provide="markdown" data-hidden-buttons="cmdImage" name="content"  th:text="*{content}"></textarea>
-				
-				    <hr>
-				</div>
+        // 获取 CSRF Token 
+        var csrfToken = $("meta[name='_csrf']").attr("content");
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+        $.ajax({
+            url: '/articles',
+            type: 'POST',
+            contentType: "application/json; charset=utf-8",
+            data:JSON.stringify({"id":$('#articleId').val(),
+                "title": $('#title').text(),
+                "author": $('#author').text(),
+                "contentHtml": ue.getContent(),
+                "content": ue.getPlainTxt(),
+                "coordinate": $('#coordinate').val(),
+                "parentId": parentId,
+                }),
+            beforeSend: function(request) {
+                request.setRequestHeader(csrfHeader, csrfToken); // 添加  CSRF Token 
+            },
+             success: function(data){
+                 if (data.success) {
+                    // 成功后，重定向
+                     window.location = '/pages/'+parentId;
+                 } else {
+                     toastr.error("error!"+data.message);
+                 }
 
-            </div>
+             },
+             error : function() {
+                 toastr.error("error!");
+             }
+        })
+    })
 
-        </div>
-
-        <!-- 右侧栏目 -->
-        <div class="col-md-4">
-            <div>
-            
-            	<!-- 图片上传 -->
-				<div class="card ">
-				    <h5 class="card-header"><i class="fa fa-file-image-o" aria-hidden="true"></i> 图片上传</h5>
-				    <div class="card-block">
-				        <div class="row mt-1">
-				             <div  class="col-lg-12">
-				
-				                <form  enctype="multipart/form-data"  id="uploadformid"  >
-				                <input type="file" name="file" accept="image/png,image/gif,image/jpeg" id="file">
-				                <button class="btn btn-primary float-right"  type="button" id="uploadImage" >插入</button>
-				                </form>
-				
-				             </div>
-				        </div>
-				    </div>
-				
-				</div>
-
-                <!-- 文章设置 -->
-
-
-            </div>
-        </div>
-
-    </div>
-    <!-- /.row -->
-
-</div>
-<!-- /.container -->
-
-<div >
-	<div style="height: 800px;width: 600px" id='image-map'>
-
-	</div>
-	<button class="recovery">恢复到最初状态</button>
-	<button class="changeBG">更换户型图</button>
-	<button class="save">保存户型图修改</button>
-	<p style="text-align: center">直接将图片拖拽到页面内也可更换户型图（注意点击"保存户型图",数据暂时保存在浏览器）</p>
-	<br>
-	<p style="text-align: center">当前可选区域(点击删除),<a href="javascript:void(0);" class="addArea">点我添加更多</a>：</p>
-	<ul class="areaList">
-
-	</ul>
-</div>
-
-<div th:replace="~{fragments/footer :: footer}">...</div>
- 
-
-<!-- JavaScript -->
-<script th:inline="javascript">
-</script>
-<script src="../../js/userspace/blogedit.js" th:src="@{/js/userspace/blogedit.js}"></script>
-
-
-<!--hot spots-->
-<script>
-	var imagePath = [[${articleModel.page.pageImagePath}]];
     var map = null;
     var drawnItems;
     var mapDOMid = '';
     var existPoint = [];
     var existPoint_bak = [];
-    var Background = [[${articleModel.page.pageImagePath}]];
+    var Background = '';
     var Background_bak = '';
     var areaArr = {};
     var areaArr_bak = {};
@@ -119,6 +63,7 @@
     function init(domId,imgUrl,callback) {
         if(typeof(map) != 'undefined' && map != null){map.remove();}
         var _tmpIMG = new Image();
+        console.log(imgUrl);
         _tmpIMG.src = imgUrl;
         _tmpIMG.onload = function() {
             var _tmpThis = this;
@@ -128,7 +73,7 @@
                 editable: true,
                 crs: L.CRS.Simple,
                 maxZoom : 5,
-                minZoom : -2,
+                minZoom : -3.5,
                 center : [ $('#'+domId).width() / 2, $('#'+domId).height() / 2 ]
             });
 
@@ -171,16 +116,13 @@
                             weight : weight
                         }
                     },
-                    circle: {
-                        shapeOptions: {
-                            weight : weight
-                        }
-                    },
-                    marker:  {
-                        shapeOptions: {
-                            weight : weight
-                        }
-                    }
+                    circle:false,
+                    // {
+                    //     shapeOptions: {
+                    //         weight : weight
+                    //     }
+                    // },
+                    marker: false
                 },
                 edit: {
                     featureGroup: drawnItems,
@@ -200,80 +142,44 @@
                     layer = e.layer;
 //                drawnItems.addLayer(layer);
                 layer.addTo(drawnItems);
-                if (type === 'marker') {
-                    swal({
-                        title: '标记',
-                        input: 'text',
-                        showCancelButton: true,
-                        inputValidator: function (value) {
-                            return new Promise(function (resolve, reject) {
-                                if (value) {
-                                    resolve();
-                                } else {
-                                    reject('你得填一下你标记了啥！');
-                                }
-                            })
-                        }
-                    }).then(function (result) {
-                        pointAttr.push({
-                            'leaflet_id': layer._leaflet_id,
-                            'type': type,
-                            'area': result
-                        });
-                        layer.bindLabel(result);
-                        swal({
-                            type: 'success',
-                            html: '您标记了:' + result
-                        });
-                    }, function (dismiss) {
-//                        if (dismiss === 'cancel') {
-//                            drawnItems.removeLayer(layer);
-//                        }
-                        drawnItems.removeLayer(layer);
-                    });
-                }else{
-                    swal({
-                        title: '请选择区域',
-                        input: 'select',
-                        inputOptions: areaArr,
-                        inputPlaceholder: '请选择',
-                        showCancelButton: true,
-                        inputValidator: function (value) {
-                            return new Promise(function (resolve, reject) {
-                                if (value != '') {
-                                    resolve();
-                                } else {
-                                    reject('你还没选择呢！');
-                                }
-                            })
-                        }
-                    }).then(function (result) {
-                        layer.bindLabel(areaArr[result]);
+                swal({
+                    title:'热点添加成功',
+                    position: 'top-end',
+                    type: 'success',
+                    inputOptions: areaArr,
+                    timer: 1000,
+                    showCancelButton: true,
+                    inputValidator: function (value) {
+                        return new Promise(function (resolve, reject) {
+                            if (value != '') {
+                                resolve();
+                            } else {
+                                reject('你还没选择呢！');
+                            }
+                        })
+                    }
+                }).then(function (result) {
+                    layer.bindLabel("bindLabel TODO");
 //                        console.log(layer.getBounds().getCenter());//获取中心点
 //                        console.log(map.latLngToLayerPoint(layer.getBounds().getCenter()));//获取中心点
 
-                        //添加文字
-                        layer.setText(areaArr[result]);
+                    //添加文字
+                    layer.setText(title);
 
-                        pointAttr.push({
-                            'leaflet_id': layer._leaflet_id,
-                            'type': type,
-                            'area': areaArr[result],
-                            'area_id': result
-                        });
-                        swal({
-                            type: 'success',
-                            html: '您选择了: ' + areaArr[result]
-                        })
-                    }, function (dismiss) {
+                    pointAttr.push({
+                        'leaflet_id': layer._leaflet_id,
+                        'type': type,
+                        'area': title,
+                        'area_id': title
+                    });
+                    savePoints();
+                }, function (dismiss) {
 //                        if (dismiss === 'cancel') {
 //                            drawnItems.removeLayer(layer);
 //                        }
-                        drawnItems.removeLayer(layer);
-                    });
-                }
+                    drawnItems.removeLayer(layer);
+                });
             });
-
             map.on(L.Draw.Event.EDITED, function (e) {
                 var layers = e.layers;
                 var countOfEditedLayers = 0;
@@ -310,9 +216,7 @@
 
     //添加文字
     var original_getPathString_circle = L.Circle.prototype.getPathString;
-    //    console.log(original_getPathString_circle);
-    //    console.log(original_getPathString_polygon);
-    //    console.log(original_getPathString_rectangle);
+
     L.Circle.include({
         getPathString: function () {
             var center = this._point,
@@ -430,7 +334,9 @@
 
             this._textNode = textNode;
 
-            return original_getPathString_polygon.call(this);
+            var result =  original_getPathString_polygon.call(this);
+            console.log(result);
+            return result;
 
         },
         setText: function (text) {
@@ -495,18 +401,6 @@
                         'area_id': n.area_id
                     });
                     break;
-                case 'marker':
-                    var marker = new L.Marker([n.lat,n.lng],{
-                        weight : weight,
-                        color : getColorByRandom()
-                    }).bindLabel(n.area,{autoPan:false});
-                    marker.addTo(drawnItems);
-                    pointAttr.push({
-                        'leaflet_id': marker._leaflet_id,
-                        'type': n.type,
-                        'area': n.area
-                    });
-                    break;
             }
         });
     }
@@ -522,14 +416,6 @@
                 }
             }
             switch(attr.type){
-                case 'marker':
-                    savePoint.push({
-                        'type': attr.type,
-                        'area': attr.area,
-                        'lat': n._latlng.lat,
-                        'lng': n._latlng.lng
-                    });
-                    break;
                 case 'circle':
                     savePoint.push({
                         'type': attr.type,
@@ -558,46 +444,46 @@
                     break;
             }
         });
+        var coordinate = $("#coordinate").val(JSON.stringify(savePoint));
+        console.log(coordinate);
     }
 
-    //保存
-    $('.save').on('click',function(){
-        swal({
-            title: '确定要保存修改吗？',
-            text: "区域和选项都将被保存",
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            confirmButtonClass: 'btn btn-success',
-            cancelButtonClass: 'btn btn-danger',
-            buttonsStyling: false
-        }).then(function () {
-            savePoints();
-            console.log(savePoint);
-            console.log(JSON.stringify(savePoint));
-            localStorage.pointData = JSON.stringify(savePoint);
-            localStorage.backgroundURL = Background;
-            localStorage.areaList = JSON.stringify(areaArr);
-            swal(
-                '成功',
-                '户型图已修改',
-                'success'
-            )
-        }, function (dismiss) {
-            // dismiss can be 'cancel', 'overlay',
-            // 'close', and 'timer'
-            if (dismiss === 'cancel') {
-                swal(
-                    '取消',
-                    '已取消修改',
-                    'error'
-                );
-            }
-        })
-    });
+    // $('.save').on('click',function(){
+    //     swal({
+    //         title: '保存修改吗？',
+    //         type: 'warning',
+    //         showCancelButton: true,
+    //         confirmButtonColor: '#3085d6',
+    //         cancelButtonColor: '#d33',
+    //         confirmButtonText: '确定',
+    //         cancelButtonText: '取消',
+    //         confirmButtonClass: 'btn btn-success',
+    //         cancelButtonClass: 'btn btn-danger',
+    //         buttonsStyling: false
+    //     }).then(function () {
+    //         savePoints();
+    //         console.log(savePoint);
+    //         console.log(JSON.stringify(savePoint));
+    //         localStorage.pointData = JSON.stringify(savePoint);
+    //         localStorage.backgroundURL = Background;
+    //         localStorage.areaList = JSON.stringify(areaArr);
+    //         swal(
+    //             '成功',
+    //             '版面已修改',
+    //             'success'
+    //         )
+    //     }, function (dismiss) {
+    //         // dismiss can be 'cancel', 'overlay',
+    //         // 'close', and 'timer'
+    //         if (dismiss === 'cancel') {
+    //             swal(
+    //                 '取消',
+    //                 '已取消修改',
+    //                 'error'
+    //             );
+    //         }
+    //     })
+    // });
 
     //重置、恢复按钮
     $('.recovery').on('click',function(){
@@ -639,6 +525,7 @@
             }
         });
     });
+    //点击可选区域按钮删除
 
     function getRandomColor(){//随机颜色
         return '#'+Math.floor(Math.random()*16777215).toString(16);
@@ -651,34 +538,9 @@
     }
     $(document).ready(function(){
         mapDOMid = 'image-map';
-        //获取数据库的数据
-        if( (typeof(localStorage.firstData) == 'undefined') || localStorage.firstData != 'false' ){
-            //测试期间的初始数据
-            localStorage.firstData = 'false';
-            existPoint = [{"type":"rectangle","area":"卧室","area_id":"ws","latlngs":[{"lat":-300,"lng":510},{"lat":-122,"lng":510},{"lat":-122,"lng":718},{"lat":-300,"lng":718}]},{"type":"rectangle","area":"卫生间","area_id":"wsj","latlngs":[{"lat":-684,"lng":676},{"lat":-506,"lng":676},{"lat":-506,"lng":802},{"lat":-684,"lng":802}]},{"type":"rectangle","area":"卧室","area_id":"ws","latlngs":[{"lat":-320,"lng":282},{"lat":-220,"lng":282},{"lat":-220,"lng":408},{"lat":-320,"lng":408}]}];
-            Background = "http:"+imagePath;
-            areaArr = {
-                kt: '客厅',
-            };
-            localStorage.areaList = JSON.stringify(areaArr);
-        }else{
-            //测试期间从浏览器本地储存提取数据
-            if( (typeof(localStorage.pointData) != 'undefined') && localStorage.pointData != null && localStorage.pointData != '' ){
-                existPoint = JSON.parse(localStorage.pointData);
-                Background = localStorage.backgroundURL;
-                areaArr = JSON.parse(localStorage.areaList);
-            }else{//如果没有就用默认数据
-                existPoint = [];
-                Background = "http:"+imagePath;
-                areaArr = {
-                    kt: '客厅',
-                    yt: '阳台',
-                };
-            }
-        }
-        $.each(areaArr,function(i,n){
-            $('.areaList').append('<li class="areaItem"><button>'+n+'</button></li>');
-        });
+        existPoint = JSON.parse(coordinate);
+        Background = pageImagePath;
+        console.log(existPoint);
         //数据备份
         existPoint_bak = existPoint;
         Background_bak = Background;
@@ -688,6 +550,9 @@
         });
 
     });
-</script>
-</body>
-</html>
+
+    // 初始化标签
+    $('.form-control-tag').tagsInput({
+    	'defaultText':'输入标签'
+    });
+});

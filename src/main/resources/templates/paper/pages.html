@@ -1,9 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
-<head th:replace="~{fragments/header :: header}">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      style="height: 100%">
+<body style="display: flex;
+    flex-direction: column;
+    height: 100%;">
 
-<body>
+<head th:replace="~{fragments/header :: header}"></head>
 <!-------------------->
+<div class="container blog-content-container">
 <div class="card-header bg-dark font-white">
 
     <div class="input-group col-md-7 col-xl-6">
@@ -13,36 +19,39 @@
 			<button class="btn btn-secondary" type="button" id="searchNameBtn">
 				<i class="fa fa-search" aria-hidden="true"></i>
 			</button>
-		</span> <a class="btn btn-primary" data-toggle="modal"
-                   data-target="#flipFlop" role="button" id="addPage"><i
-            class="fa fa-plus" aria-hidden="true"></i></a>
+		</span>
+        <a class="btn btn-primary" data-toggle="modal"
+                   data-target="#flipFlop" role="button" id="addPage">
+            <i class="fa fa-plus" style="color: white"></i>
+        </a>
+        <a class="btn btn-primary" role="button" id="back" th:href="@{'/admins'}"><i
+                class="fa fa-backward" ></i>
+        </a>
 
     </div>
 </div>
 
 <div id="mainContainer" class="container">
-    <div id="mainContainerReplace" class="row">
+    <div id="mainContainerReplace" class="oldMongolContent">
         <table class="table table-striped">
             <thead>
-            <tr>
-                <th data-field="id">ID</th>
-                <th data-field="pageName">版面名称</th>
-                <th data-field="pageName">版面描述</th>
-                <th data-field="pageImagePath">版面图片地址</th>
-                <th data-field="createTime">创建时间</th>
-                <th data-field="modifyTime">上次修改时间</th>
-                <th data-field="state">状态</th>
-                <th data-field="operation">操作</th>
+            <tr >
+                <th data-field="id"  class="notMongolContent">ID</th>
+                <th data-field="pageName"  class="notMongolContent">版面名称</th>
+                <th data-field="pageName"  class="notMongolContent">版面描述</th>
+                <th data-field="createTime"  class="notMongolContent">创建时间</th>
+                <th data-field="modifyTime"  class="notMongolContent">修改时间</th>
+                <th data-field="state"  class="notMongolContent">状态</th>
+                <th data-field="operation"  class="notMongolContent">操作</th>
 
             </tr>
             </thead>
             <tbody>
 
-            <tr th:each="page : ${paperModel.paper.pageList}">
+            <tr th:each="page : ${pageModel.pageList}">
                 <td th:text="${page.id}">1</td>
-                <td><a th:text="${page.pageName}" th:href="@{'/pages/'+${page.id}}"></td>
-                <td th:text="${page.description}"></td>
-                <td th:text="${page.pageImagePath}"></td>
+                <td class="oyun-font" ><a th:text="${page.pageName}" th:href="@{'/pages/'+${page.id}}"></td>
+                <td class="oyun-font" th:text="${page.description}"></td>
                 <td th:text="${page.createTime}"></td>
                 <td th:text="${page.modifyTime}"></td>
                 <td th:switch="${page.state}">
@@ -69,7 +78,9 @@
 
         </table>
 
+
     </div>
+    <div th:replace="~{fragments/page :: page}" >...</div>
 </div>
 <!-- The modal -->
 <div class="modal fade" id="flipFlop" tabindex="-1" role="dialog"
@@ -92,11 +103,11 @@
         </div>
     </div>
 </div>
-
+</div>
 <div th:replace="~{fragments/footer :: footer}">...</div>
 </body>
 <script th:inline="javascript">
-    var paperId = [[${paperModel.paper.id}]];
+    var paperId = [[${pageModel.paperId}]];
 </script>
 <script src="../../js/pages/main.js" th:src="@{/js/pages/main.js}"></script>
 </html>

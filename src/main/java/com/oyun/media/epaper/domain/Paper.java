@@ -2,7 +2,6 @@ package com.oyun.media.epaper.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 
@@ -32,7 +31,8 @@ public class Paper {
     @org.hibernate.annotations.CreationTimestamp
     private Timestamp createTime;
 
-    @LastModifiedDate
+    @Column(nullable = false)
+    @org.hibernate.annotations.CreationTimestamp
     private Timestamp modifyTime;
 
     @DateTimeFormat(pattern = "yyyy-mm-dd")

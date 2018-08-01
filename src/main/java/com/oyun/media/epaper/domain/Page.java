@@ -1,10 +1,13 @@
 package com.oyun.media.epaper.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,8 +19,6 @@ import java.util.List;
 @Entity
 @Data
 public class Page {
-
-    
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +34,7 @@ public class Page {
     @org.hibernate.annotations.CreationTimestamp
     private Timestamp modifyTime;
 
-//    @NotEmpty(message = "版面图片不能为空！")
+    @NotEmpty(message = "版面图片不能为空！")
     private String pageImagePath;
 
     private String description;
@@ -43,6 +44,8 @@ public class Page {
      * 状态 0-有效 1-删除
      */
     private int state = 0;
+
+    private Date releaseDate;
 
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

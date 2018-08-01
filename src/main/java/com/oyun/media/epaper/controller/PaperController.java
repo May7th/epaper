@@ -3,6 +3,7 @@ package com.oyun.media.epaper.controller;
 import com.oyun.media.epaper.domain.Authority;
 import com.oyun.media.epaper.domain.Paper;
 import com.oyun.media.epaper.domain.User;
+import com.oyun.media.epaper.service.IPageService;
 import com.oyun.media.epaper.service.IPaperService;
 import com.oyun.media.epaper.utils.ConstraintViolationExceptionHandler;
 import com.oyun.media.epaper.vo.Response;
@@ -33,6 +34,9 @@ public class PaperController {
 
     @Autowired
     private IPaperService paperService;
+
+    @Autowired
+    private IPageService pageService;
 
     @GetMapping
     public ModelAndView list(@RequestParam(value="async",required=false) boolean async,
@@ -97,10 +101,19 @@ public class PaperController {
     }
 
     @GetMapping(value = "/{id}")
-    public ModelAndView paperDetails(@PathVariable("id")Long id,Model model){
-        Paper paper = paperService.getPaperById(id);
-        model.addAttribute(paper);
-        return new ModelAndView("paper/pages","paperModel",model);
+    public ModelAndView paperDetails(@RequestParam(value="async",required=false) boolean async,
+                                     @RequestParam(value="pageIndex",required=false,defaultValue="0") int pageIndex,
+                                     @RequestParam(value="pageSize",required=false,defaultValue="10") int pageSize,
+                                     @PathVariable("id")Long id,Model model){
+
+        Pageable pageable = new PageRequest(pageIndex, pageSize);
+        Page<com.oyun.media.epaper.domain.Page> page = pageService.getPaperPage(id,pageable);
+        List<com.oyun.media.epaper.domain.Page> list = page.getContent();
+
+        model.addAttribute("page", page);
+        model.addAttribute("pageList", list);
+        model.addAttribute("paperId",id);
+        return new ModelAndView("paper/pages","pageModel",model);
     }
 
 }

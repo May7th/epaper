@@ -5,6 +5,15 @@
 * @author Way Lau <https://waylau.com>
 */
 
+@font-face {
+    font-family: 'OyunQaganTig';
+    src: url('../fonts/OyunQaganTig.eot'); /* IE9 Compat Modes */
+    src: url('../fonts/OyunQaganTig.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('../fonts/OyunQaganTig.woff') format('woff'), /* Modern Browsers */
+    url('../fonts/OyunQaganTig.ttf')  format('truetype'), /* Safari, Android, iOS */
+    url('../fonts/OyunQaganTig.svg#OyunQaganTig') format('svg'); /* Legacy iOS */
+}
+
 .badge {
   margin-left: auto; 
 }
@@ -17,4 +26,8 @@
     color: #fff;
     background-color: #0275d8;
     border-color: #0275d8;
+}
+
+.oyun-font{
+    font-family: "OyunQaganTig";
 }

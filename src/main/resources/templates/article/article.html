@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="~{fragments/header :: header}">
+</head>
+<body>
+<!-- Page Content -->
+<div class="container article-content-container">
+
+    <div class="row mt-2">
+
+        <!-- article Entries Column -->
+        <div class="col-md-8">
+
+            <!-- article Post -->
+            <div class="card mb-4">
+				<div class="card-block" th:object="${articleModel.article}">
+					<input type="hidden" class="form-control" id="coordinate" name="coordinate"  th:value="*{coordinate}">
+					<input type="hidden" class="form-control" id="parentId" name="parentId"  th:value="*{parentId}">
+				    <input type="hidden" name="id" th:value="*{id}" id="articleId">
+
+					<div class="card mb-5" style="width: 8%;height:100%;display: inline-block">
+						<div class="oyun-font" contenteditable="true" id="title" name="title"  th:text="${articleModel.article.title}" style="width: 50px;height:500px;writing-mode: vertical-lr;padding:5px"></div>
+					</div>
+					<div class="card mb-5"  style="width: 8%;height:100%;display: inline-block">
+						<div class="oyun-font" contenteditable="true" id="author" name="author"  th:text="${articleModel.article.author}" style="width: 50px;height:500px;writing-mode: vertical-lr;padding:5px"></div>
+					</div>
+
+					<!--UEditor-->
+					<div style="display: inline-block;width: 80%;height:500px;float: right;">
+						<script id="container" name="content" type="text/plain"></script>
+					</div>
+
+				</div>
+            </div>
+        </div>
+
+        <!-- 右侧栏目 -->
+        <div class="col-md-4">
+			<div >
+				<div id='image-map' style="width: 450px;height: 550px">
+
+				</div>
+			</div>
+
+				<div class="row mt-2">
+					<div>
+						<button class="btn btn-primary float-right" id="submit">发布</button>
+					</div>
+				</div>
+        </div>
+    </div>
+</div>
+<!-- 加载编辑器的容器 -->
+<div th:replace="~{fragments/footer :: footer}">...</div>
+
+
+<script th:inline="javascript">
+    var pageImagePath = [[${articleModel.page.pageImagePath}]];
+    var coordinate = [[${articleModel.article.coordinate}]];
+    var title = [[${articleModel.article.title}]];
+    var contentHtml = [[${articleModel.article.contentHtml}]];
+    var parentId = [[${articleModel.page.id}]];
+
+
+    var ue = UE.getEditor('container',{initialFrameHeight:400,scaleEnabled:true});
+    ue.ready(function() {
+        if(contentHtml.length != 0){
+            ue.setContent(contentHtml);
+        }
+    });
+
+    $.function(
+        function(title){
+            if (title.isEmpty()){
+                $("#title").text("请输入标题");
+			}
+		}
+	);
+
+</script>
+<!-- JavaScript -->
+<script src="../../js/articles/articlesedit.js" th:src="@{/js/articles/articlesedit.js}"></script>
+</body>
+</html>

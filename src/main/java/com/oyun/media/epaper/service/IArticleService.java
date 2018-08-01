@@ -37,13 +37,6 @@ public interface IArticleService {
     Article getArticleById(Long id);
 
     /**
-     * 增加新文章
-     * @param article
-     * @return
-     */
-    Article addNewArticle(Article article);
-
-    /**
      * 储存更新文章
      * @param article
      * @return

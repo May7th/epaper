@@ -83,30 +83,33 @@ public class MainController {
     }
 
     @GetMapping("/test")
-	public Paper insertPage() throws ParseException {
+	public void insertPage() throws ParseException {
     	List<Page> pages = new ArrayList<>();
-		for (int i = 0; i < 10; i++) {
-			Page page = new Page();
-			List<Article> articles = new ArrayList<>();
-			for (int j = 0; j < 10; j++) {
-				Article article = new Article();
-				article.setTitle("title"+j);
-				article.setContent("content"+j);
-				article.setContentHtml("contentHtml"+j);
-				article.setCoordinate("1,1,1,10,10,10,10,"+j);
-				articles.add(article);
+		for (int m = 1; m <= 5; m++) {
+			for (int i = 1; i <= 10; i++) {
+				Page page = new Page();
+				List<Article> articles = new ArrayList<>();
+				for (int j = 1; j <= 10; j++) {
+					Article article = new Article();
+					article.setTitle("title"+j);
+					article.setContent("content"+j);
+					article.setContentHtml("contentHtml"+j);
+					article.setCoordinate("1,1,1,10,10,10,10,"+j);
+					article.setParentId(new Long(i));
+					articles.add(article);
+				}
+				page.setArticleList(articles);
+				page.setPageName("版面"+i+": 新闻"+i);
+				page.setParentId((long) m);
+				pages.add(page);
 			}
-			page.setArticleList(articles);
-			page.setPageName("版面"+i+": 新闻"+i);
-			pages.add(page);
+			Paper paper = new Paper();
+			paper.setPaperName("内蒙古日报 "+m);
+			paper.setReleaseDate(new Date(new SimpleDateFormat("yyyy-MM-dd").parse("2016-01-01").getTime()));
+			paper.setPageList(pages);
+			paperRepository.save(paper);
 		}
-		Paper paper = new Paper();
-		paper.setPaperName("内蒙古日报");
-		paper.setReleaseDate(new Date(new SimpleDateFormat("yyyy-MM-dd").parse("2016-01-01").getTime()));
-		paper.setPageList(pages);
 
-		paperRepository.save(paper);
-		return paper;
 	}
 
 	@GetMapping("/getPaper")

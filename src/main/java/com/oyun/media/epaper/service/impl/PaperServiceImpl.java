@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -34,6 +35,8 @@ public class PaperServiceImpl implements IPaperService {
             Paper oldPaper = paperRepository.getOne(paper.getId());
             oldPaper.setPaperName(paper.getPaperName());
             oldPaper.setReleaseDate(paper.getReleaseDate());
+            oldPaper.setModifyTime(new Timestamp(System.currentTimeMillis()));
+
             return paperRepository.save(oldPaper);
         }
     }
@@ -79,6 +82,8 @@ public class PaperServiceImpl implements IPaperService {
         Paper paper = paperRepository.getOne(page.getParentId());
 
         List<com.oyun.media.epaper.domain.Page> pageList =  paper.getPageList();
+
+        page.setReleaseDate(paper.getReleaseDate());
 
         pageList.add(page);
 

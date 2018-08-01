@@ -6,6 +6,7 @@ import com.oyun.media.epaper.service.IPaperService;
 import com.oyun.media.epaper.vo.Response;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,9 @@ import javax.validation.ConstraintViolationException;
 @RequestMapping(value = "/pages")
 public class PageController {
 
+    @Value("${file.server.url}")
+    private String fileServerUrl;
+
     @Autowired
     private IPageService pageService;
 
@@ -35,6 +39,7 @@ public class PageController {
     public ModelAndView addPageForm(Model model,@PathVariable("id") Long id){
         model.addAttribute("paperId",id);
         model.addAttribute("page",new Page());
+        model.addAttribute("fileServerUrl",fileServerUrl);
         return new ModelAndView("page/add","pageModel",model);
     }
 
@@ -74,8 +79,11 @@ public class PageController {
     @GetMapping(value = "edit/{id}")
     public ModelAndView modifyForm(@PathVariable("id") Long id, Model model) {
         Page page = pageService.getPageById(id);
+        Long paperId = page.getParentId();
+        model.addAttribute("paperId",paperId);
         model.addAttribute("page", page);
-        return new ModelAndView("page/edit", "pageModel", model);
+        model.addAttribute("fileServerUrl",fileServerUrl);
+        return new ModelAndView("page/add","pageModel",model);
     }
 
     @GetMapping(value = "/{id}")

@@ -13,6 +13,7 @@ import java.sql.Date;
 public interface PaperRepository extends JpaRepository<Paper,Long> {
 
     /**
+     * 根据发行日期查询报纸
      * @param date
      * @param pageable
      * @return

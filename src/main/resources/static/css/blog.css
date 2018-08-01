@@ -108,3 +108,22 @@ article img {
 #md {
 	height:400px;	
 }
+.oldMongolContent{
+    overflow:auto;
+    display: inline-block;
+    -moz-writing-mode: vertical-lr;
+    writing-mode: vertical-lr;
+    -webkit-writing-mode: vertical-lr;
+    -o-writing-mode: vertical-lr;
+    -ms-writing-mode: tb-lr;
+    writing-mode: tb-lr;
+    /*-webkit-text-orientation:sideways-right;*/
+    FONT-SIZE: 14px;
+    /*FONT-FAMILY: OyunQaganTig;*/
+    color:#000000;
+}
+
+.notMongolContent{
+    /*transform: rotate(-90deg);*/
+    writing-mode:vertical-rl;
+}

@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -50,17 +51,16 @@ public class ArticleServiceImpl implements IArticleService {
     }
 
     @Override
-    public Article addNewArticle(Article article) {
-        return articleRepository.save(article);
-    }
-
-    @Override
     public void saveOrUpdateArticle(Article article) {
+        System.out.println(article);
+
+        com.oyun.media.epaper.domain.Page page = pageRepository.getOne(article.getParentId());
+
         if (article.getId() == null){
 
-            com.oyun.media.epaper.domain.Page page = pageRepository.getOne(article.getParentId());
-
             List<Article> articleList = page.getArticleList();
+
+            article.setReleaseDate(page.getReleaseDate());
 
             articleList.add(article);
 
@@ -68,6 +68,7 @@ public class ArticleServiceImpl implements IArticleService {
 
             pageRepository.save(page);
         }else {
+            article.setModifyTime(new Timestamp(System.currentTimeMillis()));
 
             articleRepository.save(article);
         }

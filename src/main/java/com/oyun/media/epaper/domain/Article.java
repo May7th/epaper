@@ -1,14 +1,16 @@
 package com.oyun.media.epaper.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @program: epaper
@@ -31,11 +33,11 @@ public class Article {
     @org.hibernate.annotations.CreationTimestamp
     private Timestamp createTime;
 
-    @Column
+    @Column(nullable = false)
+    @org.hibernate.annotations.CreationTimestamp
     private Timestamp modifyTime;
 
-    @NotEmpty
-    @Column(length = 100)
+    @Lob
     private String coordinate;
 
     @Column(length = 100)
@@ -44,14 +46,14 @@ public class Article {
     @Column
     private String subTitle;
 
-    @Column
+    @Lob
     private String content;
 
-    @Column
+    @Lob
     private String contentHtml;
 
     /**
-     * 状态 0-有效 1-删除
+     * 状态 0-待审核 1-正常 2-删除
      */
     @Column
     private int state = 0;
@@ -59,7 +61,5 @@ public class Article {
     @Column
     private Long parentId;
 
-    @Column
     private Date releaseDate;
-
 }

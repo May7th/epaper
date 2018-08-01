@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+	  style="height: 100%">
+<body style="display: flex;
+    flex-direction: column;
+    height: 100%;">
 <head th:replace="~{fragments/header :: header}">
-
-<body>
 <!-------------------->
-<div class="card-header bg-dark font-white">
+	<div class="container blog-content-container">
+
+	<div class="card-header bg-dark font-white">
 
 	<div class="input-group col-md-7 col-xl-6">
 
@@ -14,28 +20,26 @@
 				<i class="fa fa-search" aria-hidden="true"></i>
 			</button>
 		</span>
-		<a class="btn btn-primary" data-toggle="modal"
-				   data-target="#flipFlop" role="button" id="addPage"><i
+		<a class="btn btn-primary" th:href="@{'/articles/add/'+${articleModel.page.id}}"><i
 			class="fa fa-plus" aria-hidden="true"></i></a>
-		<a th:href="@{'/articles/add/'+${articleModel.page.id}}"><i
-				class="fa fa-plus" aria-hidden="true"></i></a>
-
+		<a class="btn btn-primary" role="button" id="back" th:href="@{'/papers/'+${articleModel.page.parentId}}"><i
+				class="fa fa-backward" aria-hidden="true"></i></a>
 	</div>
 </div>
 
 <div id="mainContainer" class="container">
-	<div id="mainContainerReplace" class="row">
+	<div id="mainContainerReplace" class="oldMongolContent">
 		<table class="table table-striped">
 			<thead>
 			<tr>
-				<th data-field="id">ID</th>
-				<th data-field="title">文章标题</th>
-				<th data-field="content">文章内容</th>
-				<th data-field="contentHtml">文章内容html</th>
-				<th data-field="createTime">创建时间</th>
-				<th data-field="modifyTime">上次修改时间</th>
-				<th data-field="state">状态</th>
-				<th data-field="operation">操作</th>
+				<th data-field="id" class="notMongolContent">ID</th>
+				<th data-field="title" class="notMongolContent">文章标题</th>
+				<th data-field="author" class="notMongolContent">作者</th>
+				<th data-field="releaseDate" class="notMongolContent">发行时间</th>
+				<th data-field="createTime" class="notMongolContent">创建时间</th>
+				<th data-field="modifyTime" class="notMongolContent">上次修改时间</th>
+				<th data-field="state" class="notMongolContent">状态</th>
+				<th data-field="operation" class="notMongolContent">操作</th>
 
 			</tr>
 			</thead>
@@ -43,15 +47,16 @@
 
 			<tr th:each="article : ${articleModel.page.articleList}">
 				<td th:text="${article.id}">1</td>
-				<td><a th:text="${article.title}" th:href="@{'/article/'+${article.id}}"></td>
-				<td th:text="${article.content}"></td>
-				<td th:text="${article.contentHtml}"></td>
+				<td class="oyun-font"><a th:text="${article.title}" th:href="@{'/articles/'+${article.id}}"></td>
+				<td class="oyun-font" th:text="${article.author}"></td>
+				<td th:text="${#dates.format(article.releaseDate, 'yyyy-MM-dd')}"></td>
 				<td th:text="${article.createTime}"></td>
 				<td th:text="${article.modifyTime}"></td>
 				<td th:switch="${article.state}">
-					<p th:case="'1'">已删除</p>
+					<p th:case="0">待审核</p>
 					<!-- *: case的默认的选项 -->
-					<p th:case="0">正常</p>
+					<p th:case="1">正常</p>
+					<p th:case="2">已删除</p>
 				</td>
 				<td>
 					<div>
@@ -95,6 +100,7 @@
 		</div>
 	</div>
 </div>
+	</div>
 
 <div th:replace="~{fragments/footer :: footer}">...</div>
 </body>
