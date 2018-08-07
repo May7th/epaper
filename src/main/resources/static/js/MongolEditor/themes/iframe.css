@@ -1,0 +1,76 @@
+
+  @font-face {
+    font-family:Oyun Qagan Tig;
+    src: url('default/font/LD-MONG160930-BT.ttf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+  @font-face {
+    font-family:Oyun Garqag Tig;
+    src: url('default/font/LD-MONG-CHT.ttf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+  @font-face {
+    font-family:Oyun Har_a Tig;
+    src: url('default/font/LD-MONG-HT.ttf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+  @font-face {
+    font-family:Oyun Hawang Tig;
+    src: url('default/font/LD-MONG-HWT.ttf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+  @font-face {
+    font-family:Oyun Gar Biqimel Tig;
+    src: url('default/font/LD-MONG-KT.ttf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+  @font-face {
+    font-family:Oyun Gurban Ulus Tig;
+    src: url('default/font/LD-MONG-SGT.ttf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+  @font-face {
+    font-family:Oyun Sonin Tig;
+    src: url('default/font/LD-MONG-XWT.ttf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+   
+     @font-face {
+    font-family:Menk Qagan Tig;
+    src: url('default/font/Menk_Qagan_Tig.ttf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+   
+   
+   .view{ 
+    max-height:470px;
+    max-width:800px;
+    font-family: Oyun Qagan Tig,Menk Qagan Tig,serif;
+   
+    writing-mode:  tb-lr;                    	/* ie8,ie9 */
+    -ms-writing-mode: tb-lr;       				/* ie8,ie9 */
+	
+    writing-mode:vertical-lr;       			/* 鐏嫄锛岃胺姝�*/
+    -webkit-writing-mode:vertical-lr;        	/* 璋锋瓕锛�60 */
+
+    -moz-writing-mode: vertical-lr;
+    -o-writing-mode: vertical-lr;
+ 
+    text-orientation: sideways-right;
+    -webkit-text-orientation: sideways-right;
+    
+    text-justify: inter-ideograph;
+	text-align:justify;
+	
+
+  
+}
