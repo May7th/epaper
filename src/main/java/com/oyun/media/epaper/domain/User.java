@@ -1,5 +1,6 @@
 package com.oyun.media.epaper.domain;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -62,11 +63,17 @@ public class User implements UserDetails {
 
     @Column(length = 200)
     private String avatarPath; // 头像图片地址
+
+	@Column(nullable = false, updatable = false)
+	@org.hibernate.annotations.CreationTimestamp
+	private Timestamp createTime;
 	
     @ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinTable(name = "user_authority", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), 
         inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
     private List<Authority> authorities;
+
+	Long authorityId;
     
 
 	@Override

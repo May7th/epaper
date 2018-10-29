@@ -1,7 +1,12 @@
 package com.oyun.media.epaper.config;
 
+import com.alibaba.druid.pool.DruidDataSource;
+import com.oyun.media.epaper.Filter.ValidateCodeFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -9,37 +14,75 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * 安全配置类.
  * @author changzhen
  */
+// 启用方法安全设置
+@Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true) // 启用方法安全设置
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private static final String KEY = "oyun.com";
 
+	@Qualifier("userServiceImpl")
 	@Autowired
 	private UserDetailsService userDetailsService;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	@Autowired
+	private AuthenticationSuccessHandler marchAuthenticationSuccessHandler;
+	@Autowired
+	private AuthenticationFailureHandler marchAuthenticationFailureHandler;
+
+	@Autowired
+	private DruidDataSource dataSource;
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-	    return new BCryptPasswordEncoder();   // 使用 BCrypt 加密
+	    return new BCryptPasswordEncoder();
 	}
 
 	@Bean
 	public AuthenticationProvider authenticationProvider() {
 	    DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
 	    authenticationProvider.setUserDetailsService(userDetailsService);
-	    authenticationProvider.setPasswordEncoder(passwordEncoder); // 设置密码加密方式
+	    authenticationProvider.setPasswordEncoder(passwordEncoder);
 	    return authenticationProvider;
+	}
+
+	@Bean
+	public PersistentTokenRepository persistentTokenRepository(){
+
+		JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+
+		tokenRepository.setDataSource(dataSource);
+
+//		tokenRepository.setCreateTableOnStartup(true);
+
+		return tokenRepository;
 	}
 
 	/**
@@ -47,22 +90,45 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-	    http.authorizeRequests().antMatchers("/css/**", "/js/**", "/fonts/**", "/index").permitAll() // 都可以访问
-				.antMatchers("/druid/**").permitAll()// 都可以访问
-				.antMatchers("/v2/api-docs",//swagger api json
-						"/swagger-resources/configuration/ui",//用来获取支持的动作
-						"/swagger-resources",//用来获取api-docs的URI
-						"/swagger-resources/configuration/security",//安全选项
+
+		ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter();
+
+		validateCodeFilter.setAuthenticationFailureHandler(marchAuthenticationFailureHandler);
+
+	    http.addFilterBefore(validateCodeFilter,UsernamePasswordAuthenticationFilter.class)
+				.authorizeRequests()
+				.antMatchers("/css/**", "/js/**","/libs/**", "/fonts/**", "/index","/path/**").permitAll()
+				.antMatchers("/druid/**","/validate/code/image","/upload/image/**").permitAll()
+				.antMatchers("/oauth/token").permitAll()
+				.antMatchers("/v2/api-docs",
+						"/swagger-resources/configuration/ui",
+						"/swagger-resources",
+						"/swagger-resources/configuration/security",
 						"/swagger-ui.html").permitAll()
-	            .antMatchers("/admins/**").hasRole("ADMIN") // 需要相应的角色才能访问
+	            .antMatchers("/admins/**").hasRole("ADMIN")
+				.anyRequest().authenticated()
+				.and()
+	            .formLogin().loginPage("/login_page")
+					.successHandler(marchAuthenticationSuccessHandler)
+					.failureHandler(marchAuthenticationFailureHandler).loginProcessingUrl("/login")
+					.usernameParameter("username").passwordParameter("password").permitAll()
 	            .and()
-	            .formLogin()   //基于 Form 表单登录验证
-	            .loginPage("/login").failureUrl("/login-error") // 自定义登录界面
-	            .and().rememberMe().key(KEY) // 启用 remember me
-	            .and().exceptionHandling().accessDeniedPage("/403");  // 处理异常，拒绝访问就重定向到 403 页面
-	    http.csrf().ignoringAntMatchers("/druid/**"); // 禁用 H2 控制台的 CSRF 防护
-	    http.csrf().ignoringAntMatchers("/swagger-ui.html"); // 禁用 H2 控制台的 CSRF 防护
-	    http.headers().frameOptions().sameOrigin(); // 允许来自同一来源的H2 控制台的请求
+				.rememberMe()
+					.tokenRepository(persistentTokenRepository())
+					.tokenValiditySeconds(3600*24*7)
+					.userDetailsService(userDetailsService)
+				.and()
+				.logout()
+					.logoutSuccessHandler(new LogoutSuccessHandler() {
+						@Override
+						public void onLogoutSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
+							System.out.println("logout success!");
+						}
+					});
+		http.csrf().disable();
+//	    http.csrf().ignoringAntMatchers("/druid/**");
+//	    http.csrf().ignoringAntMatchers("/swagger-ui.html");
+//	    http.headers().frameOptions().sameOrigin();
 	}
 
 	/**
@@ -74,5 +140,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 	    auth.userDetailsService(userDetailsService);
 	    auth.authenticationProvider(authenticationProvider());
+	}
+
+	@Override
+	@Bean
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
 	}
 }

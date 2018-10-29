@@ -6,15 +6,18 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.oyun.media.epaper.common.ApiResponse;
 import com.oyun.media.epaper.domain.*;
 import com.oyun.media.epaper.repository.PageRepository;
 import com.oyun.media.epaper.repository.PaperRepository;
 import com.oyun.media.epaper.service.IAuthorityService;
 import com.oyun.media.epaper.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -22,7 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
  * 主页控制器.
  * @author changzhen
  */
-@RestController
+@Controller
 public class MainController {
 	
 	private static final Long ROLE_USER_AUTHORITY_ID = 2L;
@@ -48,11 +51,10 @@ public class MainController {
 	    return "redirect:/epaper";
 	}
 
-	@GetMapping("/login")
-	public ModelAndView login() {
-
-		ModelAndView modelAndView = new ModelAndView("login");
-		return modelAndView;
+	@GetMapping("/login_page")
+	@ResponseBody
+	public ApiResponse login() {
+		return ApiResponse.ofMessage(ApiResponse.Status.NOT_LOGIN.getCode(),ApiResponse.Status.NOT_LOGIN.getStandardMessage());
 	}
 
 	@GetMapping("/login-error")
@@ -112,13 +114,29 @@ public class MainController {
 
 	}
 
-	@GetMapping("/getPaper")
-	public Paper getPaper(){
+	@GetMapping("/404")
+	public String notFoundPage() {
+		return "404";
+	}
 
-    	Paper paper = paperRepository.getOne(1L);
+	@GetMapping("/403")
+	public String accessError() {
+		return "403";
+	}
 
-    	return paper;
+	@GetMapping("/500")
+	public String internalError() {
+		return "500";
+	}
 
+	@GetMapping("/logout/page")
+	public String logoutPage() {
+		return "logout";
+	}
+
+	@GetMapping("/get")
+	public ApiResponse getPaper(){
+    	return ApiResponse.ofMessage(200, "success");
 	}
 
 

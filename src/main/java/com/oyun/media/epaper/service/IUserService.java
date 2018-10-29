@@ -52,4 +52,6 @@ public interface IUserService {
      * @return
      */
     List<User> listUsersByUsernames(Collection<String> usernames);
+
+    List<User> getAllUser();
 }

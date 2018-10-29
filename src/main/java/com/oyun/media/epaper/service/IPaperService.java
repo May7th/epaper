@@ -1,10 +1,12 @@
 package com.oyun.media.epaper.service;
 
+import com.oyun.media.epaper.common.ServiceMultiResult;
 import com.oyun.media.epaper.domain.Paper;
+import com.oyun.media.epaper.form.QueryData;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * @program: epaper
@@ -18,10 +20,9 @@ public interface IPaperService {
     /**
      * 根据发行日期查询报纸
      * @param date
-     * @param pageable
      * @return
      */
-    Page<Paper> findPapersByReleaseDate(Date date, Pageable pageable);
+    Paper findPapersByReleaseDate(Date date);
 
     /**
      * 根据Id查询
@@ -52,10 +53,10 @@ public interface IPaperService {
 
     /**
      * 获取所有报纸信息
-     * @param pageable
+     * @param queryData
      * @return
      */
-    Page<Paper> findAllPapers(Pageable pageable);
+    ServiceMultiResult<Paper> getAllPapers(QueryData queryData);
 
     /**
      * 添加新的版面

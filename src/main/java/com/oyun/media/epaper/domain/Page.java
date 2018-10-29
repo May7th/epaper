@@ -2,6 +2,7 @@ package com.oyun.media.epaper.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -45,10 +46,14 @@ public class Page {
      */
     private int state = 0;
 
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date releaseDate;
 
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @Lazy(value = false)
     @JoinTable(name = "page_article", joinColumns = @JoinColumn(name = "page_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id"))
     private List<Article> articleList;

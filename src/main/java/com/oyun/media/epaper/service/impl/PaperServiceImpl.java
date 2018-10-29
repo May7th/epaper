@@ -1,17 +1,26 @@
 package com.oyun.media.epaper.service.impl;
 
 import com.oyun.media.epaper.common.Const;
+import com.oyun.media.epaper.common.ServiceMultiResult;
+import com.oyun.media.epaper.domain.Attachment;
 import com.oyun.media.epaper.domain.Paper;
+import com.oyun.media.epaper.form.QueryData;
 import com.oyun.media.epaper.repository.PaperRepository;
+import com.oyun.media.epaper.service.IAttachmentService;
 import com.oyun.media.epaper.service.IPaperService;
+import com.oyun.media.epaper.utils.LoginUserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
+import javax.persistence.criteria.Predicate;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,6 +34,9 @@ public class PaperServiceImpl implements IPaperService {
 
     @Autowired
     private PaperRepository paperRepository;
+
+    @Autowired
+    private IAttachmentService attachmentService;
 
     @Transactional(rollbackFor = Exception.class )
     @Override
@@ -51,7 +63,7 @@ public class PaperServiceImpl implements IPaperService {
     @Override
     public void removePaper(Long id) {
         Paper paper = paperRepository.getOne(id);
-        paper.setState(Const.State.DELETED);
+        paper.setState(Const.State.DELETE);
         paperRepository.save(paper);
     }
 
@@ -61,18 +73,47 @@ public class PaperServiceImpl implements IPaperService {
     }
 
     @Override
-    public Page<Paper> findPapersByReleaseDate(Date date, Pageable pageable) {
+    public Paper findPapersByReleaseDate(Date date) {
 
-        Page<Paper> papers = paperRepository.findPapersByReleaseDate(date,pageable);
-        return papers;
+        Paper paper = paperRepository.findPapersByReleaseDate(date);
+
+        return paper;
     }
 
     @Override
-    public Page<Paper> findAllPapers(Pageable pageable){
+    public ServiceMultiResult<Paper> getAllPapers(QueryData queryData){
+        Sort sort;
+        if (queryData.getOrder().isEmpty()||queryData.getSort().isEmpty()){
+            sort = new Sort(Sort.Direction.ASC,"id");
+        }else {
+            sort = new Sort(queryData.getOrder().isEmpty() ? null:Sort.Direction.fromString(queryData.getOrder()),queryData.getSort());
 
-        Page<Paper> papers = paperRepository.findAll(pageable);
+        }
 
-        return papers;
+        int page = queryData.getOffset()/queryData.getLimit();
+
+        Pageable pageable = PageRequest.of(page,queryData.getLimit(),sort);
+
+//        Specification<Paper> specification = (root, criteriaQuery, criteriaBuilder) -> {
+//
+//            System.out.println(LoginUserUtil.getLoginUserName());
+//            Predicate predicate = criteriaBuilder.equal(root.get("username"), LoginUserUtil.getLoginUserName());
+//
+//            if (queryData.getPaperName() != null){
+//                predicate = criteriaBuilder.and(predicate,criteriaBuilder.equal(root.get("paperName"),queryData.getPaperName()));
+//            }
+//
+//            if (queryData.getReleaseDate() != null){
+//                predicate = criteriaBuilder.and(predicate,criteriaBuilder.greaterThanOrEqualTo(root.get("releaseDate"),queryData.getReleaseDate()));
+//            }
+//
+//            System.out.println(predicate.toString());
+//            return predicate;
+//        };
+
+        Page<Paper> paperPage = paperRepository.findAllByStateIsNot(pageable, Const.State.DELETE);
+        return new ServiceMultiResult<>(paperPage.getTotalElements(),paperPage.getContent());
+
     }
 
     @Transactional(rollbackFor = Exception.class )
@@ -84,6 +125,8 @@ public class PaperServiceImpl implements IPaperService {
         List<com.oyun.media.epaper.domain.Page> pageList =  paper.getPageList();
 
         page.setReleaseDate(paper.getReleaseDate());
+
+        attachmentService.save(attachmentService.switchStatus(page.getPageImagePath()));
 
         pageList.add(page);
 

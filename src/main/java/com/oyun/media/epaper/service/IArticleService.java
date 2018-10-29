@@ -1,10 +1,14 @@
 package com.oyun.media.epaper.service;
 
+import com.oyun.media.epaper.common.ServiceMultiResult;
 import com.oyun.media.epaper.domain.Article;
+import com.oyun.media.epaper.domain.Catalog;
+import com.oyun.media.epaper.search.ArticleSearch;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @program: eArticle
@@ -43,4 +47,21 @@ public interface IArticleService {
      */
     void saveOrUpdateArticle(Article article);
 
+    /**
+     * 更新文章状态
+     * @param articleId
+     * @param status
+     * @return
+     */
+    void updateStatus(Long articleId, int status);
+
+    Page<Article> findArticlesByCatalog(Catalog catalog,Pageable pageable);
+
+    ServiceMultiResult<Article> query(ArticleSearch rentSearch);
+
+    String checkContent(String content);
+
+    List<Article> findArticlesByParentId(Long pageId);
+
+    String getIntermediateCode(String content);
 }

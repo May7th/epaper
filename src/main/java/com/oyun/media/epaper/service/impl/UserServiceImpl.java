@@ -1,5 +1,6 @@
 package com.oyun.media.epaper.service.impl;
 
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 /**
  * 用户服务接口实现.
@@ -25,11 +27,20 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
 
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	@Transactional
 	@Override
 	public User saveOrUpateUser(User user) {
+		String newPassword = passwordEncoder.encode(user.getPassword());
+		user.setPassword(newPassword);
 		return userRepository.save(user);
+	}
+
+	public List<User> getAllUser(){
+		List<User> userList = userRepository.findAll();
+		return userList;
 	}
 
 	@Transactional
@@ -59,7 +70,11 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		return userRepository.findByUsername(username);
+		User user = userRepository.findByUsername(username);
+		if (user == null){
+			throw new UsernameNotFoundException("沒有当前用户！");
+		}
+		return user;
 	}
 
 	@Override

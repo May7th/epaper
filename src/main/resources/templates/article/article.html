@@ -46,7 +46,8 @@
 
 				<div class="row mt-2">
 					<div>
-						<button class="btn btn-primary float-right" id="submit">发布</button>
+						<button data-th-if = "${articleModel.article.id == null}" class="btn btn-primary float-right" id="submit">发布</button>
+						<button data-th-if = "${articleModel.article.id != null}" class="btn btn-info float-left" id="audited" data-th-attr="articleId=${articleModel.article.id},operation=1">审核通过</button>
 					</div>
 				</div>
         </div>
@@ -70,14 +71,6 @@
             ue.setContent(contentHtml);
         }
     });
-
-    $.function(
-        function(title){
-            if (title.isEmpty()){
-                $("#title").text("请输入标题");
-			}
-		}
-	);
 
 </script>
 <!-- JavaScript -->

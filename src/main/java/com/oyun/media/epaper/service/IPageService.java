@@ -3,6 +3,8 @@ package com.oyun.media.epaper.service;
 import com.oyun.media.epaper.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 /**
  * @program: epaper
  * @description:
@@ -42,8 +44,7 @@ public interface IPageService {
     /**
      * 根据paperId查找page
      * @param id
-     * @param pageable
      * @return
      */
-    org.springframework.data.domain.Page<Page> getPaperPage(Long id,Pageable pageable);
+    List<Page> getPaperPage(Long id);
 }

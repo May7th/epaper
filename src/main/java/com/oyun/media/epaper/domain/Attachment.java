@@ -1,6 +1,6 @@
 package com.oyun.media.epaper.domain;
 
-import lombok.Data;
+import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Length;
@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * 附件对象
@@ -15,13 +16,18 @@ import java.time.LocalDateTime;
  * @author changzhen
  */
 @Entity
-@Data
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@Setter
+@Getter
+@Builder
 public class Attachment{
 	
 	private static final long serialVersionUID = 1L;
+
 	
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	/**
 	 * 附件上传后生成的名称
@@ -33,7 +39,7 @@ public class Attachment{
 	
 	/**
 	 * 附件原始的名称
-	 */
+ */
 	@Column(name="old_name")
 	@NotEmpty
 	@Length(max = 255)
@@ -49,7 +55,6 @@ public class Attachment{
 	 * 附件的类型，这个类型和contentType类型一致
 	 */
 	@Column(length = 32)
-	@NotEmpty
 	@Length(max = 32)
 	private String type;
 	/**
@@ -75,7 +80,7 @@ public class Attachment{
 	 * 上传时间
 	 */
 	@Column(name="upload_date")
-	private LocalDateTime uploadDate;
+	private Date uploadDate;
 	/**
 	 * 上传用户账号
 	 */
@@ -92,11 +97,6 @@ public class Attachment{
 	 * 是否是临时文件，临时文件可以删除
 	 */
 	private boolean temp;
-
-	/**
-	 * 图片是否剪裁
-	 */
-	private boolean rate;
 
 	/**
 	 * 原图片的大小 单位b
@@ -117,4 +117,5 @@ public class Attachment{
 	@Length(max=128)
 	@Column(length = 128)
 	private String md5;
+
 }

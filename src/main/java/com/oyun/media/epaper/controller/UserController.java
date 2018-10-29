@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.validation.ConstraintViolationException;
 
+import com.oyun.media.epaper.common.ApiResponse;
+import com.oyun.media.epaper.common.ServiceMultiResult;
 import com.oyun.media.epaper.domain.Authority;
 import com.oyun.media.epaper.domain.User;
 import com.oyun.media.epaper.service.IAuthorityService;
@@ -16,14 +18,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -31,13 +29,24 @@ import org.springframework.web.servlet.ModelAndView;
  * 
  */
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
 	@Autowired
 	private IUserService userService;
 	
 	@Autowired
 	private IAuthorityService authorityService;
+
+    @GetMapping(value = "/list")
+    public ApiResponse getUserList(){
+
+        List<User> userList = userService.getAllUser();
+
+        ApiResponse response = new ApiResponse(ApiResponse.Status.SUCCESS.getCode(),
+                ApiResponse.Status.SUCCESS.getStandardMessage(),userList);
+
+        return response;
+    }
 	
 	/**
      * 查询所有用户
@@ -63,27 +72,16 @@ public class UserController {
         model.addAttribute("userList", list);
         return new ModelAndView(async==true?"users/list :: #mainContainerRepleace":"users/list", "userModel", model);
     }
-	
-    /**
-     * 获取创建表单页面
-     * @param model
-     * @return
-     */
-    @GetMapping("/add")
-    public ModelAndView createForm(Model model) {
-        model.addAttribute("user",new User());
-        return new ModelAndView("users/add", "userModel", model);
-    }
 
-	
     /**
      * 保存或者修改用户
      * @param user
      * @return
      */
-    @PostMapping
-    public ResponseEntity<Response> saveOrUpdateUser(User user, Long authorityId) {
+    @PostMapping("add")
+    public ResponseEntity<Response> saveOrUpdateUser(@RequestBody User user) {
 
+        Long authorityId = user.getAuthorityId();
         List<Authority> authorities = new ArrayList<>();
         authorities.add(authorityService.getAuthorityById(authorityId));
         user.setAuthorities(authorities);
@@ -101,11 +99,10 @@ public class UserController {
     /**
      * 删除用户
      * @param id
-     * @param model
      * @return
      */
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Response> delete(@PathVariable("id") Long id, Model model) {
+    @DeleteMapping
+    public ResponseEntity<Response> delete(@RequestParam(value="id", required = true) Long id) {
         try {
             userService.removeUser(id);
         } catch (Exception e) {
@@ -125,5 +122,10 @@ public class UserController {
         User user = userService.getUserById(id);
         model.addAttribute("user", user);
         return new ModelAndView("users/edit", "userModel", model);
+    }
+
+    @GetMapping(value = "/info")
+    public Object getCurrentUser(@AuthenticationPrincipal UserDetails userDetails){
+        return userDetails;
     }
 }

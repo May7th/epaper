@@ -1,16 +1,29 @@
 package com.oyun.media.epaper.controller;
 
-import lombok.extern.log4j.Log4j;
+import com.oyun.media.epaper.common.ApiDataTableResponse;
+import com.oyun.media.epaper.common.ApiResponse;
+import com.oyun.media.epaper.common.ServiceMultiResult;
+import com.oyun.media.epaper.domain.Attachment;
+import com.oyun.media.epaper.domain.Page;
+import com.oyun.media.epaper.form.DataTableSearch;
+import com.oyun.media.epaper.service.IAttachmentService;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.ClassUtils;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @program: epaper
@@ -18,41 +31,82 @@ import java.io.IOException;
  * @author: changzhen
  * @create: 2018-06-27 23:10
  **/
-@RestController
 @Log4j2
+@Controller
 public class AttachmentController {
 
-    @Value("${file.upload.path}")
-    private String filePath;
+    private final ResourceLoader resourceLoader;
 
-    @PostMapping("/upload")
-    public String fileUpload(@RequestParam("file") MultipartFile file){
-            try {
-                if (file.isEmpty()) {
-                    return "文件为空";
-                }
-                // 获取文件名
-                String fileName = file.getOriginalFilename();
-                System.out.println(fileName);                // 获取文件的后缀名
-                String suffixName = fileName.substring(fileName.lastIndexOf("."));
-                System.out.println(suffixName);
-                // 设置文件存储路径
-                System.out.println(ResourceUtils.getURL("classpath:").getPath());
-                System.out.println(ClassUtils.getDefaultClassLoader().getResource("").getPath());
-                String path = filePath + fileName + suffixName;
+    @Autowired
+    private IAttachmentService attachmentService;
 
-                File dest = new File(path);
-                // 检测是否存在目录
-                if (!dest.getParentFile().exists()) {
-                    dest.getParentFile().mkdirs();// 新建文件夹
-                }
-                file.transferTo(dest);// 文件写入
-                return path;
-            } catch (IllegalStateException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return "上传失败";
+
+    public AttachmentController( ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
     }
+
+    @PostMapping(value = "/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ResponseBody
+    public ApiResponse uploadFile(@RequestParam("file") MultipartFile file, HttpServletRequest request){
+
+        if(file.isEmpty()){
+            return ApiResponse.ofStatus(ApiResponse.Status.NOT_VALID_PARAM);
+        }
+        Attachment attachment = attachmentService.save(file,request);
+
+        if (attachment == null){
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("error", "图片不合法");
+            return ApiResponse.ofError(map);
+        }else {
+            return ApiResponse.ofSuccess(attachment.getUrl());
+        }
+    }
+
+    @GetMapping("/upload/view")
+    public ResponseEntity<Object> serveFileOnline() {
+
+        return ResponseEntity.ok(resourceLoader.getResource("file:" + "/Users/changzhen/work/oyun/epaper/epaper/upload/test.jpg"));
+
+    }
+
+    @GetMapping("attachment/list")
+    public String houseListPage() {
+        return "attachment/attachment-list";
+    }
+
+    @GetMapping("/attachments")
+    @ResponseBody
+    public ApiDataTableResponse attachments(@ModelAttribute DataTableSearch searchBody){
+
+        ServiceMultiResult<Attachment> attachmentPage = attachmentService.getAllAttachment(searchBody);
+
+        ApiDataTableResponse response = new ApiDataTableResponse(ApiResponse.Status.SUCCESS);
+
+        response.setData(attachmentPage.getResult());
+        response.setRecordsFiltered(attachmentPage.getTotal());
+        response.setRecordsTotal(attachmentPage.getTotal());
+
+        response.setDraw(searchBody.getDraw());
+
+        return response;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

@@ -1,14 +1,17 @@
 package com.oyun.media.epaper.controller;
 
+import com.oyun.media.epaper.common.ApiResponse;
+import com.oyun.media.epaper.common.ServiceMultiResult;
 import com.oyun.media.epaper.domain.Authority;
+import com.oyun.media.epaper.domain.Page;
 import com.oyun.media.epaper.domain.Paper;
 import com.oyun.media.epaper.domain.User;
+import com.oyun.media.epaper.form.QueryData;
 import com.oyun.media.epaper.service.IPageService;
 import com.oyun.media.epaper.service.IPaperService;
 import com.oyun.media.epaper.utils.ConstraintViolationExceptionHandler;
 import com.oyun.media.epaper.vo.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +32,7 @@ import java.util.List;
  * @create: 2018-05-29 09:35
  **/
 @RestController
-@RequestMapping("/papers")
+@RequestMapping("/paper")
 public class PaperController {
 
     @Autowired
@@ -38,29 +41,19 @@ public class PaperController {
     @Autowired
     private IPageService pageService;
 
-    @GetMapping
-    public ModelAndView list(@RequestParam(value="async",required=false) boolean async,
-                             @RequestParam(value="pageIndex",required=false,defaultValue="0") int pageIndex,
-                             @RequestParam(value="pageSize",required=false,defaultValue="10") int pageSize,
-                             Model model) {
+    @GetMapping(value = "/list")
+    public ApiResponse getPaperPage(@ModelAttribute QueryData query){
 
-        Pageable pageable = new PageRequest(pageIndex, pageSize);
-        Page<Paper> page = paperService.findAllPapers(pageable);
-        List<Paper> list = page.getContent();
+        ServiceMultiResult<Paper> paperPage = paperService.getAllPapers(query);
 
-        model.addAttribute("page", page);
-        model.addAttribute("paperList", list);
-        return new ModelAndView(async==true?"paper/list :: #mainContainerRepleace":"paper/list", "paperModel", model);
+        ApiResponse response = new ApiResponse(ApiResponse.Status.SUCCESS.getCode(),
+                ApiResponse.Status.SUCCESS.getStandardMessage(),paperPage);
+
+        return response;
     }
 
-    @GetMapping("/add")
-    public ModelAndView addPaperForm(Model model){
-        model.addAttribute("paper",new Paper());
-        return new ModelAndView("paper/add","paperModel",model);
-    }
-
-    @PostMapping
-    public ResponseEntity<Response> saveOrUpdatePaper(Paper paper) {
+    @PostMapping("/add")
+    public ResponseEntity<Response> saveOrUpdatePaper(@RequestBody Paper paper) {
 
         try {
             paperService.saveOrUpdatePaper(paper);
@@ -77,12 +70,12 @@ public class PaperController {
      * @param id
      * @return
      */
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Response> delete(@PathVariable("id") Long id) {
+    @DeleteMapping
+    public ResponseEntity<Response> delete(@RequestParam(value="id", required = true) Long id) {
         try {
             paperService.removePaper(id);
         } catch (Exception e) {
-            return  ResponseEntity.ok().body( new Response(false, e.getMessage()));
+            return  ResponseEntity.badRequest().body( new Response(false, e.getMessage()));
         }
         return  ResponseEntity.ok().body( new Response(true, "处理成功"));
     }
@@ -100,20 +93,16 @@ public class PaperController {
         return new ModelAndView("paper/edit", "paperModel", model);
     }
 
-    @GetMapping(value = "/{id}")
-    public ModelAndView paperDetails(@RequestParam(value="async",required=false) boolean async,
-                                     @RequestParam(value="pageIndex",required=false,defaultValue="0") int pageIndex,
-                                     @RequestParam(value="pageSize",required=false,defaultValue="10") int pageSize,
-                                     @PathVariable("id")Long id,Model model){
+    @GetMapping(value = "/pages")
+    public ApiResponse paperDetails(@ModelAttribute QueryData query,
+                                     @RequestParam(value = "id", required = true)Long id){
 
-        Pageable pageable = new PageRequest(pageIndex, pageSize);
-        Page<com.oyun.media.epaper.domain.Page> page = pageService.getPaperPage(id,pageable);
-        List<com.oyun.media.epaper.domain.Page> list = page.getContent();
+        List<Page> pageList = pageService.getPaperPage(id);
+        ApiResponse response = new ApiResponse(ApiResponse.Status.SUCCESS.getCode(),
+                ApiResponse.Status.SUCCESS.getStandardMessage(),pageList);
 
-        model.addAttribute("page", page);
-        model.addAttribute("pageList", list);
-        model.addAttribute("paperId",id);
-        return new ModelAndView("paper/pages","pageModel",model);
+        return response;
+
     }
 
 }

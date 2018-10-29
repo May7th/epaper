@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:replace="~{fragments/header :: header}">
+    <link rel="stylesheet" type="text/css" href="/static/css/admin/house-list.css">
+
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="/static/lib/html5shiv.js"></script>
+    <script type="text/javascript" src="/static/lib/respond.min.js"></script>
+    <![endif]-->
+    <title>房源列表</title>
+</head>
+<body>
+
+<div class="page-container">
+    <div class="text-c">
+        <span class="select-box inline">
+            <select id="attachmentStatus" name="attachmentStatus" class="select">
+                <option value="">全部附件</option>
+                <option value="1">临时文件</option>
+                <option value="0">储存文件</option>
+            </select>
+		</span> 创建时间：
+        <input type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'createTimeMax\')||\'%y-%M-%d\'}' })"
+               id="createTimeMin" class="input-text Wdate" style="width:110px;">
+        -
+        <input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'createTimeMin\')}',maxDate:'%y-%M-%d' })"
+               id="createTimeMax" class="input-text Wdate" style="width:110px;">
+        <input type="text" name="oldName" id="oldName" placeholder="文件名称" style="width:250px" class="input-text">
+        <button id="attachmentSearch" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i>
+            附件搜索
+        </button>
+    </div>
+    <div class="mt-20">
+        <table id="data-table"
+               class="table table-border table-bordered table-bg table-hover table-sort table-responsive"
+               style="width: 100%">
+            <thead>
+            <tr class="text-c">
+                <th width="15">ID</th>
+                <th>原始名称</th>
+                <th style="height: 20%">图片预览</th>
+                <th>附件类型</th>
+                <th>大小</th>
+                <th>上传用户</th>
+                <th>上传时间</th>
+                <th>发布状态</th>
+                <th width="80">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}">...</div>
+<!--请在下方写此页面业务相关的脚本-->
+<script src="../../js/attachment/attachment-list.js" th:src="@{/js/attachment/attachment-list.js}"></script>
+<script type="text/javascript">
+    $(function () {
+        $('.picture-thumb').zoomify();
+    });
+</script>
+</body>
+</html>

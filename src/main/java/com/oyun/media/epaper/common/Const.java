@@ -13,8 +13,9 @@ public final class Const {
     private Const(){}
 
     public interface State{
-        int SAVED = 0;
-        int DELETED = 1;
+        int SAVE = 0;
+        int PASS = 1;
+        int DELETE = 2;
     }
 
 }

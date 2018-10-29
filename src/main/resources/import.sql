@@ -1,7 +1,8 @@
-INSERT INTO user (id, username, password, name, email) VALUES (1, 'admin', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', 'oyun', 'admin@oyun.com');
+INSERT INTO user (id, username, password, name, email, create_time) VALUES (1, 'admin', '$2a$10$48WIKj5A3eHeU8Oy2Prk9uqJBhv.Cn2b2OpwP1EDbisKySazi2AJa', 'oyun', 'admin@oyun.com','2018-10-06 23:14:15');
 
 INSERT INTO authority (id, name) VALUES (1, 'ROLE_ADMIN');
-INSERT INTO authority (id, name) VALUES (2, 'ROLE_USER');
+INSERT INTO authority (id, name) VALUES (2, 'ROLE_VERIFIER');
+INSERT INTO authority (id, name) VALUES (3, 'ROLE_USER');
 
 INSERT INTO user_authority (user_id, authority_id) VALUES (1, 1);
 

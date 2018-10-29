@@ -1,11 +1,18 @@
 package com.oyun.media.epaper.controller;
 
+import com.oyun.media.epaper.common.ApiResponse;
+import com.oyun.media.epaper.common.ArticleStatus;
+import com.oyun.media.epaper.common.Const;
+import com.oyun.media.epaper.common.ServiceMultiResult;
 import com.oyun.media.epaper.domain.Article;
 import com.oyun.media.epaper.domain.Page;
+import com.oyun.media.epaper.search.ArticleSearch;
+import com.oyun.media.epaper.search.ISearchService;
 import com.oyun.media.epaper.service.IArticleService;
 import com.oyun.media.epaper.service.IPageService;
 import com.oyun.media.epaper.utils.ConstraintViolationExceptionHandler;
 import com.oyun.media.epaper.vo.Response;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,7 +30,7 @@ import javax.validation.ConstraintViolationException;
  * @create: 2018-05-29 12:03
  **/
 @RestController
-@RequestMapping("articles")
+@RequestMapping("article")
 public class ArticleController {
 
     @Autowired
@@ -32,33 +39,17 @@ public class ArticleController {
     @Autowired
     private IPageService pageService;
 
-    @GetMapping("/add/{id}")
-    public ModelAndView addPaperForm(Model model,@PathVariable("id") Long pageId){
+    @Autowired
+    private ISearchService searchService;
 
-        Page page = pageService.getPageById(pageId);
-        System.out.println(page);
-        Article article = new Article();
-        article.setParentId(page.getParentId());
-        model.addAttribute("page",page);
-        model.addAttribute("article",article);
-        return new ModelAndView("article/article","articleModel",model);
-    }
-
-    @GetMapping("{id}")
-    public ModelAndView ArticleDetails(@PathVariable("id")Long id,Model model){
-        Article article = articleService.getArticleById(id);
-        Page page = pageService.getPageById(article.getParentId());
-        model.addAttribute("page",page);
-        model.addAttribute("article",article);
-        return new ModelAndView("article/article","articleModel",model);
-    }
     /**
-     * 删除报纸
+     * 删除文章
      * @param id
      * @return
      */
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Response> delete(@PathVariable("id") Long id) {
+    @DeleteMapping
+    @ApiOperation(value = "删除文章")
+    public ResponseEntity<Response> delete(@RequestParam(value="id", required = true) Long id) {
         try {
             articleService.removeArticle(id);
         } catch (Exception e) {
@@ -67,7 +58,7 @@ public class ArticleController {
         return  ResponseEntity.ok().body( new Response(true, "处理成功"));
     }
 
-    @PostMapping
+    @PostMapping("add")
     public ResponseEntity<Response> saveOrUpdatePaper(@RequestBody Article article) {
         try {
 
@@ -80,5 +71,42 @@ public class ArticleController {
         return ResponseEntity.ok().body(new Response(true, "处理成功", article));
 
     }
+    @PutMapping(value = "/operate/{id}/{operation}")
+    public ResponseEntity<Response> operateArticle(@PathVariable(value = "id") Long id,
+                                                   @PathVariable("operation") int operation){
 
+        if (id < 0){
+            return ResponseEntity.badRequest().body(new Response(false,"id error"));
+        }
+
+        if (operation == ArticleStatus.PASSES.getValue()){
+            articleService.updateStatus(id, ArticleStatus.PASSES.getValue());
+            return ResponseEntity.ok().body(new Response(true, "处理成功"));
+        }else if (operation == ArticleStatus.NOT_AUDITED.getValue()){
+            articleService.updateStatus(id, ArticleStatus.NOT_AUDITED.getValue());
+            return ResponseEntity.ok().body(new Response(true, "处理成功"));
+        }
+        return ResponseEntity.badRequest().body(new Response(false,"update status error"));
+
+    }
+
+    @GetMapping(value = "list")
+    private ApiResponse getArticles(@ModelAttribute ArticleSearch articleSearch){
+
+        ServiceMultiResult<Article> multiResult = articleService.query(articleSearch);
+
+        return ApiResponse.ofSuccess(multiResult);
+    }
+
+    @PostMapping(value = "check")
+    private ApiResponse checkContent(@RequestBody String content){
+
+        String checkedContent = articleService.checkContent(content);
+
+        if (checkedContent==null){
+            return ApiResponse.ofMessage(ApiResponse.Status.NOT_FOUND.getCode(),"校正服务出错，请稍后再试。");
+        }
+
+        return ApiResponse.ofSuccess(checkedContent);
+    }
 }
