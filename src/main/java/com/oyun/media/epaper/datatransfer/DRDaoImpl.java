@@ -8,6 +8,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @program: data-transfer
  * @description:
@@ -42,9 +44,16 @@ public class DRDaoImpl implements DRDao {
     }
 
     @Override
+    public List<DR> findAll(){
+        List<DR> drList = mongoTemplate.findAll(DR.class);
+        return drList;
+    }
+
+    @Override
     public DR findDemoById(String id) {
         Query query = new Query(Criteria.where("_id").is(id));
         DR dr = mongoTemplate.findOne(query, DR.class);
+
 //        DB picDB = MongoUtilTest.instance.getDBDB("picsdb");
 //        GridFS gfsPhoto = new GridFS(picDB);
 ////        GridFSFindIterable iterable = gridFsTemplate.find(query(whereFilename().is(dr.getName())));

@@ -66,7 +66,9 @@ public class transferTest extends EpaperApplicationTests {
 
     @Test
     public void transferTest() throws ParseException {
-        DR dr = drDao.findDemoById("5bac9739bd9a9a34f4636b4b");
+        List<DR> drs = drDao.findAll();
+
+        drs.forEach(dr -> {
 
         String paperPage = dr.getName();
         String paperDate = new StringBuffer(paperPage.substring(0,8)).insert(4,"-").insert(7,"-").toString();
@@ -74,9 +76,14 @@ public class transferTest extends EpaperApplicationTests {
 
         DateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
 
-        Date releaseDate = dateFormat1.parse(paperDate);
+            Date releaseDate = null;
+            try {
+                releaseDate = dateFormat1.parse(paperDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
-        Paper paper = paperService.findPapersByReleaseDate(releaseDate);
+            Paper paper = paperService.findPapersByReleaseDate(releaseDate);
 
         if (paper==null){
             paper = new Paper();
@@ -184,7 +191,8 @@ public class transferTest extends EpaperApplicationTests {
                 searchService.index(article.getId());
             });
         }
-
+        System.out.println("完成dr id为 "+dr.get_id());
+        });
     }
 
     public String getImage(String id,String name){
@@ -223,7 +231,14 @@ public class transferTest extends EpaperApplicationTests {
         }else {
             String pageName = pageIndex+"ᠬᠡᠪᠯᠡᠯ";
         }
+    }
 
+    @Test
+    public void allTest(){
+        List<DR> drList = drDao.findAll();
 
+        drList.forEach(dr -> {
+            System.out.println(dr.get_id());
+        });
     }
 }

@@ -38,6 +38,7 @@ public class Page {
     @NotEmpty(message = "版面图片不能为空！")
     private String pageImagePath;
 
+    @Lob
     private String description;
 
     private Long parentId;

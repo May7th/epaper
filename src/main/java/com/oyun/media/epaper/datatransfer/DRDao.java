@@ -1,5 +1,7 @@
 package com.oyun.media.epaper.datatransfer;
 
+import java.util.List;
+
 /**
  * @program: data-transfer
  * @description:
@@ -14,4 +16,6 @@ public interface DRDao {
     void updateDemo(DR dr);
 
     DR findDemoById(String id);
+
+    public List<DR> findAll();
 }
