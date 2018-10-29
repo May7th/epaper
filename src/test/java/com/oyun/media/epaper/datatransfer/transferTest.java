@@ -66,82 +66,50 @@ public class transferTest extends EpaperApplicationTests {
 
     @Test
     public void transferTest() throws ParseException {
-        List<DR> drs = drDao.findAll();
+        List<DR> drList = drDao.findAll();
 
-        drs.forEach(dr -> {
+        drList.forEach(dr -> {
+            String paperPage = dr.getName();
+            String paperDate = new StringBuffer(paperPage.substring(0,8)).insert(4,"-").insert(7,"-").toString();
+            String pageIndex = paperPage.substring(8,10);
 
-        String paperPage = dr.getName();
-        String paperDate = new StringBuffer(paperPage.substring(0,8)).insert(4,"-").insert(7,"-").toString();
-        String pageIndex = paperPage.substring(8,10);
+            Paper paper = paperHandle(paperDate);
 
-        DateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
+            Page page = pageHandle(paper,pageIndex,dr);
 
-            Date releaseDate = null;
-            try {
-                releaseDate = dateFormat1.parse(paperDate);
-            } catch (ParseException e) {
-                e.printStackTrace();
+            if (!dr.getSubPics().isEmpty()){
+                List<SubPic> subPicList = dr.getSubPics();
+
+                Map<String, Map<String,Map<Integer,String>>> articleMap =
+                        sortArticleMap(subPicList);
+
+                List<Article> articles = InstallArticleList(articleMap,page);
+
+                page.setArticleList(articles);
+
+                paperService.addNewPaper(paper);
+
+                paperService.addNewPage(page);
+
+//                List<Article> savedArticleList = articleService.findArticlesByParentId(page.getId());
+//                savedArticleList.forEach(article -> {
+//                    searchService.index(article.getId());
+//                });
             }
+            System.out.println("完成dr id为 "+dr.get_id());
+        });
+    }
 
-            Paper paper = paperService.findPapersByReleaseDate(releaseDate);
+    private List<Article> InstallArticleList(Map<String, Map<String, Map<Integer, String>>> articleMap,Page page) {
 
-        if (paper==null){
-            paper = new Paper();
-            paper.setPaperName("ᠦᠪᠦᠷ ᠮᠤᠨᠭᠭᠤᠯ ᠦᠨ ᠡᠳᠦᠷ ᠦᠨ ᠰᠤᠨᠢᠨ");
-            paper.setReleaseDate(releaseDate);
-        }
-        Paper savedPaper = paperService.saveOrUpdatePaper(paper);
-        Page page = new Page();
-        page.setParentId(savedPaper.getId());
-        page.setPageName(pageIndex+" ᠬᠡᠪᠯᠡᠯ");
-        if (dr.getContent()!=null){
-            page.setDescription(dr.getContent());
-        }
-        String ImagePath = getImage(dr.getId(),dr.getName());
-        page.setPageImagePath(ImagePath);
-        Page returnPage = pageRepository.save(page);
-
-        Map<String, Map<String,Map<Integer,String>>> articleMap = new HashMap<>();
-        if (!dr.getSubPics().isEmpty()){
-            List<SubPic> subPicList = dr.getSubPics();
-            subPicList.forEach(subPic -> {
-                String fullName = subPic.getName();
-                String[] subName = fullName.substring(0,fullName.lastIndexOf(".")).split("-");
-                String type = subName[1].substring(0,subName[1].length()-1);
-                String order = subName[1].substring(subName[1].length()-1);
-
-                if (articleMap.containsKey(subName[0])){
-                    Map<String,Map<Integer,String>> typeMap = articleMap.get(subName[0]);
-                    String content;
-                    if (!"p".equals(type)){
-                        content = subPic.getContent();
-                    }else {
-                        content = getImage(subPic.getId(),subPic.getName());
-                    }
-
-                    if (typeMap.containsKey(type)){
-                        Map<Integer,String> partMap = typeMap.get(type);
-                        partMap.put(Integer.parseInt(order),content);
-                    }else {
-                        Map<Integer,String> partMap = new HashMap<>();
-                        partMap.put(Integer.parseInt(order),content);
-                        typeMap.put(type,partMap);
-                    }
-
-                }else {
-                    Map<Integer,String> part = new HashMap<>();
-                    part.put(Integer.parseInt(order),subPic.getContent());
-                    Map<String,Map<Integer,String>> typeMap = new HashMap<>();
-                    typeMap.put(type,part);
-                    articleMap.put(subName[0],typeMap);
-                }
-            });
         List<Article> articles = new ArrayList<>();
-            articleMap.forEach((k,v)->{
-                Article article = new Article();
-                article.setParentId(returnPage.getId());
-                StringBuffer content = new StringBuffer();
-                v.forEach((type,part)->{
+        articleMap.forEach((k,v)->{
+
+            Article article = new Article();
+            article.setParentId(page.getId());
+            StringBuffer content = new StringBuffer();
+            v.forEach((type,part)->{
+                try{
                     if ("p".equals(type)){
                         StringBuffer p = new StringBuffer();
                         part.forEach((i,s)->{
@@ -175,24 +143,66 @@ public class transferTest extends EpaperApplicationTests {
                                 break;
                         }
                     }
-                });
-                article.setContent(articleService.getIntermediateCode(article.getContentHtml()));
-                articles.add(article);
+                }catch (Exception e){
+                    log.error(e.getMessage());
+                }
             });
-           page.setArticleList(articles);
-
-            paperService.addNewPaper(paper);
-
-            paperService.addNewPage(page);
-
-
-            List<Article> savedArticleList = articleService.findArticlesByParentId(returnPage.getId());
-            savedArticleList.forEach(article -> {
-                searchService.index(article.getId());
-            });
-        }
-        System.out.println("完成dr id为 "+dr.get_id());
+//            article.setContent(articleService.getIntermediateCode(article.getContentHtml()));
+            articles.add(article);
         });
+        return articles;
+    }
+
+    private Map<String, Map<String, Map<Integer, String>>> sortArticleMap(List<SubPic> subPicList) {
+
+        Map<String, Map<String,Map<Integer,String>>> articleMap = new HashMap<>();
+
+        subPicList.forEach(subPic -> {
+            String fullName = subPic.getName();
+            String[] subName = fullName.substring(0,fullName.lastIndexOf(".")).split("-");
+            String type = subName[1].substring(0,subName[1].length()-1);
+            String order = subName[1].substring(subName[1].length()-1);
+
+            if (articleMap.containsKey(subName[0])){
+                Map<String,Map<Integer,String>> typeMap = articleMap.get(subName[0]);
+                String content;
+                if (!"p".equals(type)){
+                    content = subPic.getContent();
+                }else {
+                    content = getImage(subPic.getId(),subPic.getName());
+                }
+
+                if (typeMap.containsKey(type)){
+                    Map<Integer,String> partMap = typeMap.get(type);
+                    partMap.put(Integer.parseInt(order),content);
+                }else {
+                    Map<Integer,String> partMap = new HashMap<>();
+                    partMap.put(Integer.parseInt(order),content);
+                    typeMap.put(type,partMap);
+                }
+
+            }else {
+                Map<Integer,String> part = new HashMap<>();
+                part.put(Integer.parseInt(order),subPic.getContent());
+                Map<String,Map<Integer,String>> typeMap = new HashMap<>();
+                typeMap.put(type,part);
+                articleMap.put(subName[0],typeMap);
+            }
+        });
+        return articleMap;
+
+    }
+
+    private Page pageHandle(Paper paper,String pageIndex,DR dr) {
+        Page page = new Page();
+        page.setParentId(paper.getId());
+        page.setPageName(pageIndex+" ᠬᠡᠪᠯᠡᠯ");
+        if (dr.getContent()!=null){
+            page.setDescription(dr.getContent());
+        }
+        String ImagePath = getImage(dr.getId(),dr.getName());
+        page.setPageImagePath(ImagePath);
+        return pageRepository.save(page);
     }
 
     public String getImage(String id,String name){
@@ -240,5 +250,26 @@ public class transferTest extends EpaperApplicationTests {
         drList.forEach(dr -> {
             System.out.println(dr.get_id());
         });
+    }
+
+    public Paper paperHandle(String paperDate){
+        DateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
+
+        Date releaseDate = null;
+        try {
+            releaseDate = dateFormat1.parse(paperDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Paper paper = paperService.findPapersByReleaseDate(releaseDate);
+
+        if (paper==null){
+            paper = new Paper();
+            paper.setPaperName("ᠦᠪᠦᠷ ᠮᠤᠨᠭᠭᠤᠯ ᠦᠨ ᠡᠳᠦᠷ ᠦᠨ ᠰᠤᠨᠢᠨ");
+            paper.setReleaseDate(releaseDate);
+        }
+        return paperService.saveOrUpdatePaper(paper);
+
     }
 }
