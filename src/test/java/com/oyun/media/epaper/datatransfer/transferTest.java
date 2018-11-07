@@ -18,6 +18,7 @@ import com.oyun.media.epaper.service.IAttachmentService;
 import com.oyun.media.epaper.service.IPageService;
 import com.oyun.media.epaper.service.IPaperService;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
@@ -305,4 +306,30 @@ public class transferTest extends EpaperApplicationTests {
         pageRepository.saveAll(pageList);
 
     }
+
+    @Test
+    public void setContentImage(){
+
+        List<Page> pageList = pageRepository.findAll();
+
+        pageList.forEach(page -> {
+            List<Article> articleList = page.getArticleList();
+
+            articleList.forEach(article -> {
+                if (!StringUtils.isEmpty(article.getContentHtml())){
+                    String contentHtml = article.getContentHtml().replaceAll("style=\"width: 220px;height: 150px;\"","width=\"200\" style=\"cursor: nwse-resize;\"");
+                    article.setContentHtml(contentHtml);
+                }
+                if (!StringUtils.isEmpty(article.getContent())){
+                    String content = article.getContent().replaceAll("style=\"width: 220px;height: 150px;\"","width=\"200\" style=\"cursor: nwse-resize;\"");
+                    article.setContent(content);
+                }
+            });
+        });
+
+        pageRepository.saveAll(pageList);
+
+    }
+
+
 }

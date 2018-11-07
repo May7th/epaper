@@ -92,7 +92,7 @@ public class ArticleServiceImpl implements IArticleService {
 
             List<Article> articleList = page.getArticleList();
 
-            List<Attachment> attachmentList = attachmentService.getAttachmentsByUrl(getImgStr(article.getContent()));
+            List<Attachment> attachmentList = attachmentService.getAttachmentsByUrl(getImgStr(article.getContentHtml()));
 
             article.setContentImages(attachmentList);
 
