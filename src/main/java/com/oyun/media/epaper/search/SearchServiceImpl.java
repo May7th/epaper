@@ -8,6 +8,7 @@ import com.oyun.media.epaper.common.ServiceMultiResult;
 import com.oyun.media.epaper.domain.Article;
 import com.oyun.media.epaper.domain.Catalog;
 import com.oyun.media.epaper.repository.ArticleRepository;
+import com.oyun.media.epaper.service.IArticleService;
 import com.oyun.media.epaper.service.ICatalogService;
 import lombok.extern.log4j.Log4j2;
 import org.elasticsearch.action.index.IndexResponse;
@@ -31,10 +32,12 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -67,6 +70,9 @@ public class SearchServiceImpl implements ISearchService {
     @Autowired
     private ICatalogService catalogService;
 
+    @Autowired
+    private IArticleService articleService;
+
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
@@ -82,9 +88,12 @@ public class SearchServiceImpl implements ISearchService {
             return false;
         }
 
+        Article intermediateArticle = intermediateArticle(article);
+
+
         ArticleIndexTemplate indexTemplate = new ArticleIndexTemplate();
 
-        modelMapper.map(article,indexTemplate);
+        modelMapper.map(intermediateArticle,indexTemplate);
 
         SearchRequestBuilder builder = this.esClient
                 .prepareSearch(INDEX_NAME)
@@ -191,6 +200,9 @@ public class SearchServiceImpl implements ISearchService {
 
     @Override
     public ServiceMultiResult<Long> query(ArticleSearch articleSearch) {
+        String intermediatekeywords = articleService.getIntermediateCode(articleSearch.getKeywords());
+
+        articleSearch.setKeywords(intermediatekeywords);
 
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
 
@@ -248,6 +260,36 @@ public class SearchServiceImpl implements ISearchService {
         });
         return new ServiceMultiResult<>(response.getHits().totalHits,articleIds);
     }
+
+
+    private Article intermediateArticle(Article article){
+
+        Article intermediateArticle = new Article();
+        modelMapper.map(article,intermediateArticle);
+
+        if (!"".equals(intermediateArticle.getAuthor())){
+            String author = intermediateArticle.getAuthor();
+            intermediateArticle.setAuthor(articleService.getIntermediateCode(author));
+        }
+
+        if (!"".equals(intermediateArticle.getSubTitle())){
+            String subTitle = intermediateArticle.getSubTitle();
+            intermediateArticle.setSubTitle(articleService.getIntermediateCode(subTitle));
+        }
+
+        if (!"".equals(intermediateArticle.getTitle())){
+            String title = intermediateArticle.getTitle();
+            intermediateArticle.setTitle(articleService.getIntermediateCode(title));
+        }
+
+        if (!"".equals(intermediateArticle.getParentName())){
+            String parentName = intermediateArticle.getParentName();
+            intermediateArticle.setParentName(articleService.getIntermediateCode(parentName));
+        }
+
+        return intermediateArticle;
+    }
+
 
     @Override
     public void testData() {

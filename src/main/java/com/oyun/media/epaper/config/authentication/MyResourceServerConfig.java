@@ -40,7 +40,7 @@ public class MyResourceServerConfig extends ResourceServerConfigurerAdapter {
 
         http.addFilterBefore(validateCodeFilter,UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers("/css/**", "/js/**","/libs/**", "/fonts/**", "/index","/path/**").permitAll()
+                .antMatchers("/css/**", "/js/**","/libs/**", "/fonts/**", "/index","/path/**","/font/**","/images/**").permitAll()
                 .antMatchers("/druid/**","/validate/code/image","/upload/image/**").permitAll()
                 .antMatchers("/oauth/token").permitAll()
                 .antMatchers("/v2/api-docs",
@@ -48,6 +48,7 @@ public class MyResourceServerConfig extends ResourceServerConfigurerAdapter {
                         "/swagger-resources",
                         "/swagger-resources/configuration/security",
                         "/swagger-ui.html").permitAll()
+                .antMatchers("/epaper/**").permitAll()
                 .antMatchers("/admins/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()

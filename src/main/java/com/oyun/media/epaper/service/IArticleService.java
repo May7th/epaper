@@ -64,4 +64,6 @@ public interface IArticleService {
     List<Article> findArticlesByParentId(Long pageId);
 
     String getIntermediateCode(String content);
+
+    Article increaseReadSize(Article article);
 }

@@ -15,10 +15,7 @@ import com.oyun.media.epaper.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -48,71 +45,10 @@ public class MainController {
 	
 	@GetMapping("/index")
 	public String index() {
-	    return "redirect:/epaper";
+	    return "redirect:/paper";
 	}
 
-	@GetMapping("/login_page")
-	@ResponseBody
-	public ApiResponse login() {
-		return ApiResponse.ofMessage(ApiResponse.Status.NOT_LOGIN.getCode(),ApiResponse.Status.NOT_LOGIN.getStandardMessage());
-	}
 
-	@GetMapping("/login-error")
-	public String loginError(Model model) {
-		model.addAttribute("loginError", true);
-		model.addAttribute("errorMsg", "登陆失败，用户名或者密码错误！");
-		return "login";
-	}
-	
-	@GetMapping("/register")
-	public String register() {
-		return "register";
-	}
-	
-    /**
-     * 注册用户
-     * @param user
-     * @return
-     */
-    @PostMapping("/register")
-    public String registerUser(User user) {
-        List<Authority> authorities = new ArrayList<>();
-		authorities.add(authorityService.getAuthorityById(ROLE_USER_AUTHORITY_ID));
-        user.setAuthorities(authorities);
-        
-        userService.registerUser(user);
-        return "redirect:/login";
-    }
-
-    @GetMapping("/test")
-	public void insertPage() throws ParseException {
-    	List<Page> pages = new ArrayList<>();
-		for (int m = 1; m <= 5; m++) {
-			for (int i = 1; i <= 10; i++) {
-				Page page = new Page();
-				List<Article> articles = new ArrayList<>();
-				for (int j = 1; j <= 10; j++) {
-					Article article = new Article();
-					article.setTitle("title"+j);
-					article.setContent("content"+j);
-					article.setContentHtml("contentHtml"+j);
-					article.setCoordinate("1,1,1,10,10,10,10,"+j);
-					article.setParentId(new Long(i));
-					articles.add(article);
-				}
-				page.setArticleList(articles);
-				page.setPageName("版面"+i+": 新闻"+i);
-				page.setParentId((long) m);
-				pages.add(page);
-			}
-			Paper paper = new Paper();
-			paper.setPaperName("内蒙古日报 "+m);
-			paper.setReleaseDate(new Date(new SimpleDateFormat("yyyy-MM-dd").parse("2016-01-01").getTime()));
-			paper.setPageList(pages);
-			paperRepository.save(paper);
-		}
-
-	}
 
 	@GetMapping("/404")
 	public String notFoundPage() {
@@ -128,18 +64,6 @@ public class MainController {
 	public String internalError() {
 		return "500";
 	}
-
-	@GetMapping("/logout/page")
-	public String logoutPage() {
-		return "logout";
-	}
-
-	@GetMapping("/get")
-	public ApiResponse getPaper(){
-    	return ApiResponse.ofMessage(200, "success");
-	}
-
-
 
 
 

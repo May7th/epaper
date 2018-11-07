@@ -66,9 +66,12 @@ public class transferTest extends EpaperApplicationTests {
 
     @Test
     public void transferTest() throws ParseException {
-        List<DR> drList = drDao.findAll();
+//        List<DR> drList = drDao.findAll();
 
-        drList.forEach(dr -> {
+        DR dr = drDao.findDemoById("5baca1e3bd9a9a11982d5a15");
+//        drList.forEach(dr -> {
+
+
             String paperPage = dr.getName();
             String paperDate = new StringBuffer(paperPage.substring(0,8)).insert(4,"-").insert(7,"-").toString();
             String pageIndex = paperPage.substring(8,10);
@@ -96,8 +99,10 @@ public class transferTest extends EpaperApplicationTests {
 //                    searchService.index(article.getId());
 //                });
             }
+
             System.out.println("完成dr id为 "+dr.get_id());
-        });
+
+//        });
     }
 
     private List<Article> InstallArticleList(Map<String, Map<String, Map<Integer, String>>> articleMap,Page page) {
@@ -160,8 +165,19 @@ public class transferTest extends EpaperApplicationTests {
         subPicList.forEach(subPic -> {
             String fullName = subPic.getName();
             String[] subName = fullName.substring(0,fullName.lastIndexOf(".")).split("-");
+            if (subName.length<2){
+                return;
+            }
             String type = subName[1].substring(0,subName[1].length()-1);
             String order = subName[1].substring(subName[1].length()-1);
+
+            try{
+                Integer intOrder = Integer.parseInt(order);
+            }catch (Exception e){
+                log.error(e.getMessage());
+                return;
+            }
+
 
             if (articleMap.containsKey(subName[0])){
                 Map<String,Map<Integer,String>> typeMap = articleMap.get(subName[0]);
@@ -270,6 +286,23 @@ public class transferTest extends EpaperApplicationTests {
             paper.setReleaseDate(releaseDate);
         }
         return paperService.saveOrUpdatePaper(paper);
+    }
+
+    @Test
+    public void setArticleTest(){
+
+        List<Page> pageList = pageRepository.findAll();
+
+        pageList.forEach(page -> {
+            List<Article> articleList = page.getArticleList();
+
+            articleList.forEach(article -> {
+                article.setParentName(page.getPageName());
+                article.setReleaseDate(page.getReleaseDate());
+            });
+        });
+
+        pageRepository.saveAll(pageList);
 
     }
 }

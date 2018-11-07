@@ -111,7 +111,7 @@ public class ArticleServiceImpl implements IArticleService {
         }else {
             article.setModifyTime(new Timestamp(System.currentTimeMillis()));
 
-            List<Attachment> attachmentList = attachmentService.getAttachmentsByUrl(getImgStr(article.getContent()));
+            List<Attachment> attachmentList = attachmentService.getAttachmentsByUrl(getImgStr(article.getContentHtml()));
 
             attachmentService.updateAttachemntsByUrl(attachmentList,article.getContentImages());
 
@@ -196,6 +196,7 @@ public class ArticleServiceImpl implements IArticleService {
         return new ServiceMultiResult<>(articles.getTotalElements(), articles.getContent());
     }
 
+
     @Override
     public String checkContent(String content) {
         String checkedContent = null;
@@ -269,5 +270,11 @@ public class ArticleServiceImpl implements IArticleService {
             e.printStackTrace();
         }
         return intermediateCode;
+    }
+
+    @Override
+    public Article increaseReadSize(Article article){
+        article.setReadSize(article.getReadSize()+1);
+        return articleRepository.save(article);
     }
 }

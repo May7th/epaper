@@ -1,6 +1,9 @@
 package com.oyun.media.epaper.search;
 
 import com.oyun.media.epaper.common.ServiceMultiResult;
+import org.springframework.data.domain.Pageable;
+
+import java.util.Date;
 
 /**
  * 搜索接口

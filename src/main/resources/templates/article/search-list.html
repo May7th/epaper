@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="x-ua-compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximun-scale=1.0, user-scalable=no">
+  <title>检索</title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="温都苏">
+	<link href="../../css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+	<link href="../../css/style.css" th:href="@{/css/style.css}" rel="stylesheet">
+	<link href="../../css/content.css" th:href="@{/css/content.css}" rel="stylesheet">
+
+
+</head>
+<body>
+
+<div id="wrapper">
+	<div class="header_xl">
+		<div class="xl_logo"><img th:src="@{'/images/logo_d.png'}"></div>
+		<h2 class="mw">   </h2>
+	</div>
+	<div class="xl_right_box_a">
+		<div class="js_box">
+		    <div class="js_top mw"> <Br><Br><Br> </div>
+			<div class="rl mw f18">
+				<li>
+				<input type="text" class="demo-input" value="2018" id="test2">
+				<span></span>
+				<select id="" class="yue_ri">
+				<option value="1">01</option>
+				<option value="2">02</option>
+				<option value="3">03</option>
+				<option value="3">04</option>
+				<option value="3">05</option>
+				<option value="3">06</option>
+				<option value="3">07</option>
+				<option value="3">08</option>
+				<option value="3">09</option>
+				<option value="3">10</option>
+				<option value="3">11</option>
+				<option value="3">12</option>
+				</select>
+				<span></span>
+				<select id="" class="yue_ri">
+				<option value="1">01</option>
+				<option value="2" selected="selected">02</option>
+				<option value="3">03</option>
+				<option value="3">03</option>
+				<option value="3">04</option>
+		<option value="3">05</option>
+		<option value="3">06</option>
+		<option value="3">07</option>
+		<option value="3">08</option>
+		<option value="3">09</option>
+		<option value="3">10</option>
+		<option value="3">11</option>
+		<option value="3">12</option>
+		<option value="3">13</option>
+		<option value="3">14</option>
+		<option value="3">15</option>
+		<option value="3">16</option>
+		<option value="3">17</option>
+		<option value="3">18</option>
+		<option value="3">19</option>
+		<option value="3">20</option>
+		<option value="3">21</option>
+		<option value="3">22</option>
+		<option value="3">23</option>
+		<option value="3">24</option>
+		<option value="3">25</option>
+		<option value="3">26</option>
+		<option value="3">27</option>
+		<option value="3">28</option>
+		<option value="3">29</option>
+		<option value="3">30</option>
+				</select>
+				<span></span>
+				</li>
+			 </div>
+			<div class="js_b">
+			<div class="ss_js">
+			  <input class="btn_search_aa" type="text" name="" value="" onclick="if(this.value=''){this.value='';this.style.color='a8a8b7';}" onblur="if(this.value==''){ this.value='';this.style.color='a8a8b7';}else{this.style.color='a8a8b7';}">
+			  <input class="btn_search_bb" type="button" name="">
+			</div>
+			<div class="ss_jss">
+			  <p class="mw f18">   NO</p>
+			  <input class="btn_search_aaa" type="text">
+			</div>
+			<input class="btn_search_bbb" type="button" name="">
+			</div>
+		</div>
+   </div>
+   <div class="xl_right_box_b mw">
+		<div th:each="article:${articleList}">
+			<div class="js_title">
+			 <ul>
+			   <a data-th-text="${article.title}"> ᠨᠠᠮ ᠤᠨ ᠲᠦᠪ ᠬᠤᠷᠢᠶᠠᠨ ᠤ ᠤᠯᠤᠰ ᠲᠦᠷᠦ ᠶᠢᠨ ᠲᠤᠪᠴᠢᠶᠠᠨ ᠤ ᠪᠠᠶᠢᠩᠭᠤ ᠶᠢᠨ  ᠭᠡᠰᠢᠬᠦᠨ᠂ ᠲᠦᠷᠦ ᠶᠢᠨ ᠶᠠᠪᠤᠳᠠᠯ ᠤᠨ ᠬᠤᠷᠢᠶᠠᠨ ᠤ ᠶᠡᠷᠦᠩᠭᠡᠢ ᠰᠠᠶᠢᠳ ᠯᠢ ᠺᠧ ᠴᠢᠶᠠᠩ</a>
+				 <p><span data-th-text="${#dates.format(article.releaseDate, 'yyyy')}"></span>  <span data-th-text="${#dates.format(article.releaseDate, 'MM')}"></span> <span data-th-text="${#dates.format(article.releaseDate, 'dd')}"></span>  </p>
+			 </ul>
+			</div>
+			<div class="js_content f18">
+			<li data-th-utext="${article.contentHtml}"></li>
+			<dd>  <span data-th-text="${article.author}"></span></dd>
+			</div>
+		</div>
+
+		<div class="js_more f18"><a href="#"> </a>&nbsp;&nbsp;&nbsp;<a href="#"><<&nbsp;<a href="#"><font color="#cc6600">1</font></a>&nbsp;<a href="#">2</a>&nbsp;<a href="#">3&nbsp;<a href="#">4</a>&nbsp;<a href="#">5</a>&nbsp;<a href="#">6</a>&nbsp;<a href="#">>></a>&nbsp;&nbsp;&nbsp;&nbsp; <font color="#cc6600">20</font> </div>
+
+		<div class="xl_footer f18">
+		2008-2018 © ᠳᠤᠮᠳᠠᠳᠤ ᠤᠯᠤᠰ ᠤᠨ ᠮᠤᠩᠭᠤᠯ ᠬᠡᠯᠡᠨ ᠤ ᠰᠤᠨᠢᠨ ᠮᠡᠳᠡᠭᠡᠨ ᠤ ᠰᠦᠯᠵᠢᠶ᠎ᠡ ᠦᠮᠴᠢᠯᠡᠯ ᠤᠨ ᠡᠷᠬᠡ ᠲᠠᠢ<Br>
+		ᠵᠤᠬᠢᠶᠠᠭᠴᠢ ᠶᠢᠨ ᠡᠷᠬᠡ ᠬᠠᠤᠯᠢ ᠪᠠᠷ ᠬᠠᠮᠠᠭᠠᠯᠠᠭᠳᠠᠭᠰᠠᠨ᠂ ᠵᠦᠪᠰᠢᠶᠡᠷᠡᠯ ᠦᠭᠡᠢ ᠪᠠᠷ ᠬᠠᠭᠤᠯᠪᠤᠷᠢᠯᠠᠬᠤ ᠶᠢ ᠬᠠᠲᠠᠭᠤ ᠬᠤᠷᠢᠭᠯᠠᠨ᠎ᠠ<Br> ᠬᠠᠷᠢᠯᠴᠠᠬᠤ ᠤᠲᠠᠰᠤ᠄ 0471-6659<Br>
+		ᠢᠮᠧᠯ᠄ tn@mgyxw.net   蒙ICP备10000005号
+		</div>
+	</div>
+
+</div>
+
+<script src="../../js/jquery-3.1.1.min.js" th:src="@{/js/jquery-3.1.1.min.js}"></script>
+<script src="../../js/jquery.form.min.js" th:src="@{/js/jquery.form.min.js}"></script>
+
+<script>
+	$(document).ready(function(){
+		$(".js_title").click(function(){
+			$(".js_title").css('background',"#cecebf");
+			$(this).next().addClass('a').toggle();
+			$('.js_content').not('.a').hide();
+			$(this).css('background',"#cecebf");
+			$('.js_content').toggleClass('a');
+			$(".js_title ul a").css('color',"#fff");
+			$(".js_title ul p").css('color',"#444");
+			if($(this).next().css("display")=="none"){
+				$(this).css('background',"#cecebf");
+				$(this).find('a').css('color',"#fff");
+			}else{
+				$(this).css('background',"#cecebf");	
+				$(this).find('a').css('color',"#8D4703");
+				$(this).find('p').css('color',"#8D4703");
+			}
+			
+		});		
+	});
+</script>
+<script>
+lay('#version').html('-v'+ laydate.v);
+laydate.render({
+      elem: '#test2'
+      ,type: 'year'
+    });
+</script>
+
+
+</body>
+</html>

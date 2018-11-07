@@ -2,6 +2,8 @@ package com.oyun.media.epaper.search;
 
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * 文章请求参数结构体
  */
@@ -14,6 +16,7 @@ public class ArticleSearch {
     private String keywords;
     private String orderBy = "releaseDate";
     private String orderDirection = "desc";
+    private Date releaseDate = null;
 
     private int start = 0;
 

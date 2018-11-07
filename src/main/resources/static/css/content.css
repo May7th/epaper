@@ -1,0 +1,44 @@
+html { width:100%; max-height:600px; margin:0px; padding:0px; overflow-y:auto;overflow-x:auto; }
+
+/***ϸ��ҳ��ʼ***/
+#wrapper { position:relative; width:100%; height:600px; }
+.header_xl { position:absolute; left:0; top:10px; bottom:10px; width:185px; height:auto; background:url("../images/x.png") repeat-y right top; }
+.xl_logo { width:100%; float:left; height:85px; }
+.header_xl h1 { float:left; font-family:"MenkGarqag"; font-size:36px; margin:100px 0px 0px 25px; color:#666; }
+.header_xl h2 { float:left; font-family:"MenkGarqag"; font-size:36px; margin:100px 0px 0px 70px; color:#666; }
+
+.ss_xl { width:46px; height:310px; float:left; background:url("../images/ss_b.png") no-repeat top; padding-top:64px; padding-left:3px; margin:150px 0px 0px 25px; position:relative; }
+.btn_search_aa { -ms-transform:rotate(90deg) translate(0, -100%);-ms-transform-origin:0% 0%;-webkit-transform:rotate(90deg) translate(0, -100%);-webkit-transform-origin:0% 0%;-moz-transform:rotate(90deg) translate(0,-100%);-moz-transform-origin:0% 0%;-o-transform:rotate(90deg) translate(0,-100%);-o-transform-origin:0% 0%;/* white-space:nowrap; */ width:200px; float:left; height:42px; border:1px solid #acac9d; font-size:18px; color:#a8a8b7; padding-left:20px; font-family:"MenkGarqag"; }
+.btn_search_bb { width:37px; height:42px; position:absolute; bottom:0; left:5px;  background:url("../images/ss_c.png") no-repeat; border:0; }
+
+.xl_right_box_a { position:absolute; top:10px; left:185px; bottom:10px; }
+
+.pdf_box { width:408px; height:100%; margin-left:10px; float:left; overflow:hidden; }
+.pdf { width:390px; height:502px; float:left; border:2px solid #dfdfd0; border-radius:5px; margin-top:15px; margin-left:10px;-webkit-writing-mode:horizontal-tb }
+
+.title_box { float:left; border-radius:10px; background:#cecebf; padding:20px 10px 20px 10px; font-family:"MenkGarqag"; color:#646472; margin-left:14px; }
+.tvga { float:left; font-family:"Menksoft2012"; color:#646472; margin-left:16px; margin-top:300px; writing-mode: bt-lr}
+.xl_content { float:left; color:#171420; border:1px dashed #cecebf; padding:20px; line-height:180%; margin-left:16px; }
+.auther { float:left; height:100%; margin-left:14px; color:#646472; border:1px dashed #cecebf; padding:20px 10px 20px 10px; line-height:180%; background:#f7f3f2; font-family:"MenkGarqag"; }
+.xl_footer { float:left; height:100%; margin-left:16px; color:#171420; padding:20px 10px 20px 10px; line-height:160%; background:#f7f3f2; }
+
+.xl_right_box_b { position:absolute; top:10px; left:560px; bottom:10px; }
+
+/***����ҳ��ʼ***/
+.js_box { width:366px; margin:10px 0px 0px 10px; float:left; overflow:hidden; }
+.js_top { height:80px; float:left; margin:30px 0px 0px 120px; color:#79796a; font-size:26px; font-family:"MenkGarqag"; }
+.js_b { width:100%; float:left; margin-top:15px; margin-left:10px; }
+.ss_js { width:46px; height:310px; float:left; background:url("../images/ss_b.png") no-repeat top; padding-top:64px; padding-left:3px; margin:25px 0px 0px 40px; position:relative;  overflow:hidden; }
+.ss_jss { width:46px; height:310px; float:left; margin:25px 0px 0px 60px; color:#79796a; font-family:"MenkGarqag"; position:relative; }
+.ss_jss p { font-size:21px; }
+.btn_search_aaa { -ms-transform:rotate(90deg) translate(0, -100%);-ms-transform-origin:0% 0%;-webkit-transform:rotate(90deg) translate(0, -100%);-webkit-transform-origin:0% 0%;-moz-transform:rotate(90deg) translate(0,-100%);-moz-transform-origin:0% 0%;-o-transform:rotate(90deg) translate(0,-100%);-o-transform-origin:0% 0%;/* white-space:nowrap; */ width:80px; height:42px; border:1px solid #acac9d; font-size:18px; color:#a8a8b7; padding-left:4px; position:absolute; left:-6px; bottom:84px; }
+.btn_search_bbb { width:80px; height:80px; float:left; background:url("../images/js.png") no-repeat; border:0; border-radius:6px; margin:100px 0px 0px 40px; }
+.js_content { float:left; padding:20px 10px 20px 10px; margin-left:16px; display:none; }
+.js_content li { float:left; color:#171420; line-height:180%; }
+.js_content dd { float:left; color:#8c4600; margin:350px 0px 0px 10px; font-family:"MenkGarqag"; font-size:18px; }
+.js_title { height:100%; float:left; margin-left:14px; background:#cecebf; border-radius:10px; padding:20px 10px 20px 10px; cursor:pointer; }
+.js_title ul { float:left; }
+.js_title a { float:left; height:480px; color:#fff; line-height:150%; font-family:"MenkGarqag"; font-size:18px; }
+.js_title p { float:left; height:250px; color:#444; font-size:18px; margin:280px 0px 0px 3px; }
+.js_more { padding:16px 4px 16px 4px; float:left; border-radius:8px; margin:220px 0px 0px 16px; }
+.js_more a { color:#414141; }
