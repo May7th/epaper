@@ -16,7 +16,8 @@ public interface RecommendRepository extends JpaRepository<Recommend,Long>{
 
     Recommend findByArticleId(Long id);
 
-    List<Recommend> findAllByNewsType(int type);
+    List<Recommend> findAllByNewsTypeOrderBySequenceAsc(int type);
+
 
 
 }

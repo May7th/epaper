@@ -58,6 +58,7 @@ public interface IArticleService {
     Page<Article> findArticlesByCatalog(Catalog catalog,Pageable pageable);
 
     ServiceMultiResult<Article> query(ArticleSearch rentSearch);
+    Page<Article> queryPage(ArticleSearch articleSearch);
 
     String checkContent(String content);
 
@@ -66,4 +67,6 @@ public interface IArticleService {
     String getIntermediateCode(String content);
 
     Article increaseReadSize(Article article);
+
+    List<Article> clickRateList(int indexCount);
 }

@@ -96,7 +96,7 @@ public class RecommendServiceImpl implements IRecommendService {
         if (type == 0){
             return recommendRepository.findAll();
         }else{
-            return recommendRepository.findAllByNewsType(type);
+            return recommendRepository.findAllByNewsTypeOrderBySequenceAsc(type);
         }
     }
 
@@ -104,6 +104,21 @@ public class RecommendServiceImpl implements IRecommendService {
     public List<Recommend> saveRecommendList(List<Recommend> recommendList) {
 
         return recommendRepository.saveAll(recommendList);
+
+    }
+
+    @Override
+    public List<Recommend> findAllRecommendsByType(int indexCount, int type){
+
+        List<Recommend> recommends = recommendRepository.findAllByNewsTypeOrderBySequenceAsc(type);
+
+        List<Recommend> printRecommends = new ArrayList<>();
+
+        for (int i = 0; i < (indexCount>recommends.size()?recommends.size():indexCount); i++) {
+            printRecommends.add(recommends.get(i));
+        }
+
+        return printRecommends;
 
     }
 

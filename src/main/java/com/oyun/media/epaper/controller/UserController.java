@@ -12,6 +12,7 @@ import com.oyun.media.epaper.domain.User;
 import com.oyun.media.epaper.service.IAuthorityService;
 import com.oyun.media.epaper.service.IUserService;
 import com.oyun.media.epaper.utils.ConstraintViolationExceptionHandler;
+import com.oyun.media.epaper.utils.UserUtil;
 import com.oyun.media.epaper.vo.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -33,6 +35,8 @@ import org.springframework.web.servlet.ModelAndView;
 public class UserController {
 	@Autowired
 	private IUserService userService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 	
 	@Autowired
 	private IAuthorityService authorityService;
@@ -66,7 +70,7 @@ public class UserController {
 
         Pageable pageable = new PageRequest(pageIndex, pageSize);
         Page<User> page = userService.listUsersByNameLike(name, pageable);
-        List<User> list = page.getContent();    // 当前所在页面数据列表
+        List<User> list = page.getContent();
 
         model.addAttribute("page", page);
         model.addAttribute("userList", list);
@@ -127,5 +131,21 @@ public class UserController {
     @GetMapping(value = "/info")
     public Object getCurrentUser(@AuthenticationPrincipal UserDetails userDetails){
         return userDetails;
+    }
+
+
+    @PostMapping("resetPassword")
+    public ResponseEntity<Response> resetPassword(@RequestParam(value = "oldPassword",required = true) String oldPassword,
+                                     @RequestParam(value = "newPassword",required = true) String newPassword){
+
+        User currentUser = UserUtil.getCurrentUser();
+        if (passwordEncoder.matches(oldPassword,currentUser.getPassword())){
+
+            currentUser.setPassword(newPassword);
+
+            userService.saveOrUpateUser(currentUser);
+            return ResponseEntity.ok().body(new Response(true, "密码修改成功"));
+        }else {
+            return ResponseEntity.badRequest().body(new Response(false,"update status error"));        }
     }
 }

@@ -19,4 +19,6 @@ public interface IRecommendService {
     List<Recommend> findAllRecommendsByType(int type);
 
     List<Recommend> saveRecommendList(List<Recommend> recommendList);
+
+    List<Recommend> findAllRecommendsByType(int indexCount,int type);
 }

@@ -1,6 +1,7 @@
 package com.oyun.media.epaper.search;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -14,13 +15,15 @@ public class ArticleSearch {
     private int recommend = -1;
     private int state = -1;
     private String keywords;
+    private String wordType;
     private String orderBy = "releaseDate";
     private String orderDirection = "desc";
+    @DateTimeFormat(pattern ="yyyy-mm-dd")
     private Date releaseDate = null;
 
     private int start = 0;
 
-    private int size = 5;
+    private int size = 10;
 
 
     public int getStart() {
@@ -29,7 +32,7 @@ public class ArticleSearch {
 
     public int getSize() {
         if (this.size < 1) {
-            return 5;
+            return 10;
         } else if (this.size > 100) {
             return 100;
         } else {

@@ -20,7 +20,7 @@ public interface PaperRepository extends JpaRepository<Paper,Long>,
      * @param date
      * @return
      */
-    Paper findPapersByReleaseDate(Date date);
+    Paper findPaperByReleaseDate(Date date);
 
     Page<Paper> findAllByStateIsNot(Pageable pageable,int state);
 

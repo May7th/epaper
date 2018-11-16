@@ -2,12 +2,21 @@ package com.oyun.media.epaper.Search;
 
 import com.oyun.media.epaper.EpaperApplicationTests;
 import com.oyun.media.epaper.common.ServiceMultiResult;
+import com.oyun.media.epaper.domain.Article;
+import com.oyun.media.epaper.domain.Recommend;
+import com.oyun.media.epaper.repository.RecommendRepository;
 import com.oyun.media.epaper.search.ArticleSearch;
 import com.oyun.media.epaper.search.ISearchService;
 import com.oyun.media.epaper.service.IArticleService;
+import com.oyun.media.epaper.service.IRecommendService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @program: epaper
@@ -22,6 +31,12 @@ public class SearchServiceTest extends EpaperApplicationTests {
 
     @Autowired
     private IArticleService articleService;
+
+    @Autowired
+    private IRecommendService recommendService;
+
+    @Autowired
+    private RecommendRepository recommendRepository;
 
     @Test
     public void testIndex(){
@@ -49,9 +64,19 @@ public class SearchServiceTest extends EpaperApplicationTests {
     }
 
     @Test
+    @Transactional
     public void testData(){
-        String content = "ᠬᠦᠮᠦᠨ<img src='asdfdsa/fdsafdsa/fdsafd/'>fdafa ";
-        articleService.checkContent(content);
+        List<Recommend> recommendList = recommendRepository.findAll();
+
+        List<Recommend> newList = new ArrayList<>();
+        recommendList.forEach(recommend -> {
+            Article article = articleService.getArticleById(recommend.getArticleId());
+            Date date = article.getReleaseDate();
+            recommend.setReleaseDate(date);
+            newList.add(recommend);
+        });
+
+        recommendService.saveRecommendList(newList);
     }
 
 

@@ -21,10 +21,7 @@ import com.oyun.media.transService.PortFuntionDelegate;
 import com.oyun.media.transService.PortFuntionService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -196,6 +193,51 @@ public class ArticleServiceImpl implements IArticleService {
         return new ServiceMultiResult<>(articles.getTotalElements(), articles.getContent());
     }
 
+    @Override
+    public Page<Article> queryPage(ArticleSearch articleSearch) {
+
+        if (articleSearch.getKeywords() != null && !articleSearch.getKeywords().isEmpty()){
+            ServiceMultiResult<Long> serviceMultiResult = searchService.query(articleSearch);
+
+            return wrapperArticleResultByPage(serviceMultiResult.getResult(),articleSearch,serviceMultiResult.getTotal());
+        }
+
+        Sort sort = ArticleSort.generateSort(articleSearch.getOrderBy(),articleSearch.getOrderDirection());
+
+        int page = articleSearch.getStart()/articleSearch.getSize();
+
+        Pageable pageable = new PageRequest(page,articleSearch.getSize(),sort);
+
+        Specification<Article> specification = (root, criteriaQuery, criteriaBuilder) -> {
+
+            Predicate predicate = criteriaBuilder.notEqual(root.get("state"), ArticleStatus.DELETED.getValue());
+
+            if (articleSearch.getCatalogId() >-1){
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get("catalog"), articleSearch.getCatalogId()));
+            }
+
+            if (!articleSearch.getCatalogName().isEmpty()){
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get("catalogName"), articleSearch.getCatalogName()));
+            }
+
+            if (articleSearch.getRecommend() > -1){
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get("recommend"), articleSearch.getRecommend()));
+            }
+
+            if (articleSearch.getState() > -1){
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get("state"), articleSearch.getState()));
+            }
+
+
+            return predicate;
+        };
+
+        Page<Article> articles = articleRepository.findAll(specification, pageable);
+
+        return articles;
+    }
+
+
 
     @Override
     public String checkContent(String content) {
@@ -276,5 +318,33 @@ public class ArticleServiceImpl implements IArticleService {
     public Article increaseReadSize(Article article){
         article.setReadSize(article.getReadSize()+1);
         return articleRepository.save(article);
+    }
+
+    private Page<Article> wrapperArticleResultByPage(List<Long> articleIds,ArticleSearch articleSearch,long total){
+        Sort sort = ArticleSort.generateSort(articleSearch.getOrderBy(),articleSearch.getOrderDirection());
+
+        int page = articleSearch.getStart()/articleSearch.getSize();
+
+        Pageable pageable = new PageRequest(page,articleSearch.getSize(),sort);
+
+        List<Article> articleList = articleRepository.findAllById(articleIds);
+
+        Page<Article> articlePage = new PageImpl<Article>(articleList,pageable,total);
+
+
+        return articlePage;
+    }
+
+    @Override
+    public List<Article> clickRateList(int indexCount){
+
+        List<Article> articleList = articleRepository.findTop10ByOrderByReadSizeDesc();
+
+        List<Article> printArticles = new ArrayList<>(indexCount);
+        for (int i = 0; i < indexCount; i++) {
+            printArticles.add(articleList.get(i));
+        }
+
+        return printArticles;
     }
 }

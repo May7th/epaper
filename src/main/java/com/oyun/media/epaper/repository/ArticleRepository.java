@@ -31,4 +31,10 @@ public interface ArticleRepository extends JpaRepository<Article,Long>{
     Page<Article> findAll(Specification<Article> specification, Pageable pageable);
 
     List<Article> findArticlesByParentId(Long pageId);
+
+    Page<Article> findAllById(List<Long> ids,Pageable pageable);
+
+    Page<Article> findAllByOrderByReadSizeDesc(Pageable pageable);
+    List<Article> findTop10ByOrderByReadSizeDesc();
+
 }

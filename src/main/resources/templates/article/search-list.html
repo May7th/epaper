@@ -5,11 +5,16 @@
   <meta http-equiv="x-ua-compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximun-scale=1.0, user-scalable=no">
   <title>检索</title>
-  <meta name="Generator" content="EditPlus">
-  <meta name="Author" content="温都苏">
-	<link href="../../css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
-	<link href="../../css/style.css" th:href="@{/css/style.css}" rel="stylesheet">
+
+    <link href="../../css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet">
+    <link href="../../css/bootstrap-theme.min.css" th:href="@{/css/bootstrap-theme.min.css}" rel="stylesheet">
+    <link href="../../css/bootstrap-datetimepicker.min.css" th:href="@{/css/bootstrap-datetimepicker.min.css}" rel="stylesheet" media="screen">
+    <link href="../../css/font-awesome.min.css" th:href="@{/css/font-awesome.min.css}" rel="stylesheet">
+    <link href="../../css/style.css" th:href="@{/css/style.css}" rel="stylesheet">
 	<link href="../../css/content.css" th:href="@{/css/content.css}" rel="stylesheet">
+    <!-- bootstrap datetimepicker CSS -->
+    <!-- Tether core CSS -->
+    <link href="../../css/tether.min.css" th:href="@{/css/tether.min.css}" rel="stylesheet">
 
 
 </head>
@@ -22,103 +27,77 @@
 	</div>
 	<div class="xl_right_box_a">
 		<div class="js_box">
-		    <div class="js_top mw"> <Br><Br><Br> </div>
-			<div class="rl mw f18">
-				<li>
-				<input type="text" class="demo-input" value="2018" id="test2">
-				<span></span>
-				<select id="" class="yue_ri">
-				<option value="1">01</option>
-				<option value="2">02</option>
-				<option value="3">03</option>
-				<option value="3">04</option>
-				<option value="3">05</option>
-				<option value="3">06</option>
-				<option value="3">07</option>
-				<option value="3">08</option>
-				<option value="3">09</option>
-				<option value="3">10</option>
-				<option value="3">11</option>
-				<option value="3">12</option>
-				</select>
-				<span></span>
-				<select id="" class="yue_ri">
-				<option value="1">01</option>
-				<option value="2" selected="selected">02</option>
-				<option value="3">03</option>
-				<option value="3">03</option>
-				<option value="3">04</option>
-		<option value="3">05</option>
-		<option value="3">06</option>
-		<option value="3">07</option>
-		<option value="3">08</option>
-		<option value="3">09</option>
-		<option value="3">10</option>
-		<option value="3">11</option>
-		<option value="3">12</option>
-		<option value="3">13</option>
-		<option value="3">14</option>
-		<option value="3">15</option>
-		<option value="3">16</option>
-		<option value="3">17</option>
-		<option value="3">18</option>
-		<option value="3">19</option>
-		<option value="3">20</option>
-		<option value="3">21</option>
-		<option value="3">22</option>
-		<option value="3">23</option>
-		<option value="3">24</option>
-		<option value="3">25</option>
-		<option value="3">26</option>
-		<option value="3">27</option>
-		<option value="3">28</option>
-		<option value="3">29</option>
-		<option value="3">30</option>
-				</select>
-				<span></span>
-				</li>
-			 </div>
-			<div class="js_b">
-			<div class="ss_js">
-			  <input class="btn_search_aa" type="text" name="" value="" onclick="if(this.value=''){this.value='';this.style.color='a8a8b7';}" onblur="if(this.value==''){ this.value='';this.style.color='a8a8b7';}else{this.style.color='a8a8b7';}">
-			  <input class="btn_search_bb" type="button" name="">
-			</div>
-			<div class="ss_jss">
-			  <p class="mw f18">   NO</p>
-			  <input class="btn_search_aaa" type="text">
-			</div>
-			<input class="btn_search_bbb" type="button" name="">
-			</div>
+            <form th:action="@{/epaper/article/search}" method="get">
+                <div class="js_top mw"> <Br><Br><Br> </div>
+                <div class="rl mw f18">
+                    <div >
+                        <div class="input-group date form_date col-md-15" >
+                            <input name="releaseDate" class="form-control" size="16" type="text" th:value="${releaseDate}" readonly>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="js_b">
+                <div class="ss_js">
+                  <input id="keywords" class="btn_search_aa" type="text" name="keywords" th:value="${keywords}"/>
+                </div>
+                <div class="ss_jss">
+                    <div class="RadioStyle">
+                        <div class="Block PaddingL">
+                            <input type="radio" name="wordType" id="all" checked  value=""/>
+                            <label for="all"><p class="checkLabel">ᠪᠦᠭᠦᠳᠡ</p></label>
+                            <input type="radio" name="wordType" id="content" th:checked="${wordType}=='content'" value="content"/>
+                            <label for="content"><p class="checkLabel">ᠠᠭᠤᠯᠭ᠎ᠠ</p></label>
+                            <input type="radio" name="wordType" id="title" th:checked="${wordType}=='title'" value="title"/>
+                            <label for="title"><p class="checkLabel">ᠭᠠᠷᠴᠠᠭ</p></label>
+                            <input type="radio" name="wordType" id="author" th:checked="${wordType}=='author'" value="author"/>
+                            <label for="author"><p class="checkLabel">ᠨᠠᠶᠢᠷᠠᠭᠤᠯᠤᠭᠴᠢ</p></label>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <button class="btn_search_bbb" type="submit"/>
+                </div>
+            </form>
 		</div>
    </div>
-   <div class="xl_right_box_b mw">
-		<div th:each="article:${articleList}">
-			<div class="js_title">
-			 <ul>
-			   <a data-th-text="${article.title}"> ᠨᠠᠮ ᠤᠨ ᠲᠦᠪ ᠬᠤᠷᠢᠶᠠᠨ ᠤ ᠤᠯᠤᠰ ᠲᠦᠷᠦ ᠶᠢᠨ ᠲᠤᠪᠴᠢᠶᠠᠨ ᠤ ᠪᠠᠶᠢᠩᠭᠤ ᠶᠢᠨ  ᠭᠡᠰᠢᠬᠦᠨ᠂ ᠲᠦᠷᠦ ᠶᠢᠨ ᠶᠠᠪᠤᠳᠠᠯ ᠤᠨ ᠬᠤᠷᠢᠶᠠᠨ ᠤ ᠶᠡᠷᠦᠩᠭᠡᠢ ᠰᠠᠶᠢᠳ ᠯᠢ ᠺᠧ ᠴᠢᠶᠠᠩ</a>
-				 <p><span data-th-text="${#dates.format(article.releaseDate, 'yyyy')}"></span>  <span data-th-text="${#dates.format(article.releaseDate, 'MM')}"></span> <span data-th-text="${#dates.format(article.releaseDate, 'dd')}"></span>  </p>
-			 </ul>
-			</div>
-			<div class="js_content f18">
-			<li data-th-utext="${article.contentHtml}"></li>
-			<dd>  <span data-th-text="${article.author}"></span></dd>
-			</div>
-		</div>
+   <div  class="xl_right_box_b mw">
+	   <div id="searchList">
 
-		<div class="js_more f18"><a href="#"> </a>&nbsp;&nbsp;&nbsp;<a href="#"><<&nbsp;<a href="#"><font color="#cc6600">1</font></a>&nbsp;<a href="#">2</a>&nbsp;<a href="#">3&nbsp;<a href="#">4</a>&nbsp;<a href="#">5</a>&nbsp;<a href="#">6</a>&nbsp;<a href="#">>></a>&nbsp;&nbsp;&nbsp;&nbsp; <font color="#cc6600">20</font> </div>
-
+       </div>
+       <div class="js_more f18">
+           <div id="pagination"></div>
+       </div>
 		<div class="xl_footer f18">
 		2008-2018 © ᠳᠤᠮᠳᠠᠳᠤ ᠤᠯᠤᠰ ᠤᠨ ᠮᠤᠩᠭᠤᠯ ᠬᠡᠯᠡᠨ ᠤ ᠰᠤᠨᠢᠨ ᠮᠡᠳᠡᠭᠡᠨ ᠤ ᠰᠦᠯᠵᠢᠶ᠎ᠡ ᠦᠮᠴᠢᠯᠡᠯ ᠤᠨ ᠡᠷᠬᠡ ᠲᠠᠢ<Br>
 		ᠵᠤᠬᠢᠶᠠᠭᠴᠢ ᠶᠢᠨ ᠡᠷᠬᠡ ᠬᠠᠤᠯᠢ ᠪᠠᠷ ᠬᠠᠮᠠᠭᠠᠯᠠᠭᠳᠠᠭᠰᠠᠨ᠂ ᠵᠦᠪᠰᠢᠶᠡᠷᠡᠯ ᠦᠭᠡᠢ ᠪᠠᠷ ᠬᠠᠭᠤᠯᠪᠤᠷᠢᠯᠠᠬᠤ ᠶᠢ ᠬᠠᠲᠠᠭᠤ ᠬᠤᠷᠢᠭᠯᠠᠨ᠎ᠠ<Br> ᠬᠠᠷᠢᠯᠴᠠᠬᠤ ᠤᠲᠠᠰᠤ᠄ 0471-6659<Br>
 		ᠢᠮᠧᠯ᠄ tn@mgyxw.net   蒙ICP备10000005号
 		</div>
 	</div>
-
 </div>
 
 <script src="../../js/jquery-3.1.1.min.js" th:src="@{/js/jquery-3.1.1.min.js}"></script>
+<script src="../../js/bootstrap.js" th:src="@{/js/bootstrap.js}"></script>
 <script src="../../js/jquery.form.min.js" th:src="@{/js/jquery.form.min.js}"></script>
+<script src="../../js/tether.min.js" th:src="@{/js/tether.min.js}"></script>
+<script src="../../js/articles/pagination.min.js" th:src="@{/js/articles/pagination.min.js}"></script>
+<script src="../../js/papers/datepicker/bootstrap-datetimepicker.min.js" th:src="@{/js/papers/datepicker/bootstrap-datetimepicker.min.js}"></script>
+<script src="../../js/papers/datepicker/locales/bootstrap-datetimepicker.zh-CN.js" th:src="@{/js/papers/datepicker/locales/bootstrap-datetimepicker.zh-CN.js}"></script>
 
+<script type="text/javascript">
+    $('.form_date').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 1
+    });
+</script>
 <script>
 	$(document).ready(function(){
 		$(".js_title").click(function(){
@@ -137,18 +116,65 @@
 				$(this).find('a').css('color',"#8D4703");
 				$(this).find('p').css('color',"#8D4703");
 			}
-			
-		});		
+
+		});
 	});
 </script>
-<script>
-lay('#version').html('-v'+ laydate.v);
-laydate.render({
-      elem: '#test2'
-      ,type: 'year'
-    });
-</script>
+<script th:inline="javascript">
+    var pageIndex = 1;  //页面索引初始值
+    var pageSize = 10;  //每页显示条数初始化，修改显示条数，修改这里即可
+    var a = [[${total}]];
+    var keywords = $("#keywords").val();
+    var releaseDate = [[${releaseDate}]];
+    var wordType = [[${wordType}]];
+    $(function () {
+        $("#pagination").pagination({
+            dataSource: function(done){
+                var result = [];
+                for (var i = 1; i <= a; i++) {
+                    result.push(i);
+                }
+                done(result);
+            } ,
+            callback: PageCallback, //PageCallback() 为翻页调用次函数。
+            pageSize: pageSize,
+            autoHidePrevious: true,
+            autoHideNext: true,
+            prevText : "<<",//自定义“上一页”标签
+            nextText : ">>",//自定义“下一页”标签
+            // prev_text: "« 上一页",
+            // next_text: "下一页 »",
+            // items_per_page:pageSize,
+            // num_edge_entries: 2,  //两侧首尾分页条目数
+            // num_display_entries: 6, //连续分页主体部分分页条目数
+            pageNumber: pageIndex, //当前页索引,
+            ulClassName:"pageNumber",
+            activeClassName:"page-active"
+        });
 
+        function PageCallback(data, pagination) {
+            InitTable(data[0],keywords,releaseDate);
+        }
+        function InitTable(pageNumber,keywords,releaseDate) {
+            $.ajax({
+                type: "get",
+                contentType : 'application/json',
+                url: '/epaper/article/searchList',  //提交到一般处理程序请求数据
+                data: {
+                    "start": pageNumber,
+                    "size":pageSize,
+                    "keywords":keywords,
+                    "releaseDate":releaseDate,
+                    "wordType":wordType
+                },
+                success: function(data) {
+                    $("#searchList").html(data);
+                }
+            });
+        }
+    });
+
+</script>
 
 </body>
 </html>

@@ -75,7 +75,7 @@ public class PaperServiceImpl implements IPaperService {
     @Override
     public Paper findPapersByReleaseDate(Date date) {
 
-        Paper paper = paperRepository.findPapersByReleaseDate(date);
+        Paper paper = paperRepository.findPaperByReleaseDate(date);
 
         return paper;
     }

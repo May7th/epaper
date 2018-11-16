@@ -1,6 +1,8 @@
 package com.oyun.media.epaper.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -31,6 +33,9 @@ public class Recommend {
     private String author;
 
     @Column
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date releaseDate;
 
     @Column

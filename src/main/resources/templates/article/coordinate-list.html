@@ -1,0 +1,55 @@
+<div>
+    <div th:each="article:${articleList}">
+        <div class="js_title" data-th-attr="coordinate=${article.coordinate}">
+            <ul>
+                <a data-th-text="${article.title}"></a>
+                <p><span data-th-text="${#dates.format(article.releaseDate, 'yyyy')}"></span>  <span data-th-text="${#dates.format(article.releaseDate, 'MM')}"></span> <span data-th-text="${#dates.format(article.releaseDate, 'dd')}"></span>  </p>
+            </ul>
+        </div>
+        <div class="js_content f18">
+            <li data-th-utext="${article.contentHtml}"></li>
+            <a th:href="@{${article.id}}" style="color: #818c8c;margin:430px 0px 0px 10px; font-family:'MenkGarqag'; font-size:13px; ">ᠠᠭᠤᠯᠭ᠎ᠠ ᠶ᠋ᠢᠨ ᠲᠣᠳᠣᠷᠬᠠᠢ ᠪᠠᠢᠳᠠᠯ</a>
+            <dd>  <span data-th-text="${article.author}"></span></dd>
+        </div>
+    </div>
+
+</div>
+
+<script src="../../js/jquery-3.1.1.min.js" th:src="@{/js/jquery-3.1.1.min.js}"></script>
+<script src="../../js/jquery.form.min.js" th:src="@{/js/jquery.form.min.js}"></script>
+
+<script>
+    $(document).ready(function(){
+        $(".js_title").click(function(){
+            $(".js_title").css('background',"#cecebf");
+            $(this).next().addClass('a').toggle();
+            $('.js_content').not('.a').hide();
+            $(this).css('background',"#cecebf");
+            $('.js_content').toggleClass('a');
+            $(".js_title ul a").css('color',"#fff");
+            $(".js_title ul p").css('color',"#444");
+            if($(this).next().css("display")=="none"){
+                $(this).css('background',"#cecebf");
+                $(this).find('a').css('color',"#fff");
+            }else{
+                $(this).css('background',"#cecebf");
+                $(this).find('a').css('color',"#8D4703");
+                $(this).find('p').css('color',"#8D4703");
+            }
+
+        });
+
+        $(".js_title").mouseenter(function () {
+            var coordinate = $(this).attr("coordinate");
+            drawnItems = new L.FeatureGroup();
+            showPoint(JSON.parse(coordinate));
+            map.addLayer(drawnItems);
+        })
+        $(".js_title").mouseleave(function () {
+            map.removeLayer(drawnItems);
+        })
+    });
+</script>
+
+</body>
+</html>

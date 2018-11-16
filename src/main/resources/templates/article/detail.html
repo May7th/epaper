@@ -5,16 +5,16 @@
   <meta http-equiv="x-ua-compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximun-scale=1.0, user-scalable=no">
   <title>细缆</title>
-  <meta name="Generator" content="EditPlus">
-  <meta name="Author" content="温都苏">
-	<link href="../../css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
-	<link href="../../css/style.css" th:href="@{/css/style.css}" rel="stylesheet">
+    <link href="../../css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet">
+    <link href="../../css/bootstrap-theme.min.css" th:href="@{/css/bootstrap-theme.min.css}" rel="stylesheet">
+    <link href="../../css/bootstrap-datetimepicker.min.css" th:href="@{/css/bootstrap-datetimepicker.min.css}" rel="stylesheet" media="screen">
+    <link href="../../css/font-awesome.min.css" th:href="@{/css/font-awesome.min.css}" rel="stylesheet">
+    <link href="../../css/style.css" th:href="@{/css/style.css}" rel="stylesheet">
 	<link href="../../css/content.css" th:href="@{/css/content.css}" rel="stylesheet">
     <link href="../../libs/hotspots/css/leaflet.css" th:href="@{/libs/hotspots/css/leaflet.css}" rel="stylesheet">
     <link href="../../libs/hotspots/css/leaflet.draw-src.css" th:href="@{/libs/hotspots/css/leaflet.draw-src.css}" rel="stylesheet">
     <link href="../../libs/hotspots/css/leaflet.label.css" th:href="@{/libs/hotspots/css/leaflet.label.css}" rel="stylesheet">
     <link href="../../libs/hotspots/css/sweetalert2.min.css" th:href="@{/libs/hotspots/css/sweetalert2.min.css}" rel="stylesheet">
-    <script src="../../js/laydate/laydate.js" th:src="@{/js/laydate/laydate.js}"></script>
 
 </head>
 <body>
@@ -26,7 +26,7 @@
         <div class="ss_xl">
             <form th:action="@{~/epaper/article/search}" method="get">
                 <input id="keywords" class="btn_search_aa" type="text" name="keywords" value="" onclick="if(this.value=''){this.value='';this.style.color='a8a8b7';}" onblur="if(this.value==''){ this.value='';this.style.color='a8a8b7';}else{this.style.color='a8a8b7';}">
-                <button class="btn_search_bb" type="submit" id="searchByWord">
+                <button class="btn_search_bb" type="submit" id="searchByWord"/>
             </form>
         </div>
 
@@ -34,61 +34,17 @@
     <div class="xl_right_box_a mw">
 
         <div class="pdf_box">
-            <div class="rl mw f18">
-                <li>
-                    <input type="text" class="demo-input" value="2018" id="test2">
-                    <span></span>
-                    <select id="" class="yue_ri">
-                        <option value="1">01</option>
-                        <option value="2">02</option>
-                        <option value="3">03</option>
-                        <option value="3">04</option>
-                        <option value="3">05</option>
-                        <option value="3">06</option>
-                        <option value="3">07</option>
-                        <option value="3">08</option>
-                        <option value="3">09</option>
-                        <option value="3">10</option>
-                        <option value="3">11</option>
-                        <option value="3">12</option>
-                    </select>
-                    <span></span>
-                    <select id="" class="yue_ri">
-                        <option value="1">01</option>
-                        <option value="2" selected="selected">02</option>
-                        <option value="3">03</option>
-                        <option value="3">04</option>
-                        <option value="3">05</option>
-                        <option value="3">06</option>
-                        <option value="3">07</option>
-                        <option value="3">08</option>
-                        <option value="3">09</option>
-                        <option value="3">10</option>
-                        <option value="3">11</option>
-                        <option value="3">12</option>
-                        <option value="3">13</option>
-                        <option value="3">14</option>
-                        <option value="3">15</option>
-                        <option value="3">16</option>
-                        <option value="3">17</option>
-                        <option value="3">18</option>
-                        <option value="3">19</option>
-                        <option value="3">20</option>
-                        <option value="3">21</option>
-                        <option value="3">22</option>
-                        <option value="3">23</option>
-                        <option value="3">24</option>
-                        <option value="3">25</option>
-                        <option value="3">26</option>
-                        <option value="3">27</option>
-                        <option value="3">28</option>
-                        <option value="3">29</option>
-                        <option value="3">30</option>
-
-                    </select>
-                    <span></span>
-                </li>
-                <input class="btn_search" type="button" name="">
+            <div class="rl mw f18" style="writing-mode: vertical-lr">
+                <form th:action="@{~/epaper/paper}" method="get">
+                    <div style="writing-mode: horizontal-tb" >
+                        <div class="input-group date form_date col-md-15" style="width: 350px;padding: 12px" >
+                            <input name="releaseDate" class="form-control" type="text" th:value="${articleModel.article.releaseDate}" style="font-size: 16px;text-align: center;" readonly>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+                    </div>
+                    <button class="btn_search" type="submit"/>
+                </form>
             </div>
             <div class="pdf">
                 <div id='image-map' style="width:390px; height:502px;"></div>
@@ -111,11 +67,6 @@
 </div>
 
 <script>
-    lay('#version').html('-v'+ laydate.v);
-    laydate.render({
-        elem: '#test2'
-        ,type: 'year'
-    });
     function getArticlesByName() {
         $.ajax({
             url: "/epaper/article/search",
@@ -142,14 +93,27 @@
 <script src="../../js/jquery-3.1.1.min.js" th:src="@{/js/jquery-3.1.1.min.js}"></script>
 <script src="../../js/jquery.form.min.js" th:src="@{/js/jquery.form.min.js}"></script>
 <script src="../../js/articles/articlesedit.js" th:src="@{/js/articles/articlesedit.js}"></script>
-<!--hot spots-->
-
 <script src="../../libs/hotspots/js/leaflet-src.js" th:src="@{/libs/hotspots/js/leaflet-src.js}"></script>
 <script src="../../libs/hotspots/js/leaflet.draw-src.js" th:src="@{/libs/hotspots/js/leaflet.draw-src.js}"></script>
 <script src="../../libs/hotspots/js/leaflet.label.js" th:src="@{/libs/hotspots/js/leaflet.label.js}"></script>
 <script src="../../libs/hotspots/js/leaflet.draw.lang.zh-cn.js" th:src="@{/libs/hotspots/js/leaflet.draw.lang.zh-cn.js}"></script>
 <script src="../../libs/hotspots/js/pinyin_dict_firstletter.js" th:src="@{/libs/hotspots/js/pinyin_dict_firstletter.js}"></script>
 <script src="../../libs/hotspots/js/pinyinUtil.js" th:src="@{/libs/hotspots/js/pinyinUtil.js}"></script>
+<script src="../../js/papers/datepicker/bootstrap-datetimepicker.min.js" th:src="@{/js/papers/datepicker/bootstrap-datetimepicker.min.js}"></script>
+<script src="../../js/papers/datepicker/locales/bootstrap-datetimepicker.zh-CN.js" th:src="@{/js/papers/datepicker/locales/bootstrap-datetimepicker.zh-CN.js}"></script>
 
+<script type="text/javascript">
+    $('.form_date').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 1
+    });
+</script>
 </body>
 </html>

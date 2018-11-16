@@ -18,6 +18,7 @@ import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.reindex.BulkByScrollResponse;
 import org.elasticsearch.index.reindex.DeleteByQueryAction;
@@ -36,6 +37,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -227,15 +229,48 @@ public class SearchServiceImpl implements ISearchService {
                     QueryBuilders.termQuery(ArticleIndexKey.RECOMMEND,articleSearch.getRecommend())
             );
         }
+        if (articleSearch.getReleaseDate() != null){
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+            String date = format.format(articleSearch.getReleaseDate());
+            boolQuery.filter(
+                    QueryBuilders.termQuery(ArticleIndexKey.RELEASE_DATE,date)
+            );
+        }
 
-        boolQuery.must(QueryBuilders.multiMatchQuery(
-                articleSearch.getKeywords(),
-                ArticleIndexKey.TITLE,
-                ArticleIndexKey.SUB_TITLE,
-                ArticleIndexKey.PARENT_NAME,
-                ArticleIndexKey.AUTHOR,
-                ArticleIndexKey.CONTENT
-                ));
+        if (articleSearch.getWordType()!= null && !articleSearch.getWordType().isEmpty()){
+
+            String wordType = articleSearch.getWordType();
+
+            switch (wordType){
+                case "title":
+                    boolQuery.must(QueryBuilders.multiMatchQuery(
+                            articleSearch.getKeywords(),
+                            ArticleIndexKey.TITLE));
+                    break;
+                case "content":
+                    boolQuery.must(QueryBuilders.multiMatchQuery(
+                            articleSearch.getKeywords(),
+                            ArticleIndexKey.CONTENT));
+                    break;
+                case "author":
+                    boolQuery.must(QueryBuilders.multiMatchQuery(
+                            articleSearch.getKeywords(),
+                            ArticleIndexKey.AUTHOR));
+                    break;
+
+                default :
+                    log.info("keyword type is "+wordType);
+            }
+        }else {
+            boolQuery.must(QueryBuilders.multiMatchQuery(
+                    articleSearch.getKeywords(),
+                    ArticleIndexKey.TITLE,
+                    ArticleIndexKey.SUB_TITLE,
+                    ArticleIndexKey.PARENT_NAME,
+                    ArticleIndexKey.AUTHOR,
+                    ArticleIndexKey.CONTENT
+            ));
+        }
 
         SearchRequestBuilder requestBuilder = this.esClient.prepareSearch(INDEX_NAME)
                 .setTypes(INDEX_TYPE)

@@ -1,20 +1,30 @@
 package com.oyun.media.epaper.controller;
 
-import com.oyun.media.epaper.common.ApiResponse;
-import com.oyun.media.epaper.common.ServiceMultiResult;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.oyun.media.epaper.domain.Article;
 import com.oyun.media.epaper.domain.Page;
+import com.oyun.media.epaper.domain.Paper;
+import com.oyun.media.epaper.domain.Recommend;
 import com.oyun.media.epaper.repository.ArticleRepository;
 import com.oyun.media.epaper.search.ArticleSearch;
 import com.oyun.media.epaper.service.IArticleService;
 import com.oyun.media.epaper.service.IPageService;
+import com.oyun.media.epaper.service.IPaperService;
+import com.oyun.media.epaper.service.IRecommendService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,8 +38,17 @@ import java.util.List;
 @Log4j2
 public class FrontController {
 
+    private static final int TEXT_RECOMMEND = 1;
+    private static final int IMAGE_RECOMMEND = 2;
+
     @Autowired
     private IArticleService articleService;
+
+    @Autowired
+    private IRecommendService recommendService;
+
+    @Autowired
+    private IPaperService paperService;
 
     @Autowired
     private ArticleRepository articleRepository;
@@ -37,6 +56,52 @@ public class FrontController {
     @Autowired
     private IPageService pageService;
 
+    @GetMapping("index")
+    public String index(Model model){
+
+        List<Article> clickRateList = articleService.clickRateList(6);
+        List<Recommend> textRecommendList = recommendService.findAllRecommendsByType(13,TEXT_RECOMMEND);
+        List<Recommend> imageRecommendList = recommendService.findAllRecommendsByType(7,IMAGE_RECOMMEND);
+        Recommend printRecommend = imageRecommendList.remove(6);
+        model.addAttribute("clickRateList",clickRateList);
+        model.addAttribute("textRecommendList",textRecommendList);
+        model.addAttribute("imageRecommendList",imageRecommendList);
+        model.addAttribute("printRecommend",printRecommend);
+
+        return "article/index";
+    }
+
+    @GetMapping("paper")
+    public String getPaper(String releaseDate, Model model){
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date date1 = null;
+        try {
+            date1 = format.parse(releaseDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Paper paper = paperService.findPapersByReleaseDate(date1);
+        if (paper == null){
+            return "redirect:index";
+        }
+
+        List<Page> pageList = paper.getPageList();
+
+        Date date = paper.getReleaseDate();
+
+        Page fristPage = pageList.get(0);
+        List<Article> articleList = fristPage.getArticleList();
+        String pageImagePath = fristPage.getPageImagePath();
+
+        model.addAttribute("paper",paper);
+        model.addAttribute("pageList",pageList);
+        model.addAttribute("releaseDate",date);
+        model.addAttribute("articleList",articleList);
+        model.addAttribute("pageImagePath",pageImagePath);
+
+        return "article/page-detail";
+
+    }
     @GetMapping("article/{id}")
     public ModelAndView articleDetail(@PathVariable("id") Long id, Model model){
 
@@ -57,12 +122,68 @@ public class FrontController {
     @GetMapping("article/search")
     public ModelAndView articleSearch(@ModelAttribute ArticleSearch articleSearch,Model model){
 
-        ServiceMultiResult<Article> multiResult = articleService.query(articleSearch);
+        String keywords = articleSearch.getKeywords();
+        String wordType = articleSearch.getWordType();
+        Date releaseDate = articleSearch.getReleaseDate();
+        if (releaseDate != null){
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+            String date = format.format(releaseDate);
+            model.addAttribute("releaseDate",date);
+        }
+        org.springframework.data.domain.Page<Article> page = articleService.queryPage(articleSearch);
 
-        List<Article> articleList = multiResult.getResult();
+        List<Article> articleList = page.getContent();
+        model.addAttribute("articleList",articleList);
+        model.addAttribute("page",page);
+        model.addAttribute("keywords",keywords);
+        model.addAttribute("wordType",wordType);
+        model.addAttribute("total",page.getTotalElements());
 
-        model.addAttribute(articleList);
+        return new ModelAndView("article/search-list","articleModel",model);
+    }
 
-        return new ModelAndView("article/search-list","articleList",articleList);
+    @GetMapping("article/searchList")
+    public ModelAndView searchArticleList(@ModelAttribute ArticleSearch articleSearch,Model model){
+
+        org.springframework.data.domain.Page<Article> articles = articleService.queryPage(articleSearch);
+
+        model.addAttribute("articleList",articles.getContent());
+
+        return new ModelAndView("article/list","articleModel",model);
+    }
+
+    @GetMapping("paper/page/{pageId}")
+    public ModelAndView getPageDetail(@PathVariable long pageId,Model model){
+
+        Page page = pageService.getPageById(pageId);
+
+        List<Article> articleList = page.getArticleList();
+
+        model.addAttribute("articleList",articleList);
+
+        return new ModelAndView("article/coordinate-list","articleModel",model);
+    }
+
+    @GetMapping("article/clickRate")
+    public String clickRateList(Model model){
+
+        model.addAttribute("total",5140);
+
+        return "article/click-list";
+    }
+
+    @GetMapping("article/getClickList")
+    public ModelAndView getAllClickList(@RequestParam(value="start",required=false,defaultValue="0") int start,
+                                         @RequestParam(value="size",required=false,defaultValue="10") int size,
+                                        Model model){
+        int index = start/size;
+        Pageable pageable = new PageRequest(index, size);
+
+        org.springframework.data.domain.Page<Article> articleList = articleRepository.findAllByOrderByReadSizeDesc(pageable);
+
+        model.addAttribute("articleList",articleList.getContent());
+
+        return new ModelAndView("article/list","articleModel",model);
+
     }
 }
