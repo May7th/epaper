@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="x-ua-compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximun-scale=1.0, user-scalable=no">
-  <title>版面信息</title>
+  <title>中国蒙古语新闻网</title>
     <link href="../../css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet">
     <link href="../../css/bootstrap-theme.min.css" th:href="@{/css/bootstrap-theme.min.css}" rel="stylesheet">
     <link href="../../css/bootstrap-datetimepicker.min.css" th:href="@{/css/bootstrap-datetimepicker.min.css}" rel="stylesheet" media="screen">
@@ -21,11 +21,11 @@
 
 <div id="wrapper">
     <div class="header_xl">
-        <div class="xl_logo"><img th:src="@{'/images/logo_d.png'}"></div>
-        <h1 class="mw">  </h1>
+        <div class="xl_logo"><a th:href="@{'/'}"><img th:src="@{'/images/logo_d.png'}"></a></div>
+        <h1 class="mw"><span style="writing-mode: sideways-rl">ᠮᠣᠩᠭᠣᠯ ᠲᠡᠦᠬᠡᠨ ᠰᠣᠨᠢᠨ</span></h1>
         <div class="ss_xl">
             <form th:action="@{~/epaper/article/search}" method="get">
-                <input id="keywords" class="btn_search_aa" type="text" name="keywords" value="" onclick="if(this.value=''){this.value='';this.style.color='a8a8b7';}" onblur="if(this.value==''){ this.value='';this.style.color='a8a8b7';}else{this.style.color='a8a8b7';}">
+                <input id="keywords" class="btn_search_aa" type="text" name="keywords" value="ᠵᠠᠩᠭᠢᠯᠠᠭ᠎ᠠ ᠶ᠋ᠢᠨ ᠦᠭᠡᠰ ᠢᠶᠡᠨ ᠡᠨᠳᠡ ᠪᠢᠴᠢ" onclick="if(this.value='ᠵᠠᠩᠭᠢᠯᠠᠭ᠎ᠠ ᠶ᠋ᠢᠨ ᠦᠭᠡᠰ ᠢᠶᠡᠨ ᠡᠨᠳᠡ ᠪᠢᠴᠢ'){this.value='';this.style.color='a8a8b7';}" onblur="if(this.value==''){ this.value='ᠵᠠᠩᠭᠢᠯᠠᠭ᠎ᠠ ᠶ᠋ᠢᠨ ᠦᠭᠡᠰ ᠢᠶᠡᠨ ᠡᠨᠳᠡ ᠪᠢᠴᠢ';this.style.color='a8a8b7';}else{this.style.color='a8a8b7';}">
                 <button class="btn_search_bb" type="submit" id="searchByWord"/>
             </form>
         </div>
@@ -51,7 +51,7 @@
             </div>
         </div>
         <div class="left_b_p" th:each="page:${pageList}" style="margin: 5px">
-            <p onclick="switchPage(this)"  data-th-text="${page.pageName}" th:attr="pageId=${page.id},pageImagePath=${page.pageImagePath}" style="cursor:pointer;"></p>
+            <p onclick="switchPage(this)"  data-th-text="${page.pageName}" th:attr="pageId=${page.id},releaseDate=${releaseDate}" style="cursor:pointer;"></p>
         </div>
 
         <div  class="xl_right_box_b mw" style="left: 460px;">
@@ -60,19 +60,21 @@
                     <div class="js_title" data-th-attr="coordinate=${article.coordinate}">
                         <ul>
                             <a data-th-text="${article.title}"></a>
-                            <p><span data-th-text="${#dates.format(article.releaseDate, 'yyyy')}"></span>  <span data-th-text="${#dates.format(article.releaseDate, 'MM')}"></span> <span data-th-text="${#dates.format(article.releaseDate, 'dd')}"></span>  </p>
+                            <p style="writing-mode: sideways-rl"><span data-th-text="${#dates.format(article.releaseDate, 'yyyy')}"></span> ᠣᠨ ᠤ <span data-th-text="${#dates.format(article.releaseDate, 'MM')}"></span> ᠰᠠᠷ᠎ᠠ ᠶ᠋ᠢᠨ  <span data-th-text="${#dates.format(article.releaseDate, 'dd')}"></span> ᠡᠳᠦᠷ ᠤᠨ ᠰᠣᠨᠢᠨ</p>
                         </ul>
                     </div>
                     <div class="js_content f18">
                         <li data-th-utext="${article.contentHtml}"></li>
-                        <a th:href="@{${article.id}}" style="color: #818c8c;margin:450px 0px 0px 10px; font-family:'MenkGarqag'; font-size:13px; ">文章详情</a>
-                        <dd>  <span data-th-text="${article.author}"></span></dd>
+                        <a th:href="@{'article/'+${article.id}}" style="color: #00A4FF;margin:400px 0px 0px 10px; font-family:'MenkGarqag'; font-size:16px; ">ᠠᠭᠤᠯᠭ᠎ᠠ ᠶ᠋ᠢᠨ ᠲᠣᠳᠣᠷᠬᠠᠢ ᠪᠠᠢᠳᠠᠯ</a>
+                        <dd style="writing-mode: sideways-rl">ᠨᠠᠢᠷᠠᠭᠤᠯᠤᠭᠴᠢ ᠄ <span data-th-text="${article.author}"></span></dd>
                     </div>
                 </div>
             </div>
             <div class="xl_footer f18">
                 2008-2018 © ᠳᠤᠮᠳᠠᠳᠤ ᠤᠯᠤᠰ ᠤᠨ ᠮᠤᠩᠭᠤᠯ ᠬᠡᠯᠡᠨ ᠤ ᠰᠤᠨᠢᠨ ᠮᠡᠳᠡᠭᠡᠨ ᠤ ᠰᠦᠯᠵᠢᠶ᠎ᠡ ᠦᠮᠴᠢᠯᠡᠯ ᠤᠨ ᠡᠷᠬᠡ ᠲᠠᠢ<Br>
-                ᠵᠤᠬᠢᠶᠠᠭᠴᠢ ᠶᠢᠨ ᠡᠷᠬᠡ ᠬᠠᠤᠯᠢ ᠪᠠᠷ ᠬᠠᠮᠠᠭᠠᠯᠠᠭᠳᠠᠭᠰᠠᠨ᠂ ᠵᠦᠪᠰᠢᠶᠡᠷᠡᠯ ᠦᠭᠡᠢ ᠪᠠᠷ ᠬᠠᠭᠤᠯᠪᠤᠷᠢᠯᠠᠬᠤ ᠶᠢ ᠬᠠᠲᠠᠭᠤ ᠬᠤᠷᠢᠭᠯᠠᠨ᠎ᠠ<Br> ᠬᠠᠷᠢᠯᠴᠠᠬᠤ ᠤᠲᠠᠰᠤ᠄ 0471-6659<Br>
+                ᠵᠤᠬᠢᠶᠠᠭᠴᠢ ᠶᠢᠨ ᠡᠷᠬᠡ ᠬᠠᠤᠯᠢ ᠪᠠᠷ ᠬᠠᠮᠠᠭᠠᠯᠠᠭᠳᠠᠭᠰᠠᠨ᠂ ᠵᠦᠪᠰᠢᠶᠡᠷᠡᠯ ᠦᠭᠡᠢ ᠪᠠᠷ ᠬᠠᠭᠤᠯᠪᠤᠷᠢᠯᠠᠬᠤ ᠶᠢ ᠬᠠᠲᠠᠭᠤ ᠬᠤᠷᠢᠭᠯᠠᠨ᠎ᠠ<Br>
+                ᠦᠪᠦᠷ ᠮᠣᠩᠭᠣᠯ ᠤᠨ ᠣᠶᠣᠨ ᠵᠠᠩᠬᠢ ᠮᠡᠷᠭᠡᠵᠢᠯ ᠤᠨ ᠦᠢᠯᠡᠴᠢᠯᠡᠭᠡᠨ ᠤ ᠬᠢᠵᠠᠭᠠᠷᠲᠤ ᠺᠣᠮᠫᠠᠨᠢ ᠮᠡᠷᠭᠡᠵᠢᠯ ᠬᠠᠩᠭᠠᠪᠠ<br>
+                ᠬᠠᠷᠢᠯᠴᠠᠬᠤ ᠤᠲᠠᠰᠤ᠄ 0471-6659832<Br>
                 ᠢᠮᠧᠯ᠄ tn@mgyxw.net   蒙ICP备10000005号
             </div>
         </div>
@@ -90,23 +92,14 @@
 <script src="../../js/papers/datepicker/locales/bootstrap-datetimepicker.zh-CN.js" th:src="@{/js/papers/datepicker/locales/bootstrap-datetimepicker.zh-CN.js}"></script>
 
 <script>
+    function articleDetail(articleId){
+        location.href = "/epaper/article/"+articleId;
+    }
+
     function switchPage(e){
         var pageId = $(e).attr('pageId');
-        var pageImagePath = $(e).attr('pageImagePath');
-        $.ajax({
-            url: "/epaper/paper/page/"+pageId,
-            async : false,
-            type:"GET",
-            contentType : 'application/json',
-            success: function(data){
-                $("#searchList").html(data);
-                init("image-map",pageImagePath);
-            },
-            error : function() {
-                console.log(4321);
-            }
-        });
-
+        var releaseDate = $(e).attr('releaseDate');
+        location.href = "/epaper/paper?releaseDate="+releaseDate+"&pageId="+pageId;
     }
 </script>
 
@@ -126,7 +119,9 @@
 <script th:inline="javascript">
     var pageImagePath = [[${pageImagePath}]];
     var coordinate = "";
+    var coordinateMap = [[${coordinateMap}]];
     var map = null;
+    var temp = 0;
     var drawnItems;
     var mapDOMid = '';
     var existPoint = [];
@@ -140,7 +135,7 @@
     var weight = 2;
     var textFontSize_default = 14;
     var colorList = ["#ffbf26","#ff6438","#2cfff5","#c556ff","#ff4c5f","#0bed07","#4d596c","#8AC007","#ccb324","#FFAD5C","#72ff71","#ff78af","#93adff","#ffb3cf"];
-    function init(domId,imgUrl,callback) {
+    function init(domId,imgUrl,coordinateMap,callback) {
         if(typeof(map) != 'undefined' && map != null){map.remove();}
         var _tmpIMG = new Image();
         _tmpIMG.src = imgUrl;
@@ -166,10 +161,124 @@
             map.setMaxBounds(bounds);
             map.fitBounds(bounds);
             drawnItems = new L.FeatureGroup();
+            showAllPoint(coordinateMap);
             map.addLayer(drawnItems);
 
+            drawnItems.on('mouseover', OnMouseover);
+            drawnItems.on('mouseout', OnMouseout);
         };
     }
+    function OnClick(e) {
+        console.log(1234);
+        var _latlngs = e.layer._latlngs;
+        var points = [];
+        _latlngs.forEach((k,v)=>{
+            points[v] ={
+                'lat': k.lat,
+                'lng': k.lng
+            };
+        })
+        $.each(coordinateMap,function(value,key,index){
+            var pointList = JSON.parse(key).latlngs
+            console.log(value);
+            if (compareArraySort(points,pointList)){
+                console.log(value);
+                articleDetail(value);
+            } else {
+            }
+        })
+    }
+    function OnMouseover(e) {
+        var _latlngs = e.layer._latlngs;
+        var points = [];
+        _latlngs.forEach((k,v)=>{
+            points[v] ={
+                'lat': k.lat,
+                'lng': k.lng
+            };
+        })
+        $.each(coordinateMap,function(value,key,index){
+
+            var pointList = JSON.parse(key).latlngs
+            if (compareArraySort(points,pointList)){
+                if (temp === 1){
+                    map.removeLayer(drawnItems);
+                }
+                drawnItems = new L.FeatureGroup();
+                showPoint(JSON.parse(key));
+                map.addLayer(drawnItems);
+                drawnItems.on('click', OnClick);
+            } else {
+            }
+        })
+    }
+
+    function OnMouseout(e) {
+        var _latlngs = e.layer._latlngs;
+        var points = [];
+        _latlngs.forEach((k,v)=>{
+            points[v] ={
+                'lat': k.lat,
+                'lng': k.lng
+            };
+        })
+        $.each(coordinateMap,function(value,key){
+            var pointList = JSON.parse(key).latlngs
+            if (compareArraySort(points,pointList)){
+                    temp = 1;
+            } else {
+            }
+        })
+    }
+    function compareArraySort(a1,a2){
+        if ((!a1 && a2) || (a1 && ! a2)) return false;
+        if (a1.length !== a2.length) return false;
+        a1 = [].concat(a1);
+        a2 = [].concat(a2);
+        a1 = a1.sort();
+        a2 = a2.sort();
+        for (var i = 0, n = a1.length; i < n; i++) {
+            if (a1[i].lat !== a2[i].lat||a1[i].lng !== a2[i].lng) return false;
+        }
+        return true;
+    }
+    function showAllPoint(map){
+        $.each(map,function(i,v,k){
+            var n = JSON.parse(v);
+            switch(n.type){
+                case 'polygon':
+                    var polygon = new L.Polygon(n.latlngs,{
+                        weight : 0,
+                        color : "#FFFFFF",
+                        fillOpacity: 0
+                    })
+                    polygon.addTo(drawnItems);
+
+                    pointAttr.push({
+                        'leaflet_id': polygon._leaflet_id,
+                        'type': n.type,
+                        'area': n.area,
+                        'area_id': n.area_id
+                    });
+                    break;
+                case 'rectangle':
+                    var rectangle = new L.Rectangle(n.latlngs,{
+                        weight : 0,
+                        color : "#FFFFFF",
+                        fillOpacity: 0
+                    })
+                    rectangle.addTo(drawnItems);
+                    pointAttr.push({
+                        'leaflet_id': rectangle._leaflet_id,
+                        'type': n.type,
+                        'area': n.area,
+                        'area_id': n.area_id
+                    });
+                    break;
+            }
+        })
+    }
+
     function showPoint(n){
         switch(n.type){
             case 'polygon':
@@ -218,7 +327,7 @@
         existPoint_bak = existPoint;
         Background_bak = Background;
         areaArr_bak = jQuery.extend(true, {}, areaArr);
-        init(mapDOMid,Background,function(){
+        init(mapDOMid,Background,coordinateMap,function(){
         });
 
         $(".js_title").click(function(){
@@ -227,19 +336,21 @@
             $('.js_content').not('.a').hide();
             $(this).css('background',"#cecebf");
             $('.js_content').toggleClass('a');
-            $(".js_title ul a").css('color',"#fff");
+            $(".js_title ul a").css('color',"#020001");
             $(".js_title ul p").css('color',"#444");
             if($(this).next().css("display")=="none"){
                 $(this).css('background',"#cecebf");
-                $(this).find('a').css('color',"#fff");
+                $(this).find('a').css('color',"#020001");
             }else{
                 $(this).css('background',"#cecebf");
                 $(this).find('a').css('color',"#8D4703");
                 $(this).find('p').css('color',"#8D4703");
             }
+
         });
         $(".js_title").mouseenter(function () {
             var coordinate = $(this).attr("coordinate");
+            map.removeLayer(drawnItems);
             drawnItems = new L.FeatureGroup();
             showPoint(JSON.parse(coordinate));
             map.addLayer(drawnItems);

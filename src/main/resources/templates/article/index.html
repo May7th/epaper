@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="x-ua-compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximun-scale=1.0, user-scalable=no">
-  <title>蒙文首页</title>
+  <title>中国蒙古语新闻网</title>
     <link href="../../css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet">
     <link href="../../css/bootstrap-theme.min.css" th:href="@{/css/bootstrap-theme.min.css}" rel="stylesheet">
     <link href="../../css/bootstrap-datetimepicker.min.css" th:href="@{/css/bootstrap-datetimepicker.min.css}" rel="stylesheet" media="screen">
@@ -34,7 +34,8 @@
   <div class="left_box">
      <div class="rl mw f18" style="writing-mode: vertical-lr">
          <form th:action="@{~/epaper/paper}" method="get">
-            <p> <Br> </p>
+            <p style="writing-mode: sideways-rl;font-family:'Sonin';">ᠡᠳᠦᠷ ᠰᠠᠷ᠎ᠠ<br>
+                ᠪᠡᠷ ᠬᠠᠢᠬᠤ</p>
              <div style="writing-mode: horizontal-tb" >
                  <div class="input-group date form_date col-md-15" style="width: 350px;padding: 12px" >
                      <input name="releaseDate" class="form-control" type="text" th:value="${releaseDate}" style="font-size: 16px;text-align: center;" readonly>
@@ -46,12 +47,12 @@
          </form>
 	 </div>
 	 <div class="left_b mw">
-	   <p class="left_b_p"> </p>
+	   <p style="writing-mode: sideways-rl;" class="left_b_p">ᠲᠣᠭᠰᠢᠭᠳᠠᠴᠠ ᠶ᠋ᠢᠨ ᠳ᠋ᠤᠭᠠᠷᠯᠠᠯ</p>
 	   <div class="left_b_text">
                <a th:href="@{'/epaper/article/'+${article.id}}" target="_blank"  th:each="article:${clickRateList}">
                    <ul>
                        <li th:text="${article.title}" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;"></li>
-                       <div class="shijian f18">  : <span style="margin-top: 0px;float: none;font-size: 14px" data-th-text="${article.releaseDate}"></span></div>
+                       <div style="writing-mode: sideways-rl;" class="shijian f18"> ᠬᠤᠭᠤᠴᠠᠭ᠎ᠠ: <span style="margin-top: 0px;float: none;font-size: 14px" data-th-text="${article.releaseDate}"></span></div>
                    </ul>
                    <div class="nums"><p th:text="${article.readSize}"></p></div>
                </a>
@@ -61,7 +62,7 @@
      </div>
 
 	 <div class="left_c">
-	   <p class="mw"> </p>
+         <p class="mw"><span style="writing-mode: sideways-rl;font-family:'Sonin';">ᠦᠨᠦᠳᠦᠷ ᠤᠨ ᠰᠣᠨᠢᠷᠬᠠᠯ</span></p>
 	   <ul class="mw">
 	     <a th:href="@{'/epaper/article/'+${printRecommend.articleId}}" target="_blank">
 		 <img th:src="@{${printRecommend.showImage}}" width="" height="" border="0" alt="">
@@ -74,7 +75,7 @@
   <div class="right_box">
     <div class="ss">
         <form th:action="@{/epaper/article/search}" method="get" target= "_blank">
-            <input class="btn_search_a" type="text" name="keywords" value="" onclick="if(this.value=''){this.value='';this.style.color='a8a8b7';}" onblur="if(this.value==''){ this.value='';this.style.color='a8a8b7';}else{this.style.color='a8a8b7';}">
+            <input class="btn_search_a" type="text" name="keywords" value="ᠵᠠᠩᠭᠢᠯᠠᠭ᠎ᠠ ᠶ᠋ᠢᠨ ᠦᠭᠡᠰ ᠢᠶᠡᠨ ᠡᠨᠳᠡ ᠪᠢᠴᠢ" onclick="if(this.value='ᠵᠠᠩᠭᠢᠯᠠᠭ᠎ᠠ ᠶ᠋ᠢᠨ ᠦᠭᠡᠰ ᠢᠶᠡᠨ ᠡᠨᠳᠡ ᠪᠢᠴᠢ'){this.value='';this.style.color='a8a8b7';}" onblur="if(this.value==''){ this.value='ᠵᠠᠩᠭᠢᠯᠠᠭ᠎ᠠ ᠶ᠋ᠢᠨ ᠦᠭᠡᠰ ᠢᠶᠡᠨ ᠡᠨᠳᠡ ᠪᠢᠴᠢ';this.style.color='a8a8b7';}else{this.style.color='a8a8b7';}">
             <button class="btn_search_b" type="submit"/>
 
         </form>
@@ -101,10 +102,10 @@
 
 <div class="footer">
 <span class="mw f18" style="height:60px;">
-ᠦᠪᠦᠷ ᠮᠣᠩᠭᠣᠯ ᠤᠨ ᠣᠶᠣᠨ ᠵᠠᠩᠬᠢ ᠮᠡᠷᠭᠡᠵᠢᠯ ᠤᠨ ᠦᠢᠯᠡᠴᠢᠯᠡᠭᠡᠨ ᠤ ᠬᠢᠵᠠᠭᠠᠷᠲᠤ ᠺᠣᠮᠫᠠᠨᠢ ᠮᠡᠷᠭᠡᠵᠢᠯ ᠬᠠᠩᠭᠠᠪᠠ <br><br><br><br><br><br><br><br>
-    ᠦᠪᠦᠷ ᠮᠣᠩᠭᠣᠯ ᠤᠨ ᠣᠶᠣᠨ ᠵᠠᠩᠬᠢ ᠮᠡᠷᠭᠡᠵᠢᠯ ᠤᠨ ᠦᠢᠯᠡᠴᠢᠯᠡᠭᠡᠨ ᠤ ᠬᠢᠵᠠᠭᠠᠷᠲᠤ ᠺᠣᠮᠫᠠᠨᠢ ᠮᠡᠷᠭᠡᠵᠢᠯ ᠬᠠᠩᠭᠠᠪᠠ
-</span>
-<p class="f14">《中国蒙古语新闻网》版权所有 © 2008-2017    蒙ICP备10000005号    内蒙古日报传媒集团主办    内蒙古奥云信息技术服务有限公司技术支持<br>
+    ᠥᠪᠥᠷ ᠮᠣᠩᠭᠣᠯ ᠤ᠋ᠨ ᠡᠳᠦᠷ ᠦ᠋ᠨ ᠰᠣᠨᠢᠨ ᠤ᠋ ᠵᠠᠭᠤᠴᠢᠯᠠᠭᠤᠷ ᠤ᠋ᠨ ᠪᠦᠯᠦᠭᠯᠡᠯ ᠭᠣᠣᠯᠴᠢᠯᠠᠨ ᠡᠷᠬᠢᠯᠡᠪᠡ
+ <br><br><br><br><br><br><br><br>
+ᠦᠪᠦᠷ ᠮᠣᠩᠭᠣᠯ ᠤᠨ ᠣᠶᠣᠨ ᠵᠠᠩᠬᠢ ᠮᠡᠷᠭᠡᠵᠢᠯ ᠤᠨ ᠦᠢᠯᠡᠴᠢᠯᠡᠭᠡᠨ ᠤ ᠬᠢᠵᠠᠭᠠᠷᠲᠤ ᠺᠣᠮᠫᠠᠨᠢ ᠮᠡᠷᠭᠡᠵᠢᠯ ᠬᠠᠩᠭᠠᠪᠠ</span>
+<p class="f14">《中国蒙古语新闻网》版权所有 © 2008-2018    蒙ICP备10000005号    内蒙古日报传媒集团主办    内蒙古奥云信息技术服务有限公司技术支持<br>
 通信地址：呼和浩特市金桥开发区内蒙古日报社新闻大厦8楼     联系电话：0471-6659832<br>
 请选用IE9+/Chrome/Firefox/Safari/Opera等浏览器访问本网站<br>
 Copyright © www.mgyxw.com All Right Reserved.</p>
@@ -117,6 +118,47 @@ Copyright © www.mgyxw.com All Right Reserved.</p>
 <script src="../../js/articles/pagination.min.js" th:src="@{/js/articles/pagination.min.js}"></script>
 <script src="../../js/papers/datepicker/bootstrap-datetimepicker.min.js" th:src="@{/js/papers/datepicker/bootstrap-datetimepicker.min.js}"></script>
 <script src="../../js/papers/datepicker/locales/bootstrap-datetimepicker.zh-CN.js" th:src="@{/js/papers/datepicker/locales/bootstrap-datetimepicker.zh-CN.js}"></script>
+<script language="JavaScript">
+    function mobile_device_detect(url)
+    {
+        var thisOS=navigator.platform;
+        var os=new Array("iPhone","iPod","iPad","android","Nokia","SymbianOS","Symbian","Windows Phone","Phone","Linux armv71","MAUI","UNTRUSTED/1.0","Windows CE","BlackBerry","IEMobile");
+        for(var i=0;i<os.length;i++)
+        {
+            if(thisOS.match(os[i]))
+            {
+                window.location=url;
+            }
+        }
+//因为相当部分的手机系统不知道信息,这里是做临时性特殊辨认
+        if(navigator.platform.indexOf('iPad') != -1)
+        {
+            window.location=url;
+        }
+//做这一部分是因为Android手机的内核也是Linux
+//但是navigator.platform显示信息不尽相同情况繁多,因此从浏览器下手，即用navigator.appVersion信息做判断
+        var check = navigator.appVersion;
+        if( check.match(/linux/i) )
+        {
+//X11是UC浏览器的平台 ，如果有其他特殊浏览器也可以附加上条件
+            if(check.match(/mobile/i) || check.match(/X11/i))
+            {
+                window.location=url;
+            }
+        }
+//类in_array函数
+        Array.prototype.in_array = function(e)
+        {
+            for(i=0;i<this.length;i++)
+            {
+                if(this[i] == e)
+                    return true;
+            }
+            return false;
+        }
+    }
+    mobile_device_detect("/epaper/mobile/index");
+</script>
 <script type="text/javascript">
     $('.form_date').datetimepicker({
         format: 'yyyy-mm-dd',

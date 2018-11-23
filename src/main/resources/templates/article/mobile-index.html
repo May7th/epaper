@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="x-ua-compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximun-scale=1.0, user-scalable=no">
+  <title>中国蒙古语新闻网</title>
+    <link href="../../css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet">
+    <link href="../../css/bootstrap-theme.min.css" th:href="@{/css/bootstrap-theme.min.css}" rel="stylesheet">
+    <link href="../../css/bootstrap-datetimepicker.min.css" th:href="@{/css/bootstrap-datetimepicker.min.css}" rel="stylesheet" media="screen">
+    <link href="../../css/font-awesome.min.css" th:href="@{/css/font-awesome.min.css}" rel="stylesheet">
+    <!--<link href="../../css/mobile/content.css" th:href="@{/css/mobile/content.css}" rel="stylesheet">-->
+    <link href="../../css/mobile/style.css" th:href="@{/css/mobile/style.css}" rel="stylesheet">
+
+
+
+</head>
+
+<body>
+
+<!----- 顶部开始 ----->
+<div class="header">
+  <div class="box">
+    <div class="logo_l"><img th:src="@{'/images/mobile/logo_l.png'}" border="0" height="100%" alt=""></div>
+	<div class="logo_r"><img th:src="@{'/images/mobile/logo_r.png'}" border="0" height="100%" alt=""></div>
+	<div class="logo_c"><img th:src="@{'/images/mobile/logo_c.png'}" border="0" height="100%" alt=""></div>
+  </div>
+</div>
+<!----- 顶部结束 ----->
+
+<div class="left_box">
+    <div class="rl mw f18" style="writing-mode: vertical-lr">
+        <form th:action="@{~/epaper/paper}" method="get">
+            <p style="writing-mode: sideways-rl;font-family:'Sonin';">
+                ᠡᠳᠦᠷ ᠰᠠᠷ᠎ᠠ<br>
+                ᠪᠡᠷ ᠬᠠᠢᠬᠤ
+            </p>
+            <div style="writing-mode: horizontal-tb" >
+                <div class="input-group date form_date col-md-15" style="width: 280px;padding: 12px" >
+                    <input name="releaseDate" class="form-control" type="text" th:value="${releaseDate}" style="font-size: 16px;text-align: center;" readonly>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+            </div>
+            <button class="btn_search" type="submit" name=""/>
+        </form>
+    </div>
+</div>
+
+<div class="right_box">
+<div class="ss">
+    <form th:action="@{/epaper/article/search}" method="get" target= "_blank">
+        <input class="btn_search_a" type="text" name="keywords" value="ᠵᠠᠩᠭᠢᠯᠠᠭ᠎ᠠ ᠶ᠋ᠢᠨ ᠦᠭᠡᠰ ᠢᠶᠡᠨ ᠡᠨᠳᠡ ᠪᠢᠴᠢ" onclick="if(this.value='ᠵᠠᠩᠭᠢᠯᠠᠭ᠎ᠠ ᠶ᠋ᠢᠨ ᠦᠭᠡᠰ ᠢᠶᠡᠨ ᠡᠨᠳᠡ ᠪᠢᠴᠢ'){this.value='';this.style.color='a8a8b7';}" onblur="if(this.value==''){ this.value='ᠵᠠᠩᠭᠢᠯᠠᠭ᠎ᠠ ᠶ᠋ᠢᠨ ᠦᠭᠡᠰ ᠢᠶᠡᠨ ᠡᠨᠳᠡ ᠪᠢᠴᠢ';this.style.color='a8a8b7';}else{this.style.color='a8a8b7';}">
+        <button class="btn_search_b" type="submit"/>
+
+    </form>
+</div>
+
+    <div class="left_b mw">
+        <p style="writing-mode: sideways-rl;" class="left_b_p">ᠲᠣᠭᠰᠢᠭᠳᠠᠴᠠ ᠶ᠋ᠢᠨ ᠳ᠋ᠤᠭᠠᠷᠯᠠᠯ</p>
+        <div class="left_b_text">
+            <a th:href="@{'/epaper/article/'+${article.id}}" target="_blank"  th:each="article:${clickRateList}">
+                <ul>
+                    <li th:text="${article.title}" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;"></li>
+                </ul>
+                <div class="nums"><p th:text="${article.readSize}"></p></div>
+            </a>
+        </div>
+        <span><a th:href="@{/epaper/article/clickRate}" target="_blank"><img th:src="@{'/images/gd.png'}"></a></span>
+
+    </div>
+</div>
+
+<div class="box">
+<div id="banner">
+  <div class="swiper-wrapper">
+      <div class="swiper-slide" th:each="imageRecommend:${imageRecommendList}">
+          <a th:href="@{'/epaper/article/'+${imageRecommend.articleId}}" target="_blank"><img th:src="@{${imageRecommend.showImage}}"></a>
+          <img th:src="@{${imageRecommend.showImage}}" width="100%" height="100%"/>
+          <div class="gallerytitle mw f18" th:text="${imageRecommend.articleName}"></div>
+          </a>
+      </div>
+  </div>
+  <div class="paginations"></div>
+</div>
+</div>
+
+<div class="news_box">
+    <div class="lm_name mw">ᠰᠣᠩᠭᠤᠨ ᠲᠠᠨᠢᠯᠴᠠᠭᠤᠯᠬᠤ ᠰᠣᠨᠢᠨ</div>
+    <div class="news mw f18">
+        <li th:each="textRecommend:${textRecommendList}">
+            <a th:href="@{'/epaper/article/'+${textRecommend.articleId}}" target="_blank" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;height: 85%" th:text="${textRecommend.articleName}"></a><p style="font-family: 'Open Sans', sans-serif" th:text="${textRecommend.releaseDate}"></p>
+        </li>
+    </div>
+</div>
+
+<div class="box_cc">
+    <div class="left_c">
+        <p class="mw" ><span style="writing-mode: sideways-rl;">ᠦᠨᠦᠳᠦᠷ ᠤᠨ ᠰᠣᠨᠢᠷᠬᠠᠯ</span></p>
+        <ul class="mw">
+            <a th:href="@{'/epaper/article/'+${printRecommend.articleId}}" target="_blank">
+                <img th:src="@{${printRecommend.showImage}}" width="260" height="250px">
+                <span th:text="${printRecommend.articleName}"></span>
+            </a>
+        </ul>
+    </div>
+</div>
+
+<div class="footer">
+<span class="mw f18" style="height:60px;">
+    ᠦᠪᠦᠷ ᠮᠣᠩᠭᠣᠯ ᠤᠨ ᠡᠳᠦᠷ ᠤᠨ ᠰᠣᠨᠢᠨ ᠤ ᠵᠠᠭᠤᠴᠢᠯᠠᠭᠤᠷ ᠤᠨ ᠪᠦᠯᠦᠭᠯᠡᠯ ᠭᠤᠤᠯᠴᠢᠯᠠᠨ ᠡᠷᠬᠢᠯᠡᠪᠡ <br><br>
+    ᠦᠪᠦᠷ ᠮᠣᠩᠭᠣᠯ ᠤᠨ ᠣᠶᠣᠨ ᠵᠠᠩᠬᠢ ᠮᠡᠷᠭᠡᠵᠢᠯ ᠤᠨ ᠦᠢᠯᠡᠴᠢᠯᠡᠭᠡᠨ ᠤ ᠬᠢᠵᠠᠭᠠᠷᠲᠤ ᠺᠣᠮᠫᠠᠨᠢ ᠮᠡᠷᠭᠡᠵᠢᠯ ᠬᠠᠩᠭᠠᠪᠠ
+</span>
+    <p class="f12" style="font-family: 'Open Sans', sans-serif">《中国蒙古语新闻网》版权所有 © 2008-2017    蒙ICP备10000005号<br>内蒙古奥云信息技术服务有限公司技术支持<br>
+地址：金桥开发区内蒙古日报社新闻大厦8楼<br>联系电话：0471-6659832<br>
+Copyright © www.mgyxw.com All Right Reserved.</p>
+</div>
+<script src="../../js/jquery-3.1.1.min.js" th:src="@{/js/jquery-3.1.1.min.js}"></script>
+<script src="../../js/bootstrap.js" th:src="@{/js/bootstrap.js}"></script>
+<script src="../../js/jquery.form.min.js" th:src="@{/js/jquery.form.min.js}"></script>
+<script src="../../js/tether.min.js" th:src="@{/js/tether.min.js}"></script>
+<script src="../../js/focus.js" th:src="@{/js/focus.js}"></script>
+<script src="../../js/articles/pagination.min.js" th:src="@{/js/articles/pagination.min.js}"></script>
+<script src="../../js/papers/datepicker/bootstrap-datetimepicker.min.js" th:src="@{/js/papers/datepicker/bootstrap-datetimepicker.min.js}"></script>
+<script src="../../js/papers/datepicker/locales/bootstrap-datetimepicker.zh-CN.js" th:src="@{/js/papers/datepicker/locales/bootstrap-datetimepicker.zh-CN.js}"></script>
+<script src="../../js/mobile/index.js" th:src="@{/js/mobile/index.js}"></script>
+<script src="../../js/mobile/swiper.min.js" th:src="@{/js/mobile/swiper.min.js}"></script>
+<script type="text/javascript">
+    $('.form_date').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 1
+    });
+</script>
+</body>
+</html>

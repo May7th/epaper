@@ -24,8 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @program: epaper
@@ -71,8 +70,25 @@ public class FrontController {
         return "article/index";
     }
 
+    @GetMapping("mobile/index")
+    public String mobileIndex(Model model){
+
+        List<Article> clickRateList = articleService.clickRateList(4);
+        List<Recommend> textRecommendList = recommendService.findAllRecommendsByType(8,TEXT_RECOMMEND);
+        List<Recommend> imageRecommendList = recommendService.findAllRecommendsByType(4,IMAGE_RECOMMEND);
+        Recommend printRecommend = imageRecommendList.remove(3);
+        model.addAttribute("clickRateList",clickRateList);
+        model.addAttribute("textRecommendList",textRecommendList);
+        model.addAttribute("imageRecommendList",imageRecommendList);
+        model.addAttribute("printRecommend",printRecommend);
+
+        return "article/mobile-index";
+    }
+
     @GetMapping("paper")
-    public String getPaper(String releaseDate, Model model){
+    public String getPaper(String releaseDate,
+                           @RequestParam(value="pageId",required=false,defaultValue="0")
+                                   long pageId, Model model){
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date date1 = null;
         try {
@@ -87,17 +103,30 @@ public class FrontController {
 
         List<Page> pageList = paper.getPageList();
 
-        Date date = paper.getReleaseDate();
+        pageList.sort(Comparator.comparing(Page::getPageName));
 
-        Page fristPage = pageList.get(0);
-        List<Article> articleList = fristPage.getArticleList();
-        String pageImagePath = fristPage.getPageImagePath();
+        Date date = paper.getReleaseDate();
+        Page firstPage;
+        if (pageId == 0){
+            firstPage = pageList.get(0);
+        }else {
+            firstPage = pageService.getPageById(pageId);
+        }
+
+        List<Article> articleList = firstPage.getArticleList();
+        String pageImagePath = firstPage.getPageImagePath();
+        Map<Long,String> coordinateMap = new HashMap<>();
+
+        articleList.forEach(article -> {
+            coordinateMap.put(article.getId(),article.getCoordinate());
+        });
 
         model.addAttribute("paper",paper);
         model.addAttribute("pageList",pageList);
         model.addAttribute("releaseDate",date);
         model.addAttribute("articleList",articleList);
         model.addAttribute("pageImagePath",pageImagePath);
+        model.addAttribute("coordinateMap",coordinateMap);
 
         return "article/page-detail";
 
@@ -162,6 +191,21 @@ public class FrontController {
         model.addAttribute("articleList",articleList);
 
         return new ModelAndView("article/coordinate-list","articleModel",model);
+    }
+
+    @GetMapping("paper/pageCoordinate/{pageId}")
+    @ResponseBody
+    public List<String> getPageCoordinate(@PathVariable long pageId){
+        Page page = pageService.getPageById(pageId);
+
+        List<Article> articleList = page.getArticleList();
+
+        List<String> coordinateList = new ArrayList<>();
+
+        articleList.forEach(article -> {
+            coordinateList.add(article.getCoordinate());
+        });
+        return coordinateList;
     }
 
     @GetMapping("article/clickRate")

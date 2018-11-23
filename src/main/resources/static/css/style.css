@@ -14,10 +14,7 @@ url('../font/Menksoft2012.ttf') format('truetype');
 font-family:'MenkGarqag';
 font-style:normal;
 font-weight:normal;
-src:url('../font/MenkGarqag.eot');
-src:url('../font/MenkGarqag.eot?#iefix') format('embedded-opentype'),
-url('../font/MenkGarqag.woff') format('woff'),
-url('../font/MenkGarqag.ttf') format('truetype');
+    src: url('../fonts/OyunQaganTig3.0_20180426.ttf') format('opentype');
 }
 @font-face{
 font-family:'Hawang';
@@ -27,6 +24,34 @@ src:url('../font/MenkHawang.eot');
 src:url('../font/MenkHawang.eot?#iefix') format('embedded-opentype'),
 url('../font/MenkHawang.woff') format('woff'),
 url('../font/MenkHawang.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: Hawang;
+    src: url('../fonts/Oyun Hawang Tig20180420.ttf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: Biqimel;
+    src: url('../fonts/Oyun Gar Biqimel Tig20180421.ttf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: Har_a;
+    src: url('../fonts/Oyun Har_a Tig20180419.ttf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: Sonin;
+    src: url('../fonts/Oyun Sonin Tig20180501.ttf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
 }
 
 a:visited{text-decoration:none;}
@@ -44,7 +69,23 @@ ul,li,dl,p { list-style:none; margin:0; padding:0; display:list-item; }
 .f18 { font-size:18px; }
 .f20 { font-size:20px; }
 
-.mw { text-align:justify; writing-mode:tb-lr;-webkit-writing-mode:vertical-lr; -webkit-text-orientation: sideways-right;-o-writing-mode: vertical-lr;moz-writing-mode: vertical-lr; letter-spacing:0px;word-wrap:break-word; word-break:keep-all; }
+.mw { text-align:justify;
+    writing-mode:tb-lr;
+    -webkit-writing-mode:vertical-lr;
+    -webkit-text-orientation: sideways-right;
+    -o-writing-mode: vertical-lr;
+    moz-writing-mode: vertical-lr;
+    -moz-writing-mode: vertical-lr !important;
+    writing-mode: vertical-lr !important;
+    -webkit-writing-mode: vertical-lr !important;
+    -o-writing-mode: vertical-lr !important;
+    -ms-writing-mode: tb-lr !important;
+    writing-mode: tb-lr !important;
+    letter-spacing:0px;
+    word-wrap:break-word;
+    word-break:keep-all;
+    font-family:"MenkGarqag";
+}
 
 /*首页开始*/
 .box { width:1094px; margin:0 auto; overflow:hidden; }
@@ -63,7 +104,7 @@ ul,li,dl,p { list-style:none; margin:0; padding:0; display:list-item; }
 .btn_search { width:24px; height:46px; float:left; margin:7px 0px 0px 16px; background:url("../images/ss.png") no-repeat; border:0; display:inline-block; }
 
 .left_b { width:100%; float:left; margin-top:34px; height:580px; }
-.left_b_p { float:left; padding:16px 8px 16px 8px; background:#2693ff; color:#fff; border-radius:5px; font-family:"MenkGarqag"; font-size:18px; }
+.left_b_p { float:left; padding:16px 8px 16px 8px; background:#2693ff; color:#fff; border-radius:5px; font-family:"Sonin"; font-size:18px; }
 .left_b_text { width:395px; float:left; background:url("../images/num.png") no-repeat top; padding-top:36px; padding-left:11px; }
 .left_b_text a { width:58px; float:left; background:#f8f8f1; margin-left:4px; color:#2693ff; height:100%;}
 .left_b_text a:hover { color:#646462; }
@@ -85,7 +126,7 @@ ul,li,dl,p { list-style:none; margin:0; padding:0; display:list-item; }
 .btn_search_a { -ms-transform:rotate(90deg) translate(0, -100%);-ms-transform-origin:0% 0%;-webkit-transform:rotate(90deg) translate(0, -100%);-webkit-transform-origin:0% 0%;-moz-transform:rotate(90deg) translate(0,-100%);-moz-transform-origin:0% 0%;-o-transform:rotate(90deg) translate(0,-100%);-o-transform-origin:0% 0%;/* white-space:nowrap; */ width:560px; float:left; height:42px; border:1px solid #acac9d; font-size:18px; color:#a8a8b7; padding-left:20px; font-family:"MenkGarqag"; }
 .btn_search_b { width:37px; height:42px; float:left; margin:530px 0px 0px 3px; background:url("../images/ss_c.png") no-repeat; border:0; }
 
-.lm_name { float:left; padding:16px 8px 16px 8px; background:#d96d00; color:#fff; border-radius:5px; font-family:"MenkGarqag"; font-size:18px; margin:20px 0px 0px 0px; }
+.lm_name { float:left; padding:16px 8px 16px 8px; background:#d96d00; color:#fff; border-radius:5px; font-family:"Sonin"; font-size:18px; margin:20px 0px 0px 0px; }
 .news { width:500px; float:left; margin:30px 0px 0px 10px; }
 .news li { width:28px;  height:600px; float:left; margin-left:10px; background:url("../images/xian.png") repeat-y top center; position:relative; }
 .news li a { width:100%; color:#333; float:left;padding:20px 0px 0px 3px; background:#fff url("../images/b.png") no-repeat top center; padding-bottom:10px;}

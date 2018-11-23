@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="x-ua-compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximun-scale=1.0, user-scalable=no">
-  <title>点击率排行</title>
+  <title>中国蒙古语新闻网</title>
 
     <link href="../../css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet">
     <link href="../../css/bootstrap-theme.min.css" th:href="@{/css/bootstrap-theme.min.css}" rel="stylesheet">
@@ -22,15 +22,15 @@
 
 <div id="wrapper">
 	<div class="header_xl">
-		<div class="xl_logo"><img th:src="@{'/images/logo_d.png'}"></div>
-		<h2 class="mw">   </h2>
+        <div class="xl_logo"><a th:href="@{'/'}"><img th:src="@{'/images/logo_d.png'}"></a></div>
+		<h2 class="mw"><span style="writing-mode: sideways-rl;">ᠮᠣᠩᠭᠣᠯ ᠲᠡᠦᠬᠡᠨ ᠰᠣᠨᠢᠨ</span> </h2>
 	</div>
 	<div class="xl_right_box_a">
 		<div class="js_box">
             <form th:action="@{/epaper/article/search}" method="get">
-                <div class="js_top mw"> <Br><Br><Br> </div>
+                <div class="js_top mw"> <span style="writing-mode: sideways-rl">ᠡᠳᠦᠷ<br>ᠰᠠᠷ᠎ᠠ<br>ᠪᠡᠷ<br>ᠬᠠᠢᠬᠤ</span></div>
                 <div class="rl mw f18">
-                    <div >
+                    <div style="writing-mode: horizontal-tb;" >
                         <div class="input-group date form_date col-md-15" >
                             <input name="releaseDate" class="form-control" size="16" type="text" th:value="${releaseDate}" readonly>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
@@ -43,7 +43,7 @@
                   <input id="keywords" class="btn_search_aa" type="text" name="keywords" th:value="${keywords}"/>
                 </div>
                 <div class="ss_jss">
-                    <div class="RadioStyle">
+                    <div class="RadioStyle" style="writing-mode: sideways-rl;">
                         <div class="Block PaddingL">
                             <input type="radio" name="wordType" id="all" checked  value=""/>
                             <label for="all"><p class="checkLabel">ᠪᠦᠭᠦᠳᠡ</p></label>
@@ -52,7 +52,7 @@
                             <input type="radio" name="wordType" id="title" th:checked="${wordType}=='title'" value="title"/>
                             <label for="title"><p class="checkLabel">ᠭᠠᠷᠴᠠᠭ</p></label>
                             <input type="radio" name="wordType" id="author" th:checked="${wordType}=='author'" value="author"/>
-                            <label for="author"><p class="checkLabel">ᠨᠠᠶᠢᠷᠠᠭᠤᠯᠤᠭᠴᠢ</p></label>
+                            <label for="author"><p class="checkLabel">ᠨᠠᠢᠷᠠᠭᠤᠯᠤᠭᠴᠢ</p></label>
                         </div>
                     </div>
                     <div class="clear"></div>
@@ -71,9 +71,11 @@
        </div>
 		<div class="xl_footer f18">
 		2008-2018 © ᠳᠤᠮᠳᠠᠳᠤ ᠤᠯᠤᠰ ᠤᠨ ᠮᠤᠩᠭᠤᠯ ᠬᠡᠯᠡᠨ ᠤ ᠰᠤᠨᠢᠨ ᠮᠡᠳᠡᠭᠡᠨ ᠤ ᠰᠦᠯᠵᠢᠶ᠎ᠡ ᠦᠮᠴᠢᠯᠡᠯ ᠤᠨ ᠡᠷᠬᠡ ᠲᠠᠢ<Br>
-		ᠵᠤᠬᠢᠶᠠᠭᠴᠢ ᠶᠢᠨ ᠡᠷᠬᠡ ᠬᠠᠤᠯᠢ ᠪᠠᠷ ᠬᠠᠮᠠᠭᠠᠯᠠᠭᠳᠠᠭᠰᠠᠨ᠂ ᠵᠦᠪᠰᠢᠶᠡᠷᠡᠯ ᠦᠭᠡᠢ ᠪᠠᠷ ᠬᠠᠭᠤᠯᠪᠤᠷᠢᠯᠠᠬᠤ ᠶᠢ ᠬᠠᠲᠠᠭᠤ ᠬᠤᠷᠢᠭᠯᠠᠨ᠎ᠠ<Br> ᠬᠠᠷᠢᠯᠴᠠᠬᠤ ᠤᠲᠠᠰᠤ᠄ 0471-6659<Br>
+		ᠵᠤᠬᠢᠶᠠᠭᠴᠢ ᠶᠢᠨ ᠡᠷᠬᠡ ᠬᠠᠤᠯᠢ ᠪᠠᠷ ᠬᠠᠮᠠᠭᠠᠯᠠᠭᠳᠠᠭᠰᠠᠨ᠂ ᠵᠦᠪᠰᠢᠶᠡᠷᠡᠯ ᠦᠭᠡᠢ ᠪᠠᠷ ᠬᠠᠭᠤᠯᠪᠤᠷᠢᠯᠠᠬᠤ ᠶᠢ ᠬᠠᠲᠠᠭᠤ ᠬᠤᠷᠢᠭᠯᠠᠨ᠎ᠠ<Br>
+            ᠦᠪᠦᠷ ᠮᠣᠩᠭᠣᠯ ᠤᠨ ᠣᠶᠣᠨ ᠵᠠᠩᠬᠢ ᠮᠡᠷᠭᠡᠵᠢᠯ ᠤᠨ ᠦᠢᠯᠡᠴᠢᠯᠡᠭᠡᠨ ᠤ ᠬᠢᠵᠠᠭᠠᠷᠲᠤ ᠺᠣᠮᠫᠠᠨᠢ ᠮᠡᠷᠭᠡᠵᠢᠯ ᠬᠠᠩᠭᠠᠪᠠ<br>
+            ᠬᠠᠷᠢᠯᠴᠠᠬᠤ ᠤᠲᠠᠰᠤ᠄ 0471-6659832<Br>
 		ᠢᠮᠧᠯ᠄ tn@mgyxw.net   蒙ICP备10000005号
-		</div>
+        </div>
 	</div>
 </div>
 
