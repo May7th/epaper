@@ -45,10 +45,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private static final String KEY = "oyun.com";
 
-	@Qualifier("userServiceImpl")
-	@Autowired
-	private UserDetailsService userDetailsService;
-
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
@@ -64,6 +60,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public PasswordEncoder passwordEncoder() {
 	    return new BCryptPasswordEncoder();
 	}
+
+    @Qualifier("userServiceImpl")
+    @Autowired
+    private UserDetailsService userDetailsService;
 
 	@Bean
 	public AuthenticationProvider authenticationProvider() {

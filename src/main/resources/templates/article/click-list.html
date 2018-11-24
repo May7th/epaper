@@ -28,10 +28,10 @@
 	<div class="xl_right_box_a">
 		<div class="js_box">
             <form th:action="@{/epaper/article/search}" method="get">
-                <div class="js_top mw"> <span style="writing-mode: sideways-rl">ᠡᠳᠦᠷ<br>ᠰᠠᠷ᠎ᠠ<br>ᠪᠡᠷ<br>ᠬᠠᠢᠬᠤ</span></div>
+                <div class="js_top mw"> <span style="writing-mode: vertical-lr">ᠡᠳᠦᠷ<br>ᠰᠠᠷ᠎ᠠ<br>ᠪᠡᠷ<br>ᠬᠠᠢᠬᠤ</span></div>
                 <div class="rl mw f18">
-                    <div style="writing-mode: horizontal-tb;" >
-                        <div class="input-group date form_date col-md-15" >
+                    <div style="writing-mode: horizontal-tb;-ms-writing-mode: lr-tb;width: 320px" >
+                        <div class="input-group date form_date col-md-15" style="font-family:'sans-serif';" >
                             <input name="releaseDate" class="form-control" size="16" type="text" th:value="${releaseDate}" readonly>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
@@ -46,13 +46,13 @@
                     <div class="RadioStyle" style="writing-mode: sideways-rl;">
                         <div class="Block PaddingL">
                             <input type="radio" name="wordType" id="all" checked  value=""/>
-                            <label for="all"><p class="checkLabel">ᠪᠦᠭᠦᠳᠡ</p></label>
+                            <label for="all" style="height: 50px"><p class="checkLabel">ᠪᠦᠭᠦᠳᠡ</p></label>
                             <input type="radio" name="wordType" id="content" th:checked="${wordType}=='content'" value="content"/>
-                            <label for="content"><p class="checkLabel">ᠠᠭᠤᠯᠭ᠎ᠠ</p></label>
+                            <label for="content" style="height: 50px"><p class="checkLabel">ᠠᠭᠤᠯᠭ᠎ᠠ</p></label>
                             <input type="radio" name="wordType" id="title" th:checked="${wordType}=='title'" value="title"/>
-                            <label for="title"><p class="checkLabel">ᠭᠠᠷᠴᠠᠭ</p></label>
+                            <label for="title" style="height: 50px"><p class="checkLabel">ᠭᠠᠷᠴᠠᠭ</p></label>
                             <input type="radio" name="wordType" id="author" th:checked="${wordType}=='author'" value="author"/>
-                            <label for="author"><p class="checkLabel">ᠨᠠᠢᠷᠠᠭᠤᠯᠤᠭᠴᠢ</p></label>
+                            <label for="author" style="height: 70px"><p class="checkLabel">ᠨᠠᠢᠷᠠᠭᠤᠯᠤᠭᠴᠢ</p></label>
                         </div>
                     </div>
                     <div class="clear"></div>
@@ -67,13 +67,13 @@
 
        </div>
        <div class="js_more f18">
-           <div id="pagination"></div>
+           <div id="pagination" style="-ms-writing-mode: lr-tb;"></div>
        </div>
 		<div class="xl_footer f18">
-		2008-2018 © ᠳᠤᠮᠳᠠᠳᠤ ᠤᠯᠤᠰ ᠤᠨ ᠮᠤᠩᠭᠤᠯ ᠬᠡᠯᠡᠨ ᠤ ᠰᠤᠨᠢᠨ ᠮᠡᠳᠡᠭᠡᠨ ᠤ ᠰᠦᠯᠵᠢᠶ᠎ᠡ ᠦᠮᠴᠢᠯᠡᠯ ᠤᠨ ᠡᠷᠬᠡ ᠲᠠᠢ<Br>
+            <span style="font-family:'sans-serif'">2008-2018</span> © ᠳᠤᠮᠳᠠᠳᠤ ᠤᠯᠤᠰ ᠤᠨ ᠮᠤᠩᠭᠤᠯ ᠬᠡᠯᠡᠨ ᠤ ᠰᠤᠨᠢᠨ ᠮᠡᠳᠡᠭᠡᠨ ᠤ ᠰᠦᠯᠵᠢᠶ᠎ᠡ ᠦᠮᠴᠢᠯᠡᠯ ᠤᠨ ᠡᠷᠬᠡ ᠲᠠᠢ<Br>
 		ᠵᠤᠬᠢᠶᠠᠭᠴᠢ ᠶᠢᠨ ᠡᠷᠬᠡ ᠬᠠᠤᠯᠢ ᠪᠠᠷ ᠬᠠᠮᠠᠭᠠᠯᠠᠭᠳᠠᠭᠰᠠᠨ᠂ ᠵᠦᠪᠰᠢᠶᠡᠷᠡᠯ ᠦᠭᠡᠢ ᠪᠠᠷ ᠬᠠᠭᠤᠯᠪᠤᠷᠢᠯᠠᠬᠤ ᠶᠢ ᠬᠠᠲᠠᠭᠤ ᠬᠤᠷᠢᠭᠯᠠᠨ᠎ᠠ<Br>
             ᠦᠪᠦᠷ ᠮᠣᠩᠭᠣᠯ ᠤᠨ ᠣᠶᠣᠨ ᠵᠠᠩᠬᠢ ᠮᠡᠷᠭᠡᠵᠢᠯ ᠤᠨ ᠦᠢᠯᠡᠴᠢᠯᠡᠭᠡᠨ ᠤ ᠬᠢᠵᠠᠭᠠᠷᠲᠤ ᠺᠣᠮᠫᠠᠨᠢ ᠮᠡᠷᠭᠡᠵᠢᠯ ᠬᠠᠩᠭᠠᠪᠠ<br>
-            ᠬᠠᠷᠢᠯᠴᠠᠬᠤ ᠤᠲᠠᠰᠤ᠄ 0471-6659832<Br>
+            ᠬᠠᠷᠢᠯᠴᠠᠬᠤ ᠤᠲᠠᠰᠤ᠄ <span style="font-family:'sans-serif'">0471-6659832</span><Br>
 		ᠢᠮᠧᠯ᠄ tn@mgyxw.net   蒙ICP备10000005号
         </div>
 	</div>
@@ -95,9 +95,10 @@
         todayBtn:  1,
         autoclose: 1,
         todayHighlight: 1,
-        startView: 2,
+        startView: 4,
         minView: 2,
-        forceParse: 1
+        forceParse: 1,
+        initialDate:"1951-01-01"
     });
 </script>
 <script>

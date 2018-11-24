@@ -20,6 +20,7 @@ import com.oyun.media.port.PortFunctionService;
 import com.oyun.media.transService.PortFuntionDelegate;
 import com.oyun.media.transService.PortFuntionService;
 import lombok.extern.log4j.Log4j2;
+import org.apache.http.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
@@ -28,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.Predicate;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -208,32 +210,15 @@ public class ArticleServiceImpl implements IArticleService {
 
         Pageable pageable = new PageRequest(page,articleSearch.getSize(),sort);
 
-        Specification<Article> specification = (root, criteriaQuery, criteriaBuilder) -> {
+        Page<Article> articles = null;
+        if (articleSearch.getReleaseDate() != null){
 
-            Predicate predicate = criteriaBuilder.notEqual(root.get("state"), ArticleStatus.DELETED.getValue());
+            articles = articleRepository.findArticlesByReleaseDateAndState(articleSearch.getReleaseDate(),1,pageable);
 
-            if (articleSearch.getCatalogId() >-1){
-                predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get("catalog"), articleSearch.getCatalogId()));
-            }
+        }else {
+            articles = articleRepository.findAllByState(1, pageable);
 
-            if (!articleSearch.getCatalogName().isEmpty()){
-                predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get("catalogName"), articleSearch.getCatalogName()));
-            }
-
-            if (articleSearch.getRecommend() > -1){
-                predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get("recommend"), articleSearch.getRecommend()));
-            }
-
-            if (articleSearch.getState() > -1){
-                predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get("state"), articleSearch.getState()));
-            }
-
-
-            return predicate;
-        };
-
-        Page<Article> articles = articleRepository.findAll(specification, pageable);
-
+        }
         return articles;
     }
 

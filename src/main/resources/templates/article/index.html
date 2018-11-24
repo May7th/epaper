@@ -34,10 +34,10 @@
   <div class="left_box">
      <div class="rl mw f18" style="writing-mode: vertical-lr">
          <form th:action="@{~/epaper/paper}" method="get">
-            <p style="writing-mode: sideways-rl;font-family:'Sonin';">ᠡᠳᠦᠷ ᠰᠠᠷ᠎ᠠ<br>
+            <p style="writing-mode: vertical-lr;font-family:'Sonin';">ᠡᠳᠦᠷ ᠰᠠᠷ᠎ᠠ<br>
                 ᠪᠡᠷ ᠬᠠᠢᠬᠤ</p>
-             <div style="writing-mode: horizontal-tb" >
-                 <div class="input-group date form_date col-md-15" style="width: 350px;padding: 12px" >
+             <div style="writing-mode: horizontal-tb;-ms-writing-mode: lr-tb;width: 320px" >
+                 <div class="input-group date form_date col-md-15" style="max-width: 320px;padding: 12px; font-family:'sans-serif';" >
                      <input name="releaseDate" class="form-control" type="text" th:value="${releaseDate}" style="font-size: 16px;text-align: center;" readonly>
                      <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                      <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
@@ -52,7 +52,7 @@
                <a th:href="@{'/epaper/article/'+${article.id}}" target="_blank"  th:each="article:${clickRateList}">
                    <ul>
                        <li th:text="${article.title}" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;"></li>
-                       <div style="writing-mode: sideways-rl;" class="shijian f18"> ᠬᠤᠭᠤᠴᠠᠭ᠎ᠠ: <span style="margin-top: 0px;float: none;font-size: 14px" data-th-text="${article.releaseDate}"></span></div>
+                       <div style="writing-mode: sideways-rl;" class="shijian f18"> ᠬᠤᠭᠤᠴᠠᠭ᠎ᠠ: <span style="margin-top: 0px;float: none;font-size: 14px; font-family:'sans-serif';" data-th-text="${article.releaseDate}"></span></div>
                    </ul>
                    <div class="nums"><p th:text="${article.readSize}"></p></div>
                </a>
@@ -93,7 +93,7 @@
 	<div class="lm_name mw">ᠰᠣᠩᠭᠤᠨ ᠲᠠᠨᠢᠯᠴᠠᠭᠤᠯᠬᠤ ᠰᠣᠨᠢᠨ</div>
 	<div class="news mw f18">
 	  <li th:each="textRecommend:${textRecommendList}">
-          <a th:href="@{'/epaper/article/'+${textRecommend.articleId}}" target="_blank" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;height: 85%" th:text="${textRecommend.articleName}"></a><p th:text="${textRecommend.releaseDate}"></p>
+          <a th:href="@{'/epaper/article/'+${textRecommend.articleId}}" target="_blank" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;height: 85%" th:text="${textRecommend.articleName}"></a><p style="font-family:'sans-serif';" th:text="${textRecommend.releaseDate}"></p>
       </li>
 	  </div>
   </div>
@@ -102,10 +102,9 @@
 
 <div class="footer">
 <span class="mw f18" style="height:60px;">
-    ᠥᠪᠥᠷ ᠮᠣᠩᠭᠣᠯ ᠤ᠋ᠨ ᠡᠳᠦᠷ ᠦ᠋ᠨ ᠰᠣᠨᠢᠨ ᠤ᠋ ᠵᠠᠭᠤᠴᠢᠯᠠᠭᠤᠷ ᠤ᠋ᠨ ᠪᠦᠯᠦᠭᠯᠡᠯ ᠭᠣᠣᠯᠴᠢᠯᠠᠨ ᠡᠷᠬᠢᠯᠡᠪᠡ
- <br><br><br><br><br><br><br><br>
+ᠥᠪᠥᠷ ᠮᠣᠩᠭᠣᠯ ᠤ᠋ᠨ ᠡᠳᠦᠷ ᠦ᠋ᠨ ᠰᠣᠨᠢᠨ ᠤ᠋ ᠵᠠᠭᠤᠴᠢᠯᠠᠭᠤᠷ ᠤ᠋ᠨ ᠪᠦᠯᠦᠭᠯᠡᠯ ᠭᠣᠣᠯᠴᠢᠯᠠᠨ ᠡᠷᠬᠢᠯᠡᠪᠡ  <br><br><br><br><br><br><br><br>
 ᠦᠪᠦᠷ ᠮᠣᠩᠭᠣᠯ ᠤᠨ ᠣᠶᠣᠨ ᠵᠠᠩᠬᠢ ᠮᠡᠷᠭᠡᠵᠢᠯ ᠤᠨ ᠦᠢᠯᠡᠴᠢᠯᠡᠭᠡᠨ ᠤ ᠬᠢᠵᠠᠭᠠᠷᠲᠤ ᠺᠣᠮᠫᠠᠨᠢ ᠮᠡᠷᠭᠡᠵᠢᠯ ᠬᠠᠩᠭᠠᠪᠠ</span>
-<p class="f14">《中国蒙古语新闻网》版权所有 © 2008-2018    蒙ICP备10000005号    内蒙古日报传媒集团主办    内蒙古奥云信息技术服务有限公司技术支持<br>
+<p class="f14" style="font-family:'sans-serif';">《中国蒙古语新闻网》版权所有 © 2008-2018    蒙ICP备10000005号    内蒙古日报传媒集团主办    内蒙古奥云信息技术服务有限公司技术支持<br>
 通信地址：呼和浩特市金桥开发区内蒙古日报社新闻大厦8楼     联系电话：0471-6659832<br>
 请选用IE9+/Chrome/Firefox/Safari/Opera等浏览器访问本网站<br>
 Copyright © www.mgyxw.com All Right Reserved.</p>
@@ -167,9 +166,10 @@ Copyright © www.mgyxw.com All Right Reserved.</p>
         todayBtn:  1,
         autoclose: 1,
         todayHighlight: 1,
-        startView: 2,
+        startView: 4,
         minView: 2,
-        forceParse: 1
+        forceParse: 1,
+        initialDate:"1951-01-01"
     });
 </script>
 <script type="text/javascript">

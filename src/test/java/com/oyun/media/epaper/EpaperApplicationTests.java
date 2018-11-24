@@ -4,6 +4,7 @@ import com.oyun.media.epaper.domain.Article;
 import com.oyun.media.epaper.domain.Recommend;
 import com.oyun.media.epaper.repository.ArticleRepository;
 import com.oyun.media.epaper.repository.RecommendRepository;
+import com.oyun.media.epaper.search.SearchServiceImpl;
 import com.oyun.media.epaper.service.IArticleService;
 import com.oyun.media.epaper.task.ESMonitor;
 import org.apache.commons.lang3.StringUtils;
@@ -28,10 +29,24 @@ public class EpaperApplicationTests {
     @Autowired
     private RecommendRepository recommendRepository;
 
+    @Autowired
+    private IArticleService articleService;
+
+    @Autowired
+    private SearchServiceImpl searchService;
+
 	@Test
-    @Transactional
+//    @Transactional
 	public void contextLoads() {
 
-	}
+        List<Article> articleList = articleRepository.findAllByState(5);
+
+        articleList.forEach(article -> {
+            article.setState(1);
+            articleRepository.save(article);
+            System.out.println("================");
+        });
+
+    }
 
 }

@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 /**
@@ -27,12 +28,12 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
 
 	@Autowired
 	private UserRepository userRepository;
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+
 	
 	@Transactional
 	@Override
 	public User saveOrUpateUser(User user) {
+	    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		String newPassword = passwordEncoder.encode(user.getPassword());
 		user.setPassword(newPassword);
 		return userRepository.save(user);

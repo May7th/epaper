@@ -31,9 +31,6 @@ public class CatalogController {
     @Autowired
     private ICatalogService catalogService;
 
-    @Autowired
-    private IUserService userService;
-
     @GetMapping("list")
     private ApiResponse getCatalogList(){
         List<Catalog> catalogList= catalogService.getCatalogList();

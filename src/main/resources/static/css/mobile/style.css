@@ -1,28 +1,65 @@
-/*
- * css  2018.10.14
-*/
 @font-face{
-font-family:'Menksoft2012';
-font-style:normal;
-font-weight:normal;
-    src: url('../../fonts/OyunQaganTig3.0_20180426.ttf') format('opentype');
+    font-family:'Menksoft2012';
+    src:url('../../fonts/OyunQaganTig3.0_20180426.eot');
+    src:url('../../fonts/OyunQaganTig3.0_20180426.eot?#iefix') format('embedded-opentype'),
+    url('../../fonts/OyunQaganTig3.0_20180426.ttf') format('truetype');
+    font-weight:normal;
+    font-style:normal;
 }
-@font-face{
-font-family:'MenkGarqag';
-font-style:normal;
-font-weight:normal;
-    src: url('../../fonts/OyunQaganTig3.0_20180426.ttf') format('opentype');
+/*@font-face{*/
+/*font-family:'MenkGarqag';*/
+/*font-style:normal;*/
+/*font-weight:normal;*/
+/*src: url('../../fonts/OyunQaganTig3.0_20180426.ttf') format('truetype');*/
+/*}*/
+
+@font-face
+{
+    font-family:'MenkGarqag';
+    src:url('../../fonts/OyunQaganTig3.0_20180426.eot');
+    src:url('../../fonts/OyunQaganTig3.0_20180426.eot?#iefix') format('embedded-opentype'),
+    url('../../fonts/OyunQaganTig3.0_20180426.ttf') format('truetype'),
+    url('../../fonts/OyunQaganTig3.0_20180426.woff') format('woff');
+    font-weight:normal;
+    font-style:normal;
 }
+
 @font-face{
-font-family:'Hawang';
-font-style:normal;
-font-weight:normal;
-    src: url('../../fonts/OyunQaganTig3.0_20180426.ttf') format('opentype');
+    font-family:'Hawang';
+    font-style:normal;
+    font-weight:normal;
+    src:url('../font/MenkHawang.eot');
+    src:url('../font/MenkHawang.eot?#iefix') format('embedded-opentype'),
+    url('../font/MenkHawang.woff') format('woff'),
+    url('../font/MenkHawang.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: Hawang;
+    src: url('../../fonts/Oyun Hawang Tig20180420.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: Biqimel;
+    src: url('../../fonts/Oyun Gar Biqimel Tig20180421.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: Har_a;
+    src: url('../../fonts/Oyun Har_a Tig20180419.ttf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
 }
 
 @font-face {
     font-family: Sonin;
-    src: url('../../fonts/Oyun Sonin Tig20180501.ttf') format('opentype');
+    src:url('../../fonts/Oyun Sonin Tig20180501.eot');
+    src:url('../../fonts/Oyun Sonin Tig20180501.eot#iefix') format('embedded-opentype'),
+    url('../../fonts/Oyun Sonin Tig20180501.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -32,7 +69,7 @@ a:active{text-decoration:none;}
 a:link{text-decoration:none;}
 a:hover{text-decoration:none;}
 
-body { margin:0 auto; font-family:"Menksoft2012,Sonin"; background:#fff; }
+body { margin:0 auto; font-family:"Menksoft2012 Sonin"; background:#fff; }
 a img { border:0; }
 ul,li,dl,p { list-style:none; margin:0; padding:0; display:list-item; }
 
@@ -42,7 +79,7 @@ ul,li,dl,p { list-style:none; margin:0; padding:0; display:list-item; }
 .f18 { font-size:18px; }
 .f20 { font-size:20px; }
 
-.mw { text-align:justify; writing-mode:tb-lr;-webkit-writing-mode:vertical-lr; -webkit-text-orientation: sideways-right;-o-writing-mode: vertical-lr;moz-writing-mode: vertical-lr; letter-spacing:0px;word-wrap:break-word; word-break:keep-all; }
+.mw { font-family:"MenkGarqag"; text-align:justify; writing-mode:tb-lr;-webkit-writing-mode:vertical-lr; -webkit-text-orientation: sideways-right;-o-writing-mode: vertical-lr;moz-writing-mode: vertical-lr; letter-spacing:0px;word-wrap:break-word; word-break:keep-all; }
 
 /*首页开始*/
 .box { max-width:468px; margin:0 auto; overflow:hidden; }

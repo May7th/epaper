@@ -16,11 +16,13 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.persistence.criteria.Order;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,6 +41,7 @@ public class FrontController {
 
     private static final int TEXT_RECOMMEND = 1;
     private static final int IMAGE_RECOMMEND = 2;
+    private static final int ARTICLE_STATE = 1;
 
     @Autowired
     private IArticleService articleService;
@@ -114,6 +117,11 @@ public class FrontController {
         }
 
         List<Article> articleList = firstPage.getArticleList();
+        articleList.forEach(article -> {
+            if (article.getState() != 1){
+                articleList.remove(article);
+            }
+        });
         String pageImagePath = firstPage.getPageImagePath();
         Map<Long,String> coordinateMap = new HashMap<>();
 
@@ -121,6 +129,7 @@ public class FrontController {
             coordinateMap.put(article.getId(),article.getCoordinate());
         });
 
+        model.addAttribute("currentId",firstPage.getId());
         model.addAttribute("paper",paper);
         model.addAttribute("pageList",pageList);
         model.addAttribute("releaseDate",date);
@@ -131,6 +140,61 @@ public class FrontController {
         return "article/page-detail";
 
     }
+
+    @GetMapping("mobile/paper")
+    public String getMobilePaper(String releaseDate,
+                           @RequestParam(value="pageId",required=false,defaultValue="0")
+                                   long pageId, Model model){
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date date1 = null;
+        try {
+            date1 = format.parse(releaseDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Paper paper = paperService.findPapersByReleaseDate(date1);
+        if (paper == null){
+            return "redirect:index";
+        }
+
+        List<Page> pageList = paper.getPageList();
+
+        pageList.sort(Comparator.comparing(Page::getPageName));
+
+        Date date = paper.getReleaseDate();
+        Page firstPage;
+        if (pageId == 0){
+            firstPage = pageList.get(0);
+        }else {
+            firstPage = pageService.getPageById(pageId);
+        }
+
+        List<Article> articleList = firstPage.getArticleList();
+        articleList.forEach(article -> {
+            if (article.getState() != 1){
+                articleList.remove(article);
+            }
+        });
+        String pageImagePath = firstPage.getPageImagePath();
+        Map<Long,String> coordinateMap = new HashMap<>();
+
+        articleList.forEach(article -> {
+            coordinateMap.put(article.getId(),article.getCoordinate());
+        });
+
+        model.addAttribute("currentId",firstPage.getId());
+        model.addAttribute("paper",paper);
+        model.addAttribute("pageList",pageList);
+        model.addAttribute("releaseDate",date);
+        model.addAttribute("articleList",articleList);
+        model.addAttribute("pageImagePath",pageImagePath);
+        model.addAttribute("coordinateMap",coordinateMap);
+
+        return "article/mobile-page";
+
+    }
+
+
     @GetMapping("article/{id}")
     public ModelAndView articleDetail(@PathVariable("id") Long id, Model model){
 
@@ -141,11 +205,52 @@ public class FrontController {
         }
 
         Page page = pageService.getPageById(article.getParentId());
+        List<Article> articleList = page.getArticleList();
+        Map<Long,String> coordinateMap = new HashMap<>();
+
+        articleList.forEach(pageArticle -> {
+            coordinateMap.put(pageArticle.getId(),pageArticle.getCoordinate());
+        });
+        Long paperId = page.getParentId();
+        Paper paper = paperService.getPaperById(paperId);
+        List<Page> pageList = paper.getPageList();
+        pageList.sort(Comparator.comparing(Page::getPageName));
 
         model.addAttribute(article);
-        model.addAttribute(page);
+        model.addAttribute("currentPage",page);
+        model.addAttribute("coordinateMap",coordinateMap);
+        model.addAttribute("pageList",pageList);
 
         return new ModelAndView("article/detail", "articleModel", model);
+    }
+
+    @GetMapping("mobile/article/{id}")
+    public ModelAndView mobileArticleDetail(@PathVariable("id") Long id, Model model){
+
+        Article article = articleService.getArticleById(id);
+
+        if (articleService.increaseReadSize(article) == null){
+            log.error("article read error,id: "+id);
+        }
+
+        Page page = pageService.getPageById(article.getParentId());
+        List<Article> articleList = page.getArticleList();
+        Map<Long,String> coordinateMap = new HashMap<>();
+
+        articleList.forEach(pageArticle -> {
+            coordinateMap.put(pageArticle.getId(),pageArticle.getCoordinate());
+        });
+        Long paperId = page.getParentId();
+        Paper paper = paperService.getPaperById(paperId);
+        List<Page> pageList = paper.getPageList();
+        pageList.sort(Comparator.comparing(Page::getPageName));
+
+        model.addAttribute(article);
+        model.addAttribute("currentPage",page);
+        model.addAttribute("coordinateMap",coordinateMap);
+        model.addAttribute("pageList",pageList);
+
+        return new ModelAndView("article/mobile-detail", "articleModel", model);
     }
 
     @GetMapping("article/search")
@@ -211,7 +316,9 @@ public class FrontController {
     @GetMapping("article/clickRate")
     public String clickRateList(Model model){
 
-        model.addAttribute("total",5140);
+        long total = articleRepository.countAllByState(ARTICLE_STATE);
+
+        model.addAttribute("total",total);
 
         return "article/click-list";
     }
@@ -220,10 +327,12 @@ public class FrontController {
     public ModelAndView getAllClickList(@RequestParam(value="start",required=false,defaultValue="0") int start,
                                          @RequestParam(value="size",required=false,defaultValue="10") int size,
                                         Model model){
-        int index = start/size;
-        Pageable pageable = new PageRequest(index, size);
 
-        org.springframework.data.domain.Page<Article> articleList = articleRepository.findAllByOrderByReadSizeDesc(pageable);
+        Sort sort = new Sort(Sort.Direction. DESC, "readSize");
+        int index = start/size;
+        Pageable pageable = new PageRequest(index, size,sort);
+
+        org.springframework.data.domain.Page<Article> articleList = articleRepository.findAllByState(ARTICLE_STATE,pageable);
 
         model.addAttribute("articleList",articleList.getContent());
 

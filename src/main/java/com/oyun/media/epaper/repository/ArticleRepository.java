@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,7 +24,7 @@ public interface ArticleRepository extends JpaRepository<Article,Long>{
      * @param pageable
      * @return
      */
-    Page<Article> findArticlesByReleaseDate(Date date, Pageable pageable);
+    Page<Article> findArticlesByReleaseDateAndState(Date date, Integer state, Pageable pageable);
 
     Page<Article> findByCatalog(Catalog catalog, Pageable pageable);
 
@@ -34,7 +34,15 @@ public interface ArticleRepository extends JpaRepository<Article,Long>{
 
     Page<Article> findAllById(List<Long> ids,Pageable pageable);
 
-    Page<Article> findAllByOrderByReadSizeDesc(Pageable pageable);
+    Page<Article> findAllByState(Integer state,Pageable pageable);
     List<Article> findTop10ByOrderByReadSizeDesc();
+
+    long countAllByState(Integer state);
+
+    List<Article> findAllByContentHtmlContainsAndTitleIsNull(String contentHtml);
+    List<Article> findAllByContentHtmlContainsAndTitle(String contentHtml,String title);
+
+    List<Article> findAllByState(Integer state);
+
 
 }

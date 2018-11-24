@@ -36,7 +36,7 @@
                 ᠪᠡᠷ ᠬᠠᠢᠬᠤ
             </p>
             <div style="writing-mode: horizontal-tb" >
-                <div class="input-group date form_date col-md-15" style="width: 280px;padding: 12px" >
+                <div class="input-group date form_date col-md-15" style="width: 260px;padding: 12px" >
                     <input name="releaseDate" class="form-control" type="text" th:value="${releaseDate}" style="font-size: 16px;text-align: center;" readonly>
                     <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
@@ -133,9 +133,10 @@ Copyright © www.mgyxw.com All Right Reserved.</p>
         todayBtn:  1,
         autoclose: 1,
         todayHighlight: 1,
-        startView: 2,
+        startView: 4,
         minView: 2,
-        forceParse: 1
+        forceParse: 1,
+        initialDate:"1951-01-01"
     });
 </script>
 </body>

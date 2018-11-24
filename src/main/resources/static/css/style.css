@@ -3,19 +3,30 @@
 */
 @font-face{
 font-family:'Menksoft2012';
-font-style:normal;
-font-weight:normal;
-src:url('../font/Menksoft2012.eot');
-src:url('../font/Menksoft2012.eot?#iefix') format('embedded-opentype'),
-url('../font/Menksoft2012.woff') format('woff'),
-url('../font/Menksoft2012.ttf') format('truetype');
+    src:url('../fonts/OyunQaganTig3.0_20180426.eot');
+    src:url('../fonts/OyunQaganTig3.0_20180426.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/OyunQaganTig3.0_20180426.ttf') format('truetype');
+    font-weight:normal;
+    font-style:normal;
 }
-@font-face{
-font-family:'MenkGarqag';
-font-style:normal;
-font-weight:normal;
-    src: url('../fonts/OyunQaganTig3.0_20180426.ttf') format('opentype');
+/*@font-face{*/
+/*font-family:'MenkGarqag';*/
+/*font-style:normal;*/
+/*font-weight:normal;*/
+    /*src: url('../fonts/OyunQaganTig3.0_20180426.ttf') format('truetype');*/
+/*}*/
+
+@font-face
+{
+    font-family:'MenkGarqag';
+    src:url('../fonts/OyunQaganTig3.0_20180426.eot');
+    src:url('../fonts/OyunQaganTig3.0_20180426.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/OyunQaganTig3.0_20180426.ttf') format('truetype'),
+    url('../fonts/OyunQaganTig3.0_20180426.woff') format('woff');
+    font-weight:normal;
+    font-style:normal;
 }
+
 @font-face{
 font-family:'Hawang';
 font-style:normal;
@@ -28,14 +39,14 @@ url('../font/MenkHawang.ttf') format('truetype');
 
 @font-face {
     font-family: Hawang;
-    src: url('../fonts/Oyun Hawang Tig20180420.ttf') format('opentype');
+    src: url('../fonts/Oyun Hawang Tig20180420.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: Biqimel;
-    src: url('../fonts/Oyun Gar Biqimel Tig20180421.ttf') format('opentype');
+    src: url('../fonts/Oyun Gar Biqimel Tig20180421.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -49,7 +60,9 @@ url('../font/MenkHawang.ttf') format('truetype');
 
 @font-face {
     font-family: Sonin;
-    src: url('../fonts/Oyun Sonin Tig20180501.ttf') format('opentype');
+    src:url('../fonts/Oyun Sonin Tig20180501.eot');
+    src:url('../fonts/Oyun Sonin Tig20180501.eot#iefix') format('embedded-opentype'),
+    url('../fonts/Oyun Sonin Tig20180501.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -104,7 +117,8 @@ ul,li,dl,p { list-style:none; margin:0; padding:0; display:list-item; }
 .btn_search { width:24px; height:46px; float:left; margin:7px 0px 0px 16px; background:url("../images/ss.png") no-repeat; border:0; display:inline-block; }
 
 .left_b { width:100%; float:left; margin-top:34px; height:580px; }
-.left_b_p { float:left; padding:16px 8px 16px 8px; background:#2693ff; color:#fff; border-radius:5px; font-family:"Sonin"; font-size:18px; }
+.left_b_p { float:left; padding:16px 8px 16px 8px; background:#2693ff; color:#fff; border-radius:5px; font-family:"Sonin"; font-size:18px; margin: 4px; }
+.left_b_p_c { float:left; padding:16px 8px 16px 8px; background: #ff3f2b; color:#fff; border-radius:5px; font-family:"Sonin"; font-size:18px; margin: 4px; }
 .left_b_text { width:395px; float:left; background:url("../images/num.png") no-repeat top; padding-top:36px; padding-left:11px; }
 .left_b_text a { width:58px; float:left; background:#f8f8f1; margin-left:4px; color:#2693ff; height:100%;}
 .left_b_text a:hover { color:#646462; }
