@@ -39,10 +39,15 @@ public interface ArticleRepository extends JpaRepository<Article,Long>{
 
     long countAllByState(Integer state);
 
+    List<Article> findAllByParentIdAndState(Long pageId,Integer state);
+
     List<Article> findAllByContentHtmlContainsAndTitleIsNull(String contentHtml);
     List<Article> findAllByContentHtmlContainsAndTitle(String contentHtml,String title);
 
     List<Article> findAllByState(Integer state);
 
+    List<Article> findAllByContentHtmlContainsAndStateNotAndTitleIsNot(String contentHtml,Integer state,String title);
+
+    Page<Article> findAllByContentHtmlInAndState(String contentHtml,int state,Pageable pageable);
 
 }

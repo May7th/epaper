@@ -18,6 +18,8 @@ public interface RecommendRepository extends JpaRepository<Recommend,Long>{
 
     List<Recommend> findAllByNewsTypeOrderBySequenceAsc(int type);
 
+    List<Recommend> findAllByArticleName(String name);
+
 
 
 }

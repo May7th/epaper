@@ -26,7 +26,7 @@ public class Recommend {
     @Column
     private Long articleId;
 
-    @Column
+    @Lob
     private String articleName;
 
     @Column

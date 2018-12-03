@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="x-ua-compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximun-scale=1.0, user-scalable=no">
-  <title>中国蒙古语新闻网</title>
+  <title>中国蒙古语新闻网—历史报</title>
     <link href="../../css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet">
     <link href="../../css/bootstrap-theme.min.css" th:href="@{/css/bootstrap-theme.min.css}" rel="stylesheet">
     <link href="../../css/bootstrap-datetimepicker.min.css" th:href="@{/css/bootstrap-datetimepicker.min.css}" rel="stylesheet" media="screen">
@@ -22,7 +22,7 @@
 <div id="wrapper">
     <div class="header_xl">
         <div class="xl_logo"><a th:href="@{'/'}"><img th:src="@{'/images/logo_d.png'}"></a></div>
-        <h1 class="mw"><span style="writing-mode: sideways-rl">ᠮᠣᠩᠭᠣᠯ ᠲᠡᠦᠬᠡᠨ ᠰᠣᠨᠢᠨ</span></h1>
+        <img style="margin: 70px 0 0 4px; float: left;width: 45%;height: 45%" th:src="@{'/images/lishibao.png'}"/>
         <div class="ss_xl">
             <form th:action="@{~/epaper/article/search}" method="get">
                 <input id="keywords" class="btn_search_aa" type="text" name="keywords" value="ᠵᠠᠩᠭᠢᠯᠠᠭ᠎ᠠ ᠶ᠋ᠢᠨ ᠦᠭᠡᠰ ᠢᠶᠡᠨ ᠡᠨᠳᠡ ᠪᠢᠴᠢ" onclick="if(this.value='ᠵᠠᠩᠭᠢᠯᠠᠭ᠎ᠠ ᠶ᠋ᠢᠨ ᠦᠭᠡᠰ ᠢᠶᠡᠨ ᠡᠨᠳᠡ ᠪᠢᠴᠢ'){this.value='';this.style.color='a8a8b7';}" onblur="if(this.value==''){ this.value='ᠵᠠᠩᠭᠢᠯᠠᠭ᠎ᠠ ᠶ᠋ᠢᠨ ᠦᠭᠡᠰ ᠢᠶᠡᠨ ᠡᠨᠳᠡ ᠪᠢᠴᠢ';this.style.color='a8a8b7';}else{this.style.color='a8a8b7';}">
@@ -37,7 +37,7 @@
             <div class="rl mw f18" style="writing-mode: vertical-lr">
                 <form th:action="@{~/epaper/paper}" method="get">
                     <div style="writing-mode: horizontal-tb;-ms-writing-mode: lr-tb;width: 350px" >
-                    <div class="input-group date form_date col-md-15" style="width: 350px;padding: 12px;font-family:'sans-serif';" >
+                    <div class="input-group date form_date col-md-15" style="width: 330px;padding: 12px;font-family:'sans-serif';" >
                             <input name="releaseDate" class="form-control" type="text" th:value="${releaseDate}" style="font-size: 16px;text-align: center;" readonly>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
@@ -47,7 +47,7 @@
                 </form>
             </div>
             <div class="pdf">
-                <div id='image-map' style="width:390px; height:502px;-ms-writing-mode: lr-tb"></div>
+                <div id='image-map' style="width:350px; height:470px;-ms-writing-mode: lr-tb"></div>
             </div>
         </div>
         <div  th:each="page:${pageList}" style="margin: 5px">
@@ -72,10 +72,10 @@
                 </div>
             </div>
             <div class="xl_footer f18">
-                <span style="font-family:'sans-serif'">2008-2018</span> © ᠳᠤᠮᠳᠠᠳᠤ ᠤᠯᠤᠰ ᠤᠨ ᠮᠤᠩᠭᠤᠯ ᠬᠡᠯᠡᠨ ᠤ ᠰᠤᠨᠢᠨ ᠮᠡᠳᠡᠭᠡᠨ ᠤ ᠰᠦᠯᠵᠢᠶ᠎ᠡ ᠦᠮᠴᠢᠯᠡᠯ ᠤᠨ ᠡᠷᠬᠡ ᠲᠠᠢ<Br>
-                ᠵᠤᠬᠢᠶᠠᠭᠴᠢ ᠶᠢᠨ ᠡᠷᠬᠡ ᠬᠠᠤᠯᠢ ᠪᠠᠷ ᠬᠠᠮᠠᠭᠠᠯᠠᠭᠳᠠᠭᠰᠠᠨ᠂ ᠵᠦᠪᠰᠢᠶᠡᠷᠡᠯ ᠦᠭᠡᠢ ᠪᠠᠷ ᠬᠠᠭᠤᠯᠪᠤᠷᠢᠯᠠᠬᠤ ᠶᠢ ᠬᠠᠲᠠᠭᠤ ᠬᠤᠷᠢᠭᠯᠠᠨ᠎ᠠ<Br>
-                ᠦᠪᠦᠷ ᠮᠣᠩᠭᠣᠯ ᠤᠨ ᠣᠶᠣᠨ ᠵᠠᠩᠬᠢ ᠮᠡᠷᠭᠡᠵᠢᠯ ᠤᠨ ᠦᠢᠯᠡᠴᠢᠯᠡᠭᠡᠨ ᠤ ᠬᠢᠵᠠᠭᠠᠷᠲᠤ ᠺᠣᠮᠫᠠᠨᠢ ᠮᠡᠷᠭᠡᠵᠢᠯ ᠬᠠᠩᠭᠠᠪᠠ<br>
-                ᠬᠠᠷᠢᠯᠴᠠᠬᠤ ᠤᠲᠠᠰᠤ᠄ <span style="font-family:'sans-serif'">0471-6659832</span><Br>
+                <span style="font-family:'sans-serif'">2008-2018</span> © ᠳᠤᠮᠳᠠᠳᠤ ᠤᠯᠤᠰ ᠤ᠋ᠨ ᠮᠣᠩᠭᠣᠯ ᠬᠡᠯᠡᠨ ᠦ᠌ ᠰᠣᠨᠢᠨ
+                ᠮᠡᠳᠡᠭᠡᠨ ᠦ᠌ ᠰᠦᠯᠵᠢᠶ᠎ᠡ ᠥᠮᠴᠢᠯᠡᠯ ᠦ᠋ᠨ ᠡᠷᠬᠡ ᠲᠡᠢ ᠵᠣᠬᠢᠶᠠᠭᠴᠢ ᠶ᠋ᠢᠨ ᠡᠷᠬᠡ ᠬᠠᠤᠯᠢ ᠪᠠᠷ ᠬᠠᠮᠠᠭᠠᠯᠠᠭᠳᠠᠭᠰᠠᠨ᠂
+                ᠵᠥᠪᠱᠢᠶᠡᠷᠡᠯ ᠦᠭᠡᠢ ᠪᠡᠷ ᠬᠠᠭᠤᠯᠪᠤᠷᠢᠯᠠᠬᠤ ᠶ᠋ᠢ ᠬᠠᠲᠠᠭᠤ ᠬᠣᠷᠢᠭᠯᠠᠨ᠎ᠠ <br/>ᠥᠪᠥᠷ ᠮᠣᠩᠭᠣᠯ ᠤ᠋ᠨ ᠣᠶᠤᠨ ᠵᠠᠩᠭᠢ ᠮᠡᠷᠭᠡᠵᠢᠯ 
+                ᠦ᠋ᠨ ᠦᠢᠯᠡᠴᠢᠯᠡᠭᠡᠨ ᠦ᠌ ᠬᠢᠵᠠᠭᠠᠷᠲᠤ ᠺᠣᠮᠫᠠᠨᠢ ᠮᠡᠷᠭᠡᠵᠢᠯ ᠬᠠᠩᠭᠠᠪᠠ<br/> ᠬᠠᠷᠢᠯᠴᠠᠬᠤ ᠤᠲᠠᠰᠤ᠄ <span style="font-family:'sans-serif'">0471-6659832</span><Br>
                 ᠢᠮᠧᠯ᠄ tn@mgyxw.net   蒙ICP备10000005号
             </div>
         </div>
@@ -184,7 +184,8 @@
     });
 </script>
 <script th:inline="javascript">
-    var pageImagePath = [[${pageImagePath}]];
+    var path= [[${pageImagePath}]];
+    var pageImagePath = path.replace("image/","image/front/");
     var coordinate = "";
     var coordinateMap = [[${coordinateMap}]];
     var map = null;
@@ -218,6 +219,8 @@
                 center:[210,300]
             });
 
+            // var southWest = map.unproject([ 0, 0 ], map.getMinZoom() - 5);
+            // var northEast = map.unproject([ _tmpIMG_width,_tmpIMG_height ], map.getMaxZoom() - 5);
             var southWest = map.unproject([ 0, 0 ], map.getMinZoom() - 5);
             var northEast = map.unproject([ 210,300 ], map.getMaxZoom() - 5);
             var bounds = new L.LatLngBounds(southWest, northEast);

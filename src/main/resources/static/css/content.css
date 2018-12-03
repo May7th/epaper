@@ -8,17 +8,17 @@ html { width:100%; max-height:600px; margin:0px; padding:0px; overflow-y:auto;ov
 .header_xl h2 { float:left; font-family:"MenkGarqag"; font-size:36px; margin:100px 0px 0px 70px; color:#666; }
 
 .ss_xl { width:46px; height:310px; float:left; background:url("../images/ss_b.png") no-repeat top; padding-top:64px; padding-left:3px; margin:150px 0px 0px 25px; position:relative; }
-.btn_search_aa { -ms-transform:rotate(90deg) translate(0, -100%);-ms-transform-origin:0% 0%;-webkit-transform:rotate(90deg) translate(0, -100%);-webkit-transform-origin:0% 0%;-moz-transform:rotate(90deg) translate(0,-100%);-moz-transform-origin:0% 0%;-o-transform:rotate(90deg) translate(0,-100%);-o-transform-origin:0% 0%;/* white-space:nowrap; */ width:200px; float:left; height:42px; border:1px solid #acac9d; font-size:18px; color:#a8a8b7; padding-left:20px; font-family:"MenkGarqag"; }
+.btn_search_aa { -ms-transform:rotate(90deg) translate(0, -100%);-ms-transform-origin:0% 0%;-webkit-transform:rotate(90deg) translate(0, -100%);-webkit-transform-origin:0% 0%;-moz-transform:rotate(90deg) translate(0,-100%);-moz-transform-origin:0% 0%;-o-transform:rotate(90deg) translate(0,-100%);-o-transform-origin:0% 0%;/* white-space:nowrap; */ width:200px; float:left; height:42px; border:1px solid #acac9d; font-size:18px; color:#a8a8b7; padding-left:20px; font-family:"Menksoft2012"; }
 .btn_search_bb { width:37px; height:42px; position:absolute; bottom:0; left:5px;  background:url("../images/ss_c.png") no-repeat; border:0; }
 
 .xl_right_box_a { position:absolute; top:10px; left:185px; bottom:10px; }
 
-.pdf_box { width:408px; height:100%; margin-left:10px; float:left; overflow:hidden; }
-.pdf { width:390px; height:502px; float:left; border:2px solid #dfdfd0; border-radius:5px; margin-top:15px; margin-left:10px;-webkit-writing-mode:horizontal-tb }
+.pdf_box { width:390px; height:100%; margin-left:10px; float:left; overflow:hidden; }
+.pdf { width:350px; height:470px; float:left; border:2px solid #dfdfd0; border-radius:5px; margin-top:15px; margin-left:10px;-webkit-writing-mode:horizontal-tb }
 
-.title_box { float:left; min-height: 330px; border-radius:10px; background:#cecebf; padding:20px 10px 20px 10px; font-family:"MenkGarqag"; color:#646472; margin-left:14px; }
+.title_box { float:left; min-height: 500px; border-radius:10px; background:#cecebf; padding:20px 10px 20px 10px; font-family:"MenkGarqag"; color:#646472; margin-left:14px; }
 .tvga { float:left; font-family:"Menksoft2012"; color:#646472; margin-left:16px; margin-top:300px; writing-mode: bt-lr}
-.xl_content {font-family:"Menksoft2012"; float:left; color:#171420; border:1px dashed #cecebf; padding:20px; line-height:180%; margin-left:16px; }
+.xl_content {height: -webkit-fill-available;font-family:"Menksoft2012"; float:left; color:#171420; border:1px dashed #cecebf; padding:20px; line-height:180%; margin-left:16px; }
 .auther {  float:left; height:100%; margin-left:14px; color:#646472; border:1px dashed #cecebf; padding:20px 10px 20px 10px; line-height:180%; background:#f7f3f2; font-family:"MenkGarqag"; }
 .xl_footer { float:left; height:100%; margin-left:16px; color:#171420; padding:20px 10px 20px 10px; line-height:160%; background:#f7f3f2; }
 
@@ -33,21 +33,24 @@ html { width:100%; max-height:600px; margin:0px; padding:0px; overflow-y:auto;ov
 .ss_jss p { font-size:21px; }
 .btn_search_aaa { -ms-transform:rotate(90deg) translate(0, -100%);-ms-transform-origin:0% 0%;-webkit-transform:rotate(90deg) translate(0, -100%);-webkit-transform-origin:0% 0%;-moz-transform:rotate(90deg) translate(0,-100%);-moz-transform-origin:0% 0%;-o-transform:rotate(90deg) translate(0,-100%);-o-transform-origin:0% 0%;/* white-space:nowrap; */ width:80px; height:42px; border:1px solid #acac9d; font-size:18px; color:#a8a8b7; padding-left:4px; position:absolute; left:-6px; bottom:84px; }
 .btn_search_bbb { width:80px; height:80px; float:left; background:url("../images/js.png") no-repeat; border:0; border-radius:6px; margin:100px 0px 0px 40px; }
-.js_content { float:left; padding:20px 10px 20px 10px; margin-left:16px; display:none;}
+.js_content { float:left; padding:20px 10px 20px 10px; margin-left:16px; display:none;overflow:hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow:ellipsis;
+    word-break:keep-all;}
 .js_content li { float:left; color:#171420; line-height:180%;
     width:290px;
-    height: 100%;
-    /*white-space:nowrap;*/
+    height: 600px;
     overflow:hidden;
     text-overflow: ellipsis;
-    -o-text-overflow:ellipsis;}
+    -o-text-overflow:ellipsis;
+    word-break:keep-all;}
 .js_content dd { float:left; color:#8c4600; margin:330px 0px 0px 10px; font-family:"MenkGarqag"; font-size:18px; }
 /*.js_content p { float:left; color: #818c8c; margin:350px 0px 0px 10px; font-family:"MenkGarqag"; font-size:13px; }*/
 .js_title { height:100%; float:left; margin-left:14px; background:#cecebf; border-radius:10px; padding:20px 10px 20px 10px; cursor:pointer; }
 .js_title ul { float:left; }
 .js_title a { float:left; height:480px; color: #020001; line-height:150%; font-family:"MenkGarqag"; font-size:18px; }
 .js_title p { float:left; height:250px; color:#444; font-size:18px; margin:280px 0px 0px 3px; }
-.js_more { padding:16px 4px 16px 4px; float:right; border-radius:8px; margin:220px 0px 0px 16px; width: 40px}
+.js_more { padding:16px 4px 16px 4px; float:right; border-radius:8px; margin:0px 0px 0px 16px; width: 40px; }
 /*.js_more a { color:#414141; }*/
 .clear {
     clear: both
@@ -65,11 +68,12 @@ html { width:100%; max-height:600px; margin:0px; padding:0px; overflow-y:auto;ov
     margin: 2px;
     border-radius: 4px;
     writing-mode: sideways-rl;
+    writing-mode: vertical-lr;
 }
 .RadioStyle input:checked + label {
     background: url(images/ico_checkon.svg) no-repeat right bottom;
     border: 1px solid #00a4ff;
-    background-size: 21px 21px;
+    background-size: 14px 14px;
     color: #00a4ff
 }
 .RadioStyle input:disabled + label {
@@ -83,5 +87,7 @@ html { width:100%; max-height:600px; margin:0px; padding:0px; overflow-y:auto;ov
     -o-writing-mode: vertical-lr !important;
     -ms-writing-mode: tb-lr !important;
     writing-mode: tb-lr !important;
+    writing-mode: sideways-rl;
     font-size: 15px;
+    font-family:"MenkGarqag"
 }

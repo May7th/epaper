@@ -21,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -35,8 +36,6 @@ import org.springframework.web.servlet.ModelAndView;
 public class UserController {
 	@Autowired
 	private IUserService userService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 	
 	@Autowired
 	private IAuthorityService authorityService;
@@ -139,6 +138,7 @@ public class UserController {
                                      @RequestParam(value = "newPassword",required = true) String newPassword){
 
         User currentUser = UserUtil.getCurrentUser();
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         if (passwordEncoder.matches(oldPassword,currentUser.getPassword())){
 
             currentUser.setPassword(newPassword);

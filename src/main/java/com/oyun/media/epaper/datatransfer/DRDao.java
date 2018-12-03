@@ -18,4 +18,6 @@ public interface DRDao {
     DR findDemoById(String id);
 
     public List<DR> findAll();
+
+    DR findeDemoByName(String name);
 }

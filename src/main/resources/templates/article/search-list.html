@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="x-ua-compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximun-scale=1.0, user-scalable=no">
-  <title>中国蒙古语新闻网</title>
+  <title>中国蒙古语新闻网—历史报</title>
 
     <link href="../../css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet">
     <link href="../../css/bootstrap-theme.min.css" th:href="@{/css/bootstrap-theme.min.css}" rel="stylesheet">
@@ -23,7 +23,7 @@
 <div id="wrapper">
 	<div class="header_xl">
         <div class="xl_logo"><a th:href="@{'/'}"><img th:src="@{'/images/logo_d.png'}"></a></div>
-        <h2 class="mw"><span style="writing-mode: vertical-lr;">ᠮᠣᠩᠭᠣᠯ ᠲᠡᠦᠬᠡᠨ ᠰᠣᠨᠢᠨ</span> </h2>
+        <img style="margin: 70px 0 0 30px;width: 45%;height: 45%" th:src="@{'/images/lishibao.png'}"/>
 	</div>
 	<div class="xl_right_box_a">
 		<div class="js_box">
@@ -40,19 +40,19 @@
                 </div>
                 <div class="js_b">
                 <div class="ss_js">
-                  <input id="keywords" class="btn_search_aa" type="text" name="keywords" th:value="${keywords}"/>
+                  <input style="font-family:'Menksoft2012'" id="keywords" class="btn_search_aa" type="text" name="keywords" th:value="${keywords}"/>
                 </div>
                 <div class="ss_jss">
-                    <div class="RadioStyle" style="writing-mode: sideways-rl;">
+                    <div class="RadioStyle" style="writing-mode: sideways-rl;writing-mode: vertical-lr">
                         <div class="Block PaddingL">
                             <input type="radio" name="wordType" id="all" checked  value=""/>
-                            <label for="all" style="height: 50px"><p class="checkLabel">ᠪᠦᠭᠦᠳᠡ</p></label>
+                            <label for="all" style="height: 50px;"><img th:src="@{'/images/all.png'}" style="width: 22px;margin: 2px 2px 2px 4px"/></label>
                             <input type="radio" name="wordType" id="content" th:checked="${wordType}=='content'" value="content"/>
-                            <label for="content" style="height: 50px"><p class="checkLabel">ᠠᠭᠤᠯᠭ᠎ᠠ</p></label>
+                            <label for="content" style="height: 50px"><img th:src="@{'/images/content.png'}" style="width: 25px;margin: 1px"/></label>
                             <input type="radio" name="wordType" id="title" th:checked="${wordType}=='title'" value="title"/>
-                            <label for="title" style="height: 50px"><p class="checkLabel">ᠭᠠᠷᠴᠠᠭ</p></label>
+                            <label for="title" style="height: 50px"><img th:src="@{'/images/title.png'}" style="width: 25px;margin: 1px"/></label>
                             <input type="radio" name="wordType" id="author" th:checked="${wordType}=='author'" value="author"/>
-                            <label for="author" style="height: 70px"><p class="checkLabel">ᠨᠠᠢᠷᠠᠭᠤᠯᠤᠭᠴᠢ</p></label>
+                            <label for="author" style="height: 70px"><img th:src="@{'/images/author.png'}" style="width: 20px;margin: 2px 2px 2px 4px"/></label>
                         </div>
                     </div>
                     <div class="clear"></div>
@@ -67,13 +67,13 @@
 
        </div>
        <div class="js_more f18">
-           <div id="pagination" style="-ms-writing-mode: lr-tb"></div>
+           <div id="pagination" style="-ms-writing-mode: lr-tb;margin-top: -200px;"></div>
        </div>
 		<div class="xl_footer f18">
-            <span style="font-family:'sans-serif'">2008-2018</span> © ᠳᠤᠮᠳᠠᠳᠤ ᠤᠯᠤᠰ ᠤᠨ ᠮᠤᠩᠭᠤᠯ ᠬᠡᠯᠡᠨ ᠤ ᠰᠤᠨᠢᠨ ᠮᠡᠳᠡᠭᠡᠨ ᠤ ᠰᠦᠯᠵᠢᠶ᠎ᠡ ᠦᠮᠴᠢᠯᠡᠯ ᠤᠨ ᠡᠷᠬᠡ ᠲᠠᠢ<Br>
-            ᠵᠤᠬᠢᠶᠠᠭᠴᠢ ᠶᠢᠨ ᠡᠷᠬᠡ ᠬᠠᠤᠯᠢ ᠪᠠᠷ ᠬᠠᠮᠠᠭᠠᠯᠠᠭᠳᠠᠭᠰᠠᠨ᠂ ᠵᠦᠪᠰᠢᠶᠡᠷᠡᠯ ᠦᠭᠡᠢ ᠪᠠᠷ ᠬᠠᠭᠤᠯᠪᠤᠷᠢᠯᠠᠬᠤ ᠶᠢ ᠬᠠᠲᠠᠭᠤ ᠬᠤᠷᠢᠭᠯᠠᠨ᠎ᠠ<Br>
-            ᠦᠪᠦᠷ ᠮᠣᠩᠭᠣᠯ ᠤᠨ ᠣᠶᠣᠨ ᠵᠠᠩᠬᠢ ᠮᠡᠷᠭᠡᠵᠢᠯ ᠤᠨ ᠦᠢᠯᠡᠴᠢᠯᠡᠭᠡᠨ ᠤ ᠬᠢᠵᠠᠭᠠᠷᠲᠤ ᠺᠣᠮᠫᠠᠨᠢ ᠮᠡᠷᠭᠡᠵᠢᠯ ᠬᠠᠩᠭᠠᠪᠠ<br>
-            ᠬᠠᠷᠢᠯᠴᠠᠬᠤ ᠤᠲᠠᠰᠤ᠄ <span style="font-family:'sans-serif'">0471-6659832</span><Br>
+            <span style="font-family:'sans-serif'">2008-2018</span> © ᠳᠤᠮᠳᠠᠳᠤ ᠤᠯᠤᠰ ᠤ᠋ᠨ ᠮᠣᠩᠭᠣᠯ ᠬᠡᠯᠡᠨ ᠦ᠌ ᠰᠣᠨᠢᠨ
+            ᠮᠡᠳᠡᠭᠡᠨ ᠦ᠌ ᠰᠦᠯᠵᠢᠶ᠎ᠡ ᠥᠮᠴᠢᠯᠡᠯ ᠦ᠋ᠨ ᠡᠷᠬᠡ ᠲᠡᠢ ᠵᠣᠬᠢᠶᠠᠭᠴᠢ ᠶ᠋ᠢᠨ ᠡᠷᠬᠡ ᠬᠠᠤᠯᠢ ᠪᠠᠷ ᠬᠠᠮᠠᠭᠠᠯᠠᠭᠳᠠᠭᠰᠠᠨ᠂
+            ᠵᠥᠪᠱᠢᠶᠡᠷᠡᠯ ᠦᠭᠡᠢ ᠪᠡᠷ ᠬᠠᠭᠤᠯᠪᠤᠷᠢᠯᠠᠬᠤ ᠶ᠋ᠢ ᠬᠠᠲᠠᠭᠤ ᠬᠣᠷᠢᠭᠯᠠᠨ᠎ᠠ <br/>ᠥᠪᠥᠷ ᠮᠣᠩᠭᠣᠯ ᠤ᠋ᠨ ᠣᠶᠤᠨ ᠵᠠᠩᠭᠢ ᠮᠡᠷᠭᠡᠵᠢᠯ 
+            ᠦ᠋ᠨ ᠦᠢᠯᠡᠴᠢᠯᠡᠭᠡᠨ ᠦ᠌ ᠬᠢᠵᠠᠭᠠᠷᠲᠤ ᠺᠣᠮᠫᠠᠨᠢ ᠮᠡᠷᠭᠡᠵᠢᠯ ᠬᠠᠩᠭᠠᠪᠠ<br/> ᠬᠠᠷᠢᠯᠴᠠᠬᠤ ᠤᠲᠠᠰᠤ᠄ <span style="font-family:'sans-serif'">0471-6659832</span><Br>
             ᠢᠮᠧᠯ᠄ tn@mgyxw.net   蒙ICP备10000005号
 		</div>
 	</div>

@@ -2,17 +2,24 @@ package com.oyun.media.epaper.controller;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.oyun.media.epaper.common.ApiResponse;
+import com.oyun.media.epaper.datatransfer.DR;
+import com.oyun.media.epaper.datatransfer.DRDao;
+import com.oyun.media.epaper.datatransfer.SubPic;
 import com.oyun.media.epaper.domain.Article;
 import com.oyun.media.epaper.domain.Page;
 import com.oyun.media.epaper.domain.Paper;
 import com.oyun.media.epaper.domain.Recommend;
 import com.oyun.media.epaper.repository.ArticleRepository;
+import com.oyun.media.epaper.repository.RecommendRepository;
 import com.oyun.media.epaper.search.ArticleSearch;
 import com.oyun.media.epaper.service.IArticleService;
 import com.oyun.media.epaper.service.IPageService;
 import com.oyun.media.epaper.service.IPaperService;
 import com.oyun.media.epaper.service.IRecommendService;
+import com.oyun.media.epaper.service.impl.DataHandleService;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -58,6 +65,12 @@ public class FrontController {
     @Autowired
     private IPageService pageService;
 
+    @Autowired
+    private RecommendRepository recommendRepository;
+
+    @Autowired
+    private DataHandleService dataHandleService;
+
     @GetMapping("index")
     public String index(Model model){
 
@@ -101,7 +114,15 @@ public class FrontController {
         }
         Paper paper = paperService.findPapersByReleaseDate(date1);
         if (paper == null){
-            return "redirect:index";
+            List<Article> clickRateList = articleService.clickRateList(6);
+            List<Recommend> textRecommendList = recommendService.findAllRecommendsByType(13,TEXT_RECOMMEND);
+            List<Recommend> imageRecommendList = recommendService.findAllRecommendsByType(7,IMAGE_RECOMMEND);
+            Recommend printRecommend = imageRecommendList.remove(6);
+            model.addAttribute("clickRateList",clickRateList);
+            model.addAttribute("textRecommendList",textRecommendList);
+            model.addAttribute("imageRecommendList",imageRecommendList);
+            model.addAttribute("printRecommend",printRecommend);
+            return "article/index";
         }
 
         List<Page> pageList = paper.getPageList();
@@ -116,12 +137,19 @@ public class FrontController {
             firstPage = pageService.getPageById(pageId);
         }
 
-        List<Article> articleList = firstPage.getArticleList();
-        articleList.forEach(article -> {
-            if (article.getState() != 1){
-                articleList.remove(article);
-            }
-        });
+
+        List<Article> articleList = articleRepository.findAllByParentIdAndState(firstPage.getId(),1);
+        if (articleList.size()<1){
+            List<Article> clickRateList = articleService.clickRateList(6);
+            List<Recommend> textRecommendList = recommendService.findAllRecommendsByType(13,TEXT_RECOMMEND);
+            List<Recommend> imageRecommendList = recommendService.findAllRecommendsByType(7,IMAGE_RECOMMEND);
+            Recommend printRecommend = imageRecommendList.remove(6);
+            model.addAttribute("clickRateList",clickRateList);
+            model.addAttribute("textRecommendList",textRecommendList);
+            model.addAttribute("imageRecommendList",imageRecommendList);
+            model.addAttribute("printRecommend",printRecommend);
+            return "article/index";
+        }
         String pageImagePath = firstPage.getPageImagePath();
         Map<Long,String> coordinateMap = new HashMap<>();
 
@@ -169,12 +197,11 @@ public class FrontController {
             firstPage = pageService.getPageById(pageId);
         }
 
-        List<Article> articleList = firstPage.getArticleList();
-        articleList.forEach(article -> {
-            if (article.getState() != 1){
-                articleList.remove(article);
-            }
-        });
+
+        List<Article> articleList = articleRepository.findAllByParentIdAndState(firstPage.getId(),1);
+        if (articleList.size()<1){
+            return "redirect:index";
+        }
         String pageImagePath = firstPage.getPageImagePath();
         Map<Long,String> coordinateMap = new HashMap<>();
 
@@ -339,4 +366,33 @@ public class FrontController {
         return new ModelAndView("article/list","articleModel",model);
 
     }
+
+//    @GetMapping("article/test/search")
+//    public ModelAndView articleSearchTest(@ModelAttribute ArticleSearch articleSearch,Model model){
+//
+//        String keywords = articleSearch.getKeywords();
+//        String wordType = articleSearch.getWordType();
+//        Date releaseDate = articleSearch.getReleaseDate();
+//        if (releaseDate != null){
+//            SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+//            String date = format.format(releaseDate);
+//            model.addAttribute("releaseDate",date);
+//        }
+//        org.springframework.data.domain.Page<Article> page = articleService.queryPage(articleSearch);
+//
+//        List<Article> articleList = page.getContent();
+//        model.addAttribute("articleList",articleList);
+//        model.addAttribute("page",page);
+//        model.addAttribute("keywords",keywords);
+//        model.addAttribute("wordType",wordType);
+//        model.addAttribute("total",page.getTotalElements());
+//
+//        return new ModelAndView("article/search-list","articleModel",model);
+//    }
+
+
+//    @GetMapping("oyun/data/image/handle/url")
+//    private void handleImageNews(){
+//        dataHandleService.handleImageNews();
+//    }
 }

@@ -24,7 +24,8 @@ public class ElasticSearchConfig {
 
         Settings settings = Settings.builder()
                 .put("cluster.name","epaper")
-                .put("client.transport.sniff",true).build();
+                .put("client.transport.sniff",true)
+                .build();
 
         InetSocketTransportAddress master =
                 new InetSocketTransportAddress(InetAddress.getByName("127.0.0.1"),9300);

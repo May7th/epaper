@@ -18,6 +18,7 @@ import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.reindex.BulkByScrollResponse;
@@ -29,6 +30,7 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
 import org.elasticsearch.search.aggregations.bucket.histogram.ExtendedBounds;
 import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * @program: epaper
@@ -243,19 +246,28 @@ public class SearchServiceImpl implements ISearchService {
 
             switch (wordType){
                 case "title":
-                    boolQuery.must(QueryBuilders.multiMatchQuery(
-                            articleSearch.getKeywords(),
-                            ArticleIndexKey.TITLE));
+                    boolQuery.must(
+                            QueryBuilders.matchPhraseQuery(
+                                    ArticleIndexKey.TITLE,
+                                articleSearch.getKeywords()
+                                ).slop(2)
+                            );
                     break;
                 case "content":
-                    boolQuery.must(QueryBuilders.multiMatchQuery(
-                            articleSearch.getKeywords(),
-                            ArticleIndexKey.CONTENT));
+                    boolQuery.must(
+                                QueryBuilders.matchPhraseQuery(
+                                        ArticleIndexKey.CONTENT,
+                                        articleSearch.getKeywords()
+                                ).slop(2)
+                    );
                     break;
                 case "author":
-                    boolQuery.must(QueryBuilders.multiMatchQuery(
-                            articleSearch.getKeywords(),
-                            ArticleIndexKey.AUTHOR));
+                    boolQuery.must(
+                            QueryBuilders.matchPhraseQuery(
+                            ArticleIndexKey.AUTHOR,
+                            articleSearch.getKeywords()
+                            ).slop(2)
+                    );
                     break;
 
                 default :
@@ -266,21 +278,23 @@ public class SearchServiceImpl implements ISearchService {
                     articleSearch.getKeywords(),
                     ArticleIndexKey.TITLE,
                     ArticleIndexKey.SUB_TITLE,
-                    ArticleIndexKey.PARENT_NAME,
                     ArticleIndexKey.AUTHOR,
                     ArticleIndexKey.CONTENT
-            ));
+            ).operator(Operator.AND).slop(30)
+            );
         }
-
+        if (articleSearch.getStart()>0){
+            articleSearch.setStart(articleSearch.getStart()-1);
+        }
         SearchRequestBuilder requestBuilder = this.esClient.prepareSearch(INDEX_NAME)
                 .setTypes(INDEX_TYPE)
                 .setQuery(boolQuery)
-                .addSort(ArticleSort.getSortKey(articleSearch.getOrderBy()),
+                .addSort("_score",
                         SortOrder.fromString(articleSearch.getOrderDirection()))
                 .setFrom(articleSearch.getStart())
                 .setSize(articleSearch.getSize());
 
-        log.debug(requestBuilder.toString());
+        log.info(requestBuilder.toString());
 
         List<Long> articleIds = new ArrayList<>();
 
@@ -303,28 +317,35 @@ public class SearchServiceImpl implements ISearchService {
         modelMapper.map(article,intermediateArticle);
 
         if (!"".equals(intermediateArticle.getAuthor())){
-            String author = intermediateArticle.getAuthor();
-            intermediateArticle.setAuthor(articleService.getIntermediateCode(author));
+            String cleanHtml = removeHtmlTag(intermediateArticle.getAuthor());
+            String cleanbd = cleanHtml.replaceAll( "[\\p{P}+~$`^=|<>～｀＄＾＋＝｜＜＞￥×]" , " ");
+            String author = articleService.getIntermediateCode(cleanbd);
+            intermediateArticle.setAuthor(author.trim());
         }
 
         if (!"".equals(intermediateArticle.getSubTitle())){
-            String subTitle = intermediateArticle.getSubTitle();
-            intermediateArticle.setSubTitle(articleService.getIntermediateCode(subTitle));
+            String cleanHtml = removeHtmlTag(intermediateArticle.getSubTitle());
+            String cleanbd = cleanHtml.replaceAll( "[\\p{P}+~$`^=|<>～｀＄＾＋＝｜＜＞￥×]" , " ");
+            String subTitle = articleService.getIntermediateCode(cleanbd);
+            intermediateArticle.setSubTitle(subTitle.trim());
         }
 
         if (!"".equals(intermediateArticle.getTitle())){
-            String title = intermediateArticle.getTitle();
-            intermediateArticle.setTitle(articleService.getIntermediateCode(title));
+            String cleanHtml = removeHtmlTag(intermediateArticle.getTitle());
+            String cleanbd = cleanHtml.replaceAll( "[\\p{P}+~$`^=|<>～｀＄＾＋＝｜＜＞￥×]" , " ");
+            String title = articleService.getIntermediateCode(cleanbd);
+            intermediateArticle.setTitle(title.trim());
         }
 
-        if (!"".equals(intermediateArticle.getParentName())){
-            String parentName = intermediateArticle.getParentName();
-            intermediateArticle.setParentName(articleService.getIntermediateCode(parentName));
+        if (!"".equals(intermediateArticle.getContentHtml())){
+            String cleanHtml = removeHtmlTag(intermediateArticle.getContentHtml());
+            String cleanbd = cleanHtml.replaceAll( "[\\p{P}+~$`^=|<>～｀＄＾＋＝｜＜＞￥×]" , " ");
+            String content = articleService.getIntermediateCode(cleanbd);
+            intermediateArticle.setContent(content.trim());
         }
 
         return intermediateArticle;
     }
-
 
     @Override
     public void testData() {
@@ -357,5 +378,46 @@ public class SearchServiceImpl implements ISearchService {
         }
     }
 
+    public static String removeHtmlTag(String inputString) {
+        if (inputString == null)
+            return null;
+        String htmlStr = inputString; // 含html标签的字符串
+        String textStr = "";
+        java.util.regex.Pattern p_script;
+        java.util.regex.Matcher m_script;
+        java.util.regex.Pattern p_style;
+        java.util.regex.Matcher m_style;
+        java.util.regex.Pattern p_html;
+        java.util.regex.Matcher m_html;
+        java.util.regex.Pattern p_special;
+        java.util.regex.Matcher m_special;
+        try {
+//定义script的正则表达式{或<script[^>]*?>[\\s\\S]*?<\\/script>
+            String regEx_script = "<[\\s]*?script[^>]*?>[\\s\\S]*?<[\\s]*?\\/[\\s]*?script[\\s]*?>";
+//定义style的正则表达式{或<style[^>]*?>[\\s\\S]*?<\\/style>
+            String regEx_style = "<[\\s]*?style[^>]*?>[\\s\\S]*?<[\\s]*?\\/[\\s]*?style[\\s]*?>";
+// 定义HTML标签的正则表达式
+            String regEx_html = "<[^>]+>";
+// 定义一些特殊字符的正则表达式 如：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            String regEx_special = "\\&[a-zA-Z]{1,10};";
+
+            p_script = Pattern.compile(regEx_script, Pattern.CASE_INSENSITIVE);
+            m_script = p_script.matcher(htmlStr);
+            htmlStr = m_script.replaceAll(""); // 过滤script标签
+            p_style = Pattern.compile(regEx_style, Pattern.CASE_INSENSITIVE);
+            m_style = p_style.matcher(htmlStr);
+            htmlStr = m_style.replaceAll(""); // 过滤style标签
+            p_html = Pattern.compile(regEx_html, Pattern.CASE_INSENSITIVE);
+            m_html = p_html.matcher(htmlStr);
+            htmlStr = m_html.replaceAll(""); // 过滤html标签
+            p_special = Pattern.compile(regEx_special, Pattern.CASE_INSENSITIVE);
+            m_special = p_special.matcher(htmlStr);
+            htmlStr = m_special.replaceAll(""); // 过滤特殊标签
+            textStr = htmlStr;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return textStr;// 返回文本字符串
+    }
 
 }

@@ -50,6 +50,13 @@ public class DRDaoImpl implements DRDao {
     }
 
     @Override
+    public DR findeDemoByName(String name) {
+        Query query = new Query(Criteria.where("name").is(name));
+        DR dr = mongoTemplate.findOne(query, DR.class);
+        return dr;
+    }
+
+    @Override
     public DR findDemoById(String id) {
         Query query = new Query(Criteria.where("_id").is(id));
         DR dr = mongoTemplate.findOne(query, DR.class);

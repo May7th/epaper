@@ -210,15 +210,46 @@ public class ArticleServiceImpl implements IArticleService {
 
         Pageable pageable = new PageRequest(page,articleSearch.getSize(),sort);
 
-        Page<Article> articles = null;
-        if (articleSearch.getReleaseDate() != null){
+        Specification<Article> specification = (root, criteriaQuery, criteriaBuilder) -> {
 
-            articles = articleRepository.findArticlesByReleaseDateAndState(articleSearch.getReleaseDate(),1,pageable);
+            Predicate predicate = criteriaBuilder.equal(root.get("state"), ArticleStatus.PASSES.getValue());
 
-        }else {
-            articles = articleRepository.findAllByState(1, pageable);
+            if (articleSearch.getCatalogId() >-1){
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get("catalog"), articleSearch.getCatalogId()));
+            }
 
-        }
+            if (!articleSearch.getCatalogName().isEmpty()){
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get("catalogName"), articleSearch.getCatalogName()));
+            }
+
+            if (articleSearch.getRecommend() > -1){
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get("recommend"), articleSearch.getRecommend()));
+            }
+
+            if (articleSearch.getState() > -1){
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get("state"), articleSearch.getState()));
+            }
+
+            if (articleSearch.getReleaseDate() != null){
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                Date temp = articleSearch.getReleaseDate();
+                Date releaseDate = null;
+                try {
+                    releaseDate = format.parse(format.format(temp));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                } catch (java.text.ParseException e) {
+                    e.printStackTrace();
+                }
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get("releaseDate"), releaseDate));
+            }
+
+
+            return predicate;
+        };
+
+        Page<Article> articles = articleRepository.findAll(specification, pageable);
+
         return articles;
     }
 
