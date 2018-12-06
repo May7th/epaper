@@ -9,6 +9,7 @@ import com.oyun.media.epaper.repository.PageRepository;
 import com.oyun.media.epaper.repository.RecommendRepository;
 import com.oyun.media.epaper.service.IRecommendService;
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +24,7 @@ import java.util.List;
  * @create: 2018-10-06 22:20
  **/
 @Service
-@Log4j2
+@Slf4j
 public class RecommendServiceImpl implements IRecommendService {
 
     @Autowired

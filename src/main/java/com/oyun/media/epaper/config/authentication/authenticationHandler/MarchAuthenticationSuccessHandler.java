@@ -3,6 +3,7 @@ package com.oyun.media.epaper.config.authentication.authenticationHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oyun.media.epaper.utils.UserUtil;
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ import java.util.Base64;
  * @create: 2018-08-29 11:29
  **/
 @Component("marchAuthenticationSuccessHandler")
-@Log4j2
+@Slf4j
 public class MarchAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     @Autowired

@@ -3,6 +3,7 @@ package com.oyun.media.epaper.config.authentication.authenticationHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oyun.media.epaper.exception.ValidateCodeException;
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -24,7 +25,7 @@ import java.io.PrintWriter;
  * @create: 2018-08-29 11:29
  **/
 @Component("marchAuthenticationFailureHandler")
-@Log4j2
+@Slf4j
 public class MarchAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
     @Autowired

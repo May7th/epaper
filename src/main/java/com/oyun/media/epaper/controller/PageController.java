@@ -17,7 +17,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.oyun.media.epaper.utils.ConstraintViolationExceptionHandler;
 
 import javax.validation.ConstraintViolationException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -68,9 +71,18 @@ public class PageController {
     public ApiResponse pageDetails(@ModelAttribute QueryData query,
                                     @RequestParam(value = "id", required = true)Long id){
 
-        List<Article> articleList = pageService.getPageById(id).getArticleList();
+        Page page = pageService.getPageById(id);
+        List<Article> articleList = page.getArticleList();
+        Set<Article> articleSet = new HashSet<>();
+        List<Article> list = new ArrayList<>();
+
+        articleList.forEach(article -> {
+            if (articleSet.add(article)){
+                list.add(article);
+            }
+        });
         ApiResponse response = new ApiResponse(ApiResponse.Status.SUCCESS.getCode(),
-                ApiResponse.Status.SUCCESS.getStandardMessage(),articleList);
+                ApiResponse.Status.SUCCESS.getStandardMessage(),list);
 
         return response;
 

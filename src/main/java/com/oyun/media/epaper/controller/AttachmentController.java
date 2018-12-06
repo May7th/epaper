@@ -8,6 +8,7 @@ import com.oyun.media.epaper.domain.Page;
 import com.oyun.media.epaper.form.DataTableSearch;
 import com.oyun.media.epaper.service.IAttachmentService;
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,7 +32,7 @@ import java.util.Map;
  * @author: changzhen
  * @create: 2018-06-27 23:10
  **/
-@Log4j2
+@Slf4j
 @Controller
 public class AttachmentController {
 

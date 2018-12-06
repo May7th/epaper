@@ -9,6 +9,7 @@ import com.oyun.media.epaper.utils.FileUtil;
 import com.oyun.media.epaper.utils.LoginUserUtil;
 import com.oyun.media.epaper.utils.MD5Util;
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -44,7 +45,7 @@ import java.util.Set;
  * @create: 2018-08-10 00:09
  **/
 @Service
-@Log4j2
+@Slf4j
 public class AttachmentServiceImpl implements IAttachmentService {
 
     @Value("${server.address}")

@@ -11,6 +11,7 @@ import com.oyun.media.epaper.repository.ArticleRepository;
 import com.oyun.media.epaper.service.IArticleService;
 import com.oyun.media.epaper.service.ICatalogService;
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
@@ -51,7 +52,7 @@ import java.util.regex.Pattern;
  * @author: changzhen
  * @create: 2018-08-08 10:32
  **/
-@Log4j2
+@Slf4j
 @Service
 @Transactional
 public class SearchServiceImpl implements ISearchService {

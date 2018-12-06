@@ -20,6 +20,7 @@ import com.oyun.media.port.PortFunctionService;
 import com.oyun.media.transService.PortFuntionDelegate;
 import com.oyun.media.transService.PortFuntionService;
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -42,7 +43,7 @@ import java.util.regex.Pattern;
  * @create: 2018-05-25 15:10
  **/
 @Service
-@Log4j2
+@Slf4j
 public class ArticleServiceImpl implements IArticleService {
 
     @Autowired

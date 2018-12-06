@@ -2,6 +2,7 @@ package com.oyun.media.epaper.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -93,6 +94,7 @@ public class Article {
     private Catalog catalog;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Lazy(value = false)
     @JoinTable(name = "article_image", joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "attachment_id", referencedColumnName = "id"))
     private List<Attachment> contentImages;
