@@ -25,7 +25,7 @@
         <img style="margin: 150px 0 0 4px; float: left;width: 40%;height: 40%" th:src="@{'/images/lishibao.png'}"/>
         <div class="ss_xl">
             <form th:action="@{~/epaper/article/search}" method="get">
-                <input id="keywords" class="btn_search_aa" type="text" name="keywords" value="ᠵᠠᠩᠭᠢᠯᠠᠭ᠎ᠠ ᠶ᠋ᠢᠨ ᠦᠭᠡᠰ ᠢᠶᠡᠨ ᠡᠨᠳᠡ ᠪᠢᠴᠢᠭᠡᠷᠡᠢ" onclick="if(this.value='ᠵᠠᠩᠭᠢᠯᠠᠭ᠎ᠠ ᠶ᠋ᠢᠨ ᠦᠭᠡᠰ ᠢᠶᠡᠨ ᠡᠨᠳᠡ ᠪᠢᠴᠢᠭᠡᠷᠡᠢ'){this.value='';this.style.color='a8a8b7';}" onblur="if(this.value==''){ this.value='ᠵᠠᠩᠭᠢᠯᠠᠭ᠎ᠠ ᠶ᠋ᠢᠨ ᠦᠭᠡᠰ ᠢᠶᠡᠨ ᠡᠨᠳᠡ ᠪᠢᠴᠢᠭᠡᠷᠡᠢ';this.style.color='a8a8b7';}else{this.style.color='a8a8b7';}">
+                <input id="keywords" class="btn_search_aa" type="text" name="keywords" placeholder="ᠵᠠᠩᠭᠢᠯᠠᠭ᠎ᠠ ᠶ᠋ᠢᠨ ᠦᠭᠡᠰ ᠢᠶᠡᠨ ᠡᠨᠳᠡ ᠪᠢᠴᠢᠭᠡᠷᠡᠢ">
                 <button class="btn_search_bb" type="submit" id="searchByWord"/>
             </form>
         </div>

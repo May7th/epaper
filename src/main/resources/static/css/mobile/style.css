@@ -82,7 +82,7 @@ ul,li,dl,p { list-style:none; margin:0; padding:0; display:list-item; }
 
 /*首页开始*/
 .box { max-width:468px; margin:0 auto; overflow:hidden; }
-.header { width:100%; margin:0 auto; border-bottom:2px solid #2693ff; overflow:hidden; text-align:center; }
+.header { width:100%; margin:0 auto; border-bottom:2px solid #2693ff; background:url("../../images/logo_c.png")  no-repeat center; padding:0px 0px 10px 0px; background-size: auto 70px;}
 
 .logo_l { height:50px; float:left; margin-top:10px; }
 .logo_c { height:70px; margin:0 auto; }

@@ -47,7 +47,7 @@ public class ArticleController {
      * @param id
      * @return
      */
-    @DeleteMapping
+    @PostMapping("delete")
     @ApiOperation(value = "删除文章")
     public ResponseEntity<Response> delete(@RequestParam(value="id", required = true) Long id) {
         try {

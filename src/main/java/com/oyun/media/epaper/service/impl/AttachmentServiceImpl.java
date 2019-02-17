@@ -189,11 +189,14 @@ public class AttachmentServiceImpl implements IAttachmentService {
         if (attachments.isEmpty()){
             return;
         }
-        attachments.forEach(attachment -> {
-            if (!newAttachments.contains(attachment)){
-                switchStatus(attachment);
-            }
-        });
+        if(newAttachments != null&&!newAttachments.isEmpty()){
+            attachments.forEach(attachment -> {
+                if (!newAttachments.contains(attachment)){
+                    switchStatus(attachment);
+                }
+            });
+        }
+
     }
 
     @Transactional(rollbackFor = Exception.class )

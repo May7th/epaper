@@ -51,7 +51,7 @@ public class CatalogController {
         }
     }
 
-    @DeleteMapping
+    @PostMapping("delete")
     @ApiOperation(value = "删除分类")
     public ResponseEntity<Response> delete(@RequestParam(value="id", required = true) Long id) {
         try {

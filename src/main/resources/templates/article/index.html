@@ -47,12 +47,12 @@
          </form>
 	 </div>
 	 <div class="left_b mw">
-	   <p style="writing-mode: sideways-rl;" class="left_b_p">ᠲᠣᠭᠰᠢᠭᠳᠠᠴᠠ ᠶ᠋ᠢᠨ ᠳ᠋ᠤᠭᠠᠷᠯᠠᠯ</p>
+	   <p style="writing-mode: sideways-rl;" class="left_b_p">ᠬᠠᠯᠠᠮᠱᠢᠯ ᠮᠡᠳᠡᠭᠡ</p>
 	   <div class="left_b_text">
                <a th:href="@{'/epaper/article/'+${article.id}}" target="_blank"  th:each="article:${clickRateList}">
                    <ul>
                        <li th:text="${article.title}" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;word-break:keep-all;"></li>
-                       <div style="writing-mode: sideways-rl;" class="shijian f18"> ᠬᠤᠭᠤᠴᠠᠭ᠎ᠠ: <span style="margin-top: 0px;float: none;font-size: 14px; font-family:'sans-serif';" data-th-text="${article.releaseDate}"></span></div>
+                       <div style="writing-mode: sideways-rl;" class="shijian f18"> ᠬᠤᠭᠤᠴᠠᠭ᠎ᠠ<span style="margin-top: 0px;float: none;font-size: 14px; font-family:'sans-serif';" data-th-text="${colon}+${article.releaseDate}"></span></div>
                    </ul>
                    <div class="nums"><p th:text="${article.readSize}"></p></div>
                </a>
@@ -75,7 +75,7 @@
   <div class="right_box">
     <div class="ss">
         <form th:action="@{/epaper/article/search}" method="get" target= "_blank">
-            <input class="btn_search_a" type="text" name="keywords" value="ᠵᠠᠩᠭᠢᠯᠠᠭ᠎ᠠ ᠶ᠋ᠢᠨ ᠦᠭᠡᠰ ᠢᠶᠡᠨ ᠡᠨᠳᠡ ᠪᠢᠴᠢᠭᠡᠷᠡᠢ" onclick="if(this.value='ᠵᠠᠩᠭᠢᠯᠠᠭ᠎ᠠ ᠶ᠋ᠢᠨ ᠦᠭᠡᠰ ᠢᠶᠡᠨ ᠡᠨᠳᠡ ᠪᠢᠴᠢᠭᠡᠷᠡᠢ'){this.value='';this.style.color='a8a8b7';}" onblur="if(this.value==''){ this.value='ᠵᠠᠩᠭᠢᠯᠠᠭ᠎ᠠ ᠶ᠋ᠢᠨ ᠦᠭᠡᠰ ᠢᠶᠡᠨ ᠡᠨᠳᠡ ᠪᠢᠴᠢᠭᠡᠷᠡᠢ';this.style.color='a8a8b7';}else{this.style.color='a8a8b7';}">
+            <input class="btn_search_a" type="text" name="keywords" placeholder="ᠵᠠᠩᠭᠢᠯᠠᠭ᠎ᠠ ᠶ᠋ᠢᠨ ᠦᠭᠡᠰ ᠢᠶᠡᠨ ᠡᠨᠳᠡ ᠪᠢᠴᠢᠭᠡᠷᠡᠢ">
             <button class="btn_search_b" type="submit"/>
 
         </form>
@@ -90,12 +90,12 @@
 		</ul>
 		<div class="num"></div>
 	</div>
-	<div class="lm_name mw">ᠰᠣᠩᠭᠤᠨ ᠲᠠᠨᠢᠯᠴᠠᠭᠤᠯᠬᠤ ᠰᠣᠨᠢᠨ</div>
+	<div class="lm_name mw">ᠰᠣᠩᠭᠣᠨ ᠲᠠᠨᠢᠯᠴᠠᠭᠤᠯᠬᠤ ᠮᠡᠳᠡᠭᠡ</div>
 	<div class="news mw f18">
 	  <li th:each="textRecommend:${textRecommendList}">
-          <a th:href="@{'/epaper/article/'+${textRecommend.articleId}}" target="_blank" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;height: 85%" th:text="${textRecommend.articleName}"></a><p style="font-family:'sans-serif';" th:text="${textRecommend.releaseDate}"></p>
+          <a th:href="@{'/epaper/article/'+${textRecommend.articleId}}" target="_blank" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;height: 85%" th:text="${textRecommend.articleName}"></a><p style="font-family:'sans-serif';font-size: 16px;" th:text="${textRecommend.releaseDate}"></p>
       </li>
-	  </div>
+    </div>
   </div>
 
 </div>
@@ -158,6 +158,10 @@ Copyright © www.mgyxw.com All Right Reserved.</p>
     }
     mobile_device_detect("/epaper/mobile/index");
 </script>
+<script th:inline="javascript">
+
+</script>
+
 <script type="text/javascript">
     $('.form_date').datetimepicker({
         format: 'yyyy-mm-dd',
@@ -173,8 +177,17 @@ Copyright © www.mgyxw.com All Right Reserved.</p>
     });
 </script>
 <script type="text/javascript">
+    function isIE()
+    {
+        if(!!window.ActiveXObject || "ActiveXObject" in window)
+            return true;
+        else
+            return false;
+    }
+
 $(document).ready(function (){
 	$('#imgPlay').maiPlayer({speedSwitch:5000});
+
 });
 </script>
 

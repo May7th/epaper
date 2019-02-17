@@ -28,7 +28,7 @@ public class RecommendController {
     @Autowired
     private IArticleService articleService;
 
-    @PutMapping("add/{type}")
+    @PostMapping("add/{type}")
     public ApiResponse addRecommend(@RequestParam(value="id", required = true) Long id,
                                     @PathVariable() int type){
 
@@ -40,7 +40,7 @@ public class RecommendController {
             return ApiResponse.ofStatus(ApiResponse.Status.NOT_SUPPORTED_OPERATION);
         }
     }
-    @DeleteMapping
+    @PostMapping("delete")
     public ApiResponse deleteRecommend(@RequestParam(value="id", required = true) Long id){
 
         if (id >= 0){

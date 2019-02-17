@@ -23,7 +23,7 @@
   <div class="box">
     <div class="logo_l"><img th:src="@{'/images/mobile/logo_l.png'}" border="0" height="100%" alt=""></div>
 	<div class="logo_r"><img th:src="@{'/images/mobile/logo_r.png'}" border="0" height="100%" alt=""></div>
-	<div class="logo_c"><img th:src="@{'/images/mobile/logo_c.png'}" border="0" height="100%" alt=""></div>
+	<!--<div class="logo_c"><img th:src="@{'/images/mobile/logo_c.png'}" border="0" height="100%" alt=""></div>-->
   </div>
 </div>
 <!----- 顶部结束 ----->
@@ -57,7 +57,7 @@
 </div>
 
     <div class="left_b mw">
-        <p style="writing-mode: sideways-rl;" class="left_b_p">ᠲᠣᠭᠰᠢᠭᠳᠠᠴᠠ ᠶ᠋ᠢᠨ ᠳ᠋ᠤᠭᠠᠷᠯᠠᠯ</p>
+        <p style="writing-mode: sideways-rl;" class="left_b_p">ᠬᠠᠯᠠᠮᠱᠢᠯ ᠮᠡᠳᠡᠭᠡ</p>
         <div class="left_b_text">
             <a th:href="@{'/epaper/article/'+${article.id}}" target="_blank"  th:each="article:${clickRateList}">
                 <ul>
@@ -86,7 +86,7 @@
 </div>
 
 <div class="news_box">
-    <div class="lm_name mw">ᠰᠣᠩᠭᠤᠨ ᠲᠠᠨᠢᠯᠴᠠᠭᠤᠯᠬᠤ ᠰᠣᠨᠢᠨ</div>
+    <div class="lm_name mw">ᠰᠣᠩᠭᠣᠨ ᠲᠠᠨᠢᠯᠴᠠᠭᠤᠯᠬᠤ ᠮᠡᠳᠡᠭᠡ</div>
     <div class="news mw f18">
         <li th:each="textRecommend:${textRecommendList}">
             <a th:href="@{'/epaper/article/'+${textRecommend.articleId}}" target="_blank" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;height: 85%" th:text="${textRecommend.articleName}"></a><p style="font-family: 'Open Sans', sans-serif" th:text="${textRecommend.releaseDate}"></p>

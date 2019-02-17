@@ -17,7 +17,7 @@ public class ArticleSearch {
     private String keywords;
     private String wordType;
     private String orderBy = "releaseDate";
-    private String orderDirection = "desc";
+    private String orderDirection = "asc";
     @DateTimeFormat(pattern ="yyyy-mm-dd")
     private Date releaseDate = null;
 

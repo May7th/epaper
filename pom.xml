@@ -5,7 +5,7 @@
 
 	<groupId>com.oyun.media</groupId>
 	<artifactId>epaper</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.2.4-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>epaper</name>

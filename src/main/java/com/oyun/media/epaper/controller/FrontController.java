@@ -25,12 +25,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.persistence.criteria.Order;
+import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -73,16 +75,53 @@ public class FrontController {
     private DataHandleService dataHandleService;
 
     @GetMapping("index")
-    public String index(Model model){
-
+    public String index(Model model, HttpServletRequest request){
+        String agent = request.getHeader("User-Agent").toLowerCase();
         List<Article> clickRateList = articleService.clickRateList(6);
         List<Recommend> textRecommendList = recommendService.findAllRecommendsByType(13,TEXT_RECOMMEND);
         List<Recommend> imageRecommendList = recommendService.findAllRecommendsByType(7,IMAGE_RECOMMEND);
         Recommend printRecommend = imageRecommendList.remove(6);
+        String colon = "：";
+        boolean isIEBrowser = false;
+        if (agent.indexOf("msie") > -1 || agent.indexOf("rv:11") > -1 || agent.indexOf("edge") > -1) {
+            isIEBrowser = true;
+        }
+        if (isIEBrowser){
+            clickRateList.forEach(article -> {
+                if (!StringUtils.isEmpty(article.getContentHtml())){
+                    String content = article.getContentHtml();
+                    article.setContentHtml(handleSymbol(content));
+                }
+                if (!StringUtils.isEmpty(article.getTitle())){
+                    String title = article.getTitle();
+                    article.setTitle(handleSymbol(title));
+                }
+            });
+            textRecommendList.forEach(recommend -> {
+                if (!StringUtils.isEmpty(recommend.getArticleName())){
+                    String name = recommend.getArticleName();
+                    recommend.setArticleName(handleSymbol(name));
+                }
+
+            });
+            imageRecommendList.forEach(recommend -> {
+                if (!StringUtils.isEmpty(recommend.getArticleName())){
+                    String name = recommend.getArticleName();
+                    recommend.setArticleName(handleSymbol(name));
+                }
+
+            });
+            if (!StringUtils.isEmpty(printRecommend.getArticleName())){
+                String name = printRecommend.getArticleName();
+                printRecommend.setArticleName(handleSymbol(name));
+            }
+            colon = ":";
+        }
         model.addAttribute("clickRateList",clickRateList);
         model.addAttribute("textRecommendList",textRecommendList);
         model.addAttribute("imageRecommendList",imageRecommendList);
         model.addAttribute("printRecommend",printRecommend);
+        model.addAttribute("colon",colon);
 
         return "article/index";
     }
@@ -105,7 +144,15 @@ public class FrontController {
     @GetMapping("paper")
     public String getPaper(String releaseDate,
                            @RequestParam(value="pageId",required=false,defaultValue="0")
-                                   long pageId, Model model){
+                                   long pageId, Model model,HttpServletRequest request){
+        String agent = request.getHeader("User-Agent").toLowerCase();
+        boolean isIEBrowser = false;
+        if (agent.indexOf("msie") > -1 || agent.indexOf("rv:11") > -1 || agent.indexOf("edge") > -1) {
+            isIEBrowser = true;
+        }
+
+        boolean finalIsIEBrowser = isIEBrowser;
+
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date date1 = null;
         try {
@@ -119,6 +166,37 @@ public class FrontController {
             List<Recommend> textRecommendList = recommendService.findAllRecommendsByType(13,TEXT_RECOMMEND);
             List<Recommend> imageRecommendList = recommendService.findAllRecommendsByType(7,IMAGE_RECOMMEND);
             Recommend printRecommend = imageRecommendList.remove(6);
+
+            if (isIEBrowser){
+                clickRateList.forEach(article -> {
+                    if (!StringUtils.isEmpty(article.getContentHtml())){
+                        String content = article.getContentHtml();
+                        article.setContentHtml(handleSymbol(content));
+                    }
+                    if (!StringUtils.isEmpty(article.getTitle())){
+                        String title = article.getTitle();
+                        article.setTitle(handleSymbol(title));
+                    }
+                });
+                textRecommendList.forEach(recommend -> {
+                    if (!StringUtils.isEmpty(recommend.getArticleName())){
+                        String name = recommend.getArticleName();
+                        recommend.setArticleName(handleSymbol(name));
+                    }
+
+                });
+                imageRecommendList.forEach(recommend -> {
+                    if (!StringUtils.isEmpty(recommend.getArticleName())){
+                        String name = recommend.getArticleName();
+                        recommend.setArticleName(handleSymbol(name));
+                    }
+
+                });
+                if (!StringUtils.isEmpty(printRecommend.getArticleName())){
+                    String name = printRecommend.getArticleName();
+                    printRecommend.setArticleName(handleSymbol(name));
+                }
+            }
             model.addAttribute("clickRateList",clickRateList);
             model.addAttribute("textRecommendList",textRecommendList);
             model.addAttribute("imageRecommendList",imageRecommendList);
@@ -145,6 +223,36 @@ public class FrontController {
             List<Recommend> textRecommendList = recommendService.findAllRecommendsByType(13,TEXT_RECOMMEND);
             List<Recommend> imageRecommendList = recommendService.findAllRecommendsByType(7,IMAGE_RECOMMEND);
             Recommend printRecommend = imageRecommendList.remove(6);
+            if (isIEBrowser){
+                clickRateList.forEach(article -> {
+                    if (!StringUtils.isEmpty(article.getContentHtml())){
+                        String content = article.getContentHtml();
+                        article.setContentHtml(handleSymbol(content));
+                    }
+                    if (!StringUtils.isEmpty(article.getTitle())){
+                        String title = article.getTitle();
+                        article.setTitle(handleSymbol(title));
+                    }
+                });
+                textRecommendList.forEach(recommend -> {
+                    if (!StringUtils.isEmpty(recommend.getArticleName())){
+                        String name = recommend.getArticleName();
+                        recommend.setArticleName(handleSymbol(name));
+                    }
+
+                });
+                imageRecommendList.forEach(recommend -> {
+                    if (!StringUtils.isEmpty(recommend.getArticleName())){
+                        String name = recommend.getArticleName();
+                        recommend.setArticleName(handleSymbol(name));
+                    }
+
+                });
+                if (!StringUtils.isEmpty(printRecommend.getArticleName())){
+                    String name = printRecommend.getArticleName();
+                    printRecommend.setArticleName(handleSymbol(name));
+                }
+            }
             model.addAttribute("clickRateList",clickRateList);
             model.addAttribute("textRecommendList",textRecommendList);
             model.addAttribute("imageRecommendList",imageRecommendList);
@@ -156,6 +264,16 @@ public class FrontController {
 
         articleList.forEach(article -> {
             coordinateMap.put(article.getId(),article.getCoordinate());
+            if (finalIsIEBrowser){
+                if (!StringUtils.isEmpty(article.getContentHtml())){
+                    String content = article.getContentHtml();
+                    article.setContentHtml(handleSymbol(content));
+                }
+                if (!StringUtils.isEmpty(article.getTitle())){
+                    String title = article.getTitle();
+                    article.setTitle(handleSymbol(title));
+                }
+            }
         });
 
         model.addAttribute("currentId",firstPage.getId());
@@ -224,12 +342,27 @@ public class FrontController {
 
 
     @GetMapping("article/{id}")
-    public ModelAndView articleDetail(@PathVariable("id") Long id, Model model){
+    public ModelAndView articleDetail(@PathVariable("id") Long id, Model model,HttpServletRequest request){
 
         Article article = articleService.getArticleById(id);
 
         if (articleService.increaseReadSize(article) == null){
             log.error("article read error,id: "+id);
+        }
+        String agent = request.getHeader("User-Agent").toLowerCase();
+        boolean isIEBrowser = false;
+        if (agent.indexOf("msie") > -1 || agent.indexOf("rv:11") > -1 || agent.indexOf("edge") > -1) {
+            isIEBrowser = true;
+        }
+        if (isIEBrowser){
+            if (!StringUtils.isEmpty(article.getContentHtml())){
+                String content = article.getContentHtml();
+                article.setContentHtml(handleSymbol(content));
+            }
+            if (!StringUtils.isEmpty(article.getTitle())){
+                String title = article.getTitle();
+                article.setTitle(handleSymbol(title));
+            }
         }
 
         Page page = pageService.getPageById(article.getParentId());
@@ -282,7 +415,12 @@ public class FrontController {
     }
 
     @GetMapping("article/search")
-    public ModelAndView articleSearch(@ModelAttribute ArticleSearch articleSearch,Model model){
+    public ModelAndView articleSearch(@ModelAttribute ArticleSearch articleSearch,Model model,HttpServletRequest request){
+        String agent = request.getHeader("User-Agent").toLowerCase();
+        boolean isIEBrowser = false;
+        if (agent.indexOf("msie") > -1 || agent.indexOf("rv:11") > -1 || agent.indexOf("edge") > -1) {
+            isIEBrowser = true;
+        }
 
         String keywords = articleSearch.getKeywords();
         String wordType = articleSearch.getWordType();
@@ -295,6 +433,20 @@ public class FrontController {
         org.springframework.data.domain.Page<Article> page = articleService.queryPage(articleSearch);
 
         List<Article> articleList = page.getContent();
+        if (isIEBrowser) {
+            articleList.forEach(article -> {
+
+                if (!StringUtils.isEmpty(article.getContentHtml())) {
+                    String content = article.getContentHtml();
+                    article.setContentHtml(handleSymbol(content));
+                }
+                if (!StringUtils.isEmpty(article.getTitle())) {
+                    String title = article.getTitle();
+                    article.setTitle(handleSymbol(title));
+                }
+
+            });
+        }
         model.addAttribute("articleList",articleList);
         model.addAttribute("page",page);
         model.addAttribute("keywords",keywords);
@@ -305,22 +457,62 @@ public class FrontController {
     }
 
     @GetMapping("article/searchList")
-    public ModelAndView searchArticleList(@ModelAttribute ArticleSearch articleSearch,Model model){
-
+    public ModelAndView searchArticleList(@ModelAttribute ArticleSearch articleSearch,Model model,HttpServletRequest request){
+        String agent = request.getHeader("User-Agent").toLowerCase();
+        boolean isIEBrowser = false;
+        if (agent.indexOf("msie") > -1 || agent.indexOf("rv:11") > -1 || agent.indexOf("edge") > -1) {
+            isIEBrowser = true;
+        }
         org.springframework.data.domain.Page<Article> articles = articleService.queryPage(articleSearch);
 
-        model.addAttribute("articleList",articles.getContent());
+
+        List<Article> articleList = articles.getContent();
+        if (isIEBrowser) {
+            articleList.forEach(article -> {
+
+                if (!StringUtils.isEmpty(article.getContentHtml())) {
+                    String content = article.getContentHtml();
+                    article.setContentHtml(handleSymbol(content));
+                }
+                if (!StringUtils.isEmpty(article.getTitle())) {
+                    String title = article.getTitle();
+                    article.setTitle(handleSymbol(title));
+                }
+
+            });
+        }
+        model.addAttribute("articleList",articleList);
 
         return new ModelAndView("article/list","articleModel",model);
     }
 
     @GetMapping("paper/page/{pageId}")
-    public ModelAndView getPageDetail(@PathVariable long pageId,Model model){
+    public ModelAndView getPageDetail(@PathVariable long pageId,Model model,HttpServletRequest request){
+
+        String agent = request.getHeader("User-Agent").toLowerCase();
+        boolean isIEBrowser = false;
+        if (agent.indexOf("msie") > -1 || agent.indexOf("rv:11") > -1 || agent.indexOf("edge") > -1) {
+            isIEBrowser = true;
+        }
 
         Page page = pageService.getPageById(pageId);
 
         List<Article> articleList = page.getArticleList();
 
+        if (isIEBrowser) {
+            articleList.forEach(article -> {
+
+                if (!StringUtils.isEmpty(article.getContentHtml())) {
+                    String content = article.getContentHtml();
+                    article.setContentHtml(handleSymbol(content));
+                }
+                if (!StringUtils.isEmpty(article.getTitle())) {
+                    String title = article.getTitle();
+                    article.setTitle(handleSymbol(title));
+                }
+
+            });
+        }
         model.addAttribute("articleList",articleList);
 
         return new ModelAndView("article/coordinate-list","articleModel",model);
@@ -354,46 +546,106 @@ public class FrontController {
     @GetMapping("article/getClickList")
     public ModelAndView getAllClickList(@RequestParam(value="start",required=false,defaultValue="0") int start,
                                          @RequestParam(value="size",required=false,defaultValue="10") int size,
-                                        Model model){
-
+                                        Model model,
+                                        HttpServletRequest request){
+        String agent = request.getHeader("User-Agent").toLowerCase();
+        boolean isIEBrowser = false;
+        if (agent.indexOf("msie") > -1 || agent.indexOf("rv:11") > -1 || agent.indexOf("edge") > -1) {
+            isIEBrowser = true;
+        }
         Sort sort = new Sort(Sort.Direction. DESC, "readSize");
         int index = start/size;
         Pageable pageable = new PageRequest(index, size,sort);
 
-        org.springframework.data.domain.Page<Article> articleList = articleRepository.findAllByState(ARTICLE_STATE,pageable);
+        org.springframework.data.domain.Page<Article> page = articleRepository.findAllByState(ARTICLE_STATE,pageable);
+        List<Article> articleList = page.getContent();
+        if (isIEBrowser) {
+            articleList.forEach(article -> {
 
-        model.addAttribute("articleList",articleList.getContent());
+                if (!StringUtils.isEmpty(article.getContentHtml())) {
+                    String content = article.getContentHtml();
+                    article.setContentHtml(handleSymbol(content));
+                }
+                if (!StringUtils.isEmpty(article.getTitle())) {
+                    String title = article.getTitle();
+                    article.setTitle(handleSymbol(title));
+                }
+
+            });
+        }
+        model.addAttribute("articleList",articleList);
 
         return new ModelAndView("article/list","articleModel",model);
 
     }
 
-//    @GetMapping("article/test/search")
-//    public ModelAndView articleSearchTest(@ModelAttribute ArticleSearch articleSearch,Model model){
-//
-//        String keywords = articleSearch.getKeywords();
-//        String wordType = articleSearch.getWordType();
-//        Date releaseDate = articleSearch.getReleaseDate();
-//        if (releaseDate != null){
-//            SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
-//            String date = format.format(releaseDate);
-//            model.addAttribute("releaseDate",date);
-//        }
-//        org.springframework.data.domain.Page<Article> page = articleService.queryPage(articleSearch);
-//
-//        List<Article> articleList = page.getContent();
-//        model.addAttribute("articleList",articleList);
-//        model.addAttribute("page",page);
-//        model.addAttribute("keywords",keywords);
-//        model.addAttribute("wordType",wordType);
-//        model.addAttribute("total",page.getTotalElements());
-//
-//        return new ModelAndView("article/search-list","articleModel",model);
-//    }
+
+    @GetMapping("oyun/data/recommend/handle/url")
+    private void handleImageNews(){
+       List<Article> articles = articleRepository.findAll();
+       articles.forEach(article -> {
+
+           System.out.println(article.getId());
+           if (!StringUtils.isEmpty(article.getContentHtml())){
+               String content = article.getContentHtml();
+               String a = content.replaceAll("》","︾");
+               String b = a.replaceAll("《","︽");
+               article.setContentHtml(b);
+               if (!StringUtils.isEmpty(article.getTitle())){
+                   String title = article.getTitle();
+                   String c = title.replaceAll("》","︾");
+                   String d = c.replaceAll("《","︽");
+                   article.setTitle(d);
+               }
+               articleRepository.save(article);
+           }
+
+       });
+       List<Recommend> recommends = recommendRepository.findAll();
+
+       recommends.forEach(recommend -> {
+           if (!StringUtils.isEmpty(recommend.getArticleName())){
+               String name = recommend.getArticleName();
+               String c = name.replaceAll("》","︾");
+               String d = c.replaceAll("《","︽");
+
+               recommend.setArticleName(d);
+           }
+
+           recommendRepository.save(recommend);
+       });
+
+    }
+
+    private String handleSymbol(String str){
+        String a = str.replaceAll("》","︾");
+        String handleString = a.replaceAll("《","︽");
+
+        return handleString;
+    }
 
 
-//    @GetMapping("oyun/data/image/handle/url")
-//    private void handleImageNews(){
-//        dataHandleService.handleImageNews();
-//    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

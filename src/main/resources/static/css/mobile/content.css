@@ -18,7 +18,7 @@ html { width:100%; height:100%; margin:0px; padding:0px; overflow:hidden;overflo
 
 .title_box { height:100%; float:left; border-radius:10px; background:#cecebf; padding:20px 10px 20px 10px; font-family:"MenkGarqag"; color:#646472; margin-left:14px; overflow:hidden; line-height:140%; }
 .tvga { float:left; font-family:"Menksoft2012"; color:#646472; margin-left:16px; margin-top:300px; }
-.xl_content { float:left; color:#171420; border:1px dashed #cecebf; padding:20px; line-height:180%; margin-left:16px; }
+.xl_content {text-indent: 2em; float:left; color:#171420; border:1px dashed #cecebf; padding:20px; line-height:180%; margin-left:16px; }
 .auther { float:left; height:100%; margin-left:14px; color:#646472; border:1px dashed #cecebf; padding:20px 10px 20px 10px; line-height:180%; background:#f7f3f2; font-family:"MenkGarqag"; }
 .xl_footer { float:left; height:100%; margin-left:16px; color:#171420; padding:20px 10px 20px 10px; line-height:160%; background:#f7f3f2; }
 
@@ -33,7 +33,7 @@ html { width:100%; height:100%; margin:0px; padding:0px; overflow:hidden;overflo
 .ss_jss p { font-size:21px; }
 .btn_search_aaa { -ms-transform:rotate(90deg) translate(0, -100%);-ms-transform-origin:0% 0%;-webkit-transform:rotate(90deg) translate(0, -100%);-webkit-transform-origin:0% 0%;-moz-transform:rotate(90deg) translate(0,-100%);-moz-transform-origin:0% 0%;-o-transform:rotate(90deg) translate(0,-100%);-o-transform-origin:0% 0%;/* white-space:nowrap; */ width:80px; height:42px; border:1px solid #acac9d; font-size:20px; color:#a8a8b7; padding-left:4px; position:absolute; left:-6px; bottom:84px; }
 .btn_search_bbb { width:80px; height:80px; float:left; background:url("../images/js.png") no-repeat; border:0; border-radius:6px; margin:100px 0px 0px 40px; }
-.js_content { float:left; padding:20px 10px 20px 10px; margin-left:16px; display:none; }
+.js_content {text-indent: 2em; float:left; padding:20px 10px 20px 10px; margin-left:16px; display:none; }
 .js_content li { float:left; color:#171420; line-height:180%; }
 .js_content dd { float:left; color:#8c4600; margin:350px 0px 0px 10px; font-family:"MenkGarqag"; font-size:20px; }
 .js_title { height:100%; float:left; margin-left:14px; background:#cecebf; border-radius:10px; padding:20px 10px 20px 10px; cursor:pointer; }

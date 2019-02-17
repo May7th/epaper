@@ -104,7 +104,7 @@ public class UserController {
      * @param id
      * @return
      */
-    @DeleteMapping
+    @PostMapping("delete")
     public ResponseEntity<Response> delete(@RequestParam(value="id", required = true) Long id) {
         try {
             userService.removeUser(id);
